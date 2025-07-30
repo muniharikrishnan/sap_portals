@@ -5,3 +5,65 @@ Z48EMPLOGIN - ztable for the login
 Z48PASSWORD - domain
 
 Z48PASSDT- data element   
+
+Z48_EMPLOG_FM - fm
+
+access and postman url - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_emp_login_901548?sap-client=100
+
+xml body - <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:Z48_EMPLOG_FM>
+         <EMPLOYEE_ID>00000002</EMPLOYEE_ID>
+         <PASSWORD>EMPLOYEE2</PASSWORD>
+      </urn:Z48_EMPLOG_FM>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+profile details
+
+Z48_EMP_PROFILE_FM - fm
+
+
+LEAVE DETAILS
+
+Z48_EMP_LEAVE_FM - FM 
+
+Z48_EMP_LEAVE_STRUCT - STRUCTURE
+
+Z48_EMP_LEAVE_TT - TABLE TYPE
+
+access and postman url : http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_emp_leave_901548?sap-client=100
+
+xml body : <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:Z48_EMP_LEAVE_FM>
+         <EMPLOYEE_ID>00000006</EMPLOYEE_ID>
+      </urn:Z48_EMP_LEAVE_FM>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+pay details
+
+Z48_EMP_PAY_FM - fm
+
+Z48_PAY_TT - TT
+
+Z48_PAY_STRUCT - STRUCTURE
+
+pdf details
+
+Z48_EMP_PAYPDF_FM - fm
+
+Z48_PAYPDF_FORM - form 
+
+Z48_PAYPDF_INTF - interface 
+
+
+
