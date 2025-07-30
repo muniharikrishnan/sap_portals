@@ -1,0 +1,111 @@
+<!-- Back Button -->
+<button class="back-btn" (click)="goBack()">← Back</button>
+
+<!-- Delivery Details Container -->
+<div class="delivery-container">
+  <!-- Header Section -->
+  <div class="delivery-header">
+    <h2 class="delivery-title">Delivery Details</h2>
+    <span class="delivery-underline"></span>
+    <p class="delivery-subtitle">Track your delivery information and status</p>
+  </div>
+
+  <!-- Controls Section -->
+  <div class="controls-section">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search by Delivery No..." 
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+        >
+        <span class="search-icon">🔍</span>
+      </div>
+      <button class="clear-search-btn" *ngIf="searchTerm" (click)="clearSearch()">
+        ✕
+      </button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+        <span class="refresh-icon" [class.spinning]="isLoading">🔄</span>
+        Refresh
+      </button>
+      <button class="export-btn" (click)="exportToCSV()" [disabled]="filteredDeliveryData.length === 0">
+        <span class="export-icon">📊</span>
+        Export CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Container with Scroll -->
+  <div class="table-container" *ngIf="deliveryData.length > 0">
+    <table class="delivery-table">
+      <thead>
+        <tr>
+          <th>Delivery No</th>
+          <th>Date</th>
+          <th>Shipping Point</th>
+          <th>Sales Org</th>
+          <th>Type</th>
+          <th>Delivery Date</th>
+          <th>Item No</th>
+          <th>Material No</th>
+          <th>Description</th>
+          <th class="text-right">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredDeliveryData; trackBy: trackByDeliveryId">
+          <td data-label="Delivery No">
+            <span class="delivery-badge">{{ item.vbeln }}</span>
+          </td>
+          <td data-label="Date">{{ formatDate(item.erdat) }}</td>
+          <td data-label="Shipping Point">{{ item.vstel }}</td>
+          <td data-label="Sales Org">{{ item.vkorg }}</td>
+          <td data-label="Type">
+            <span class="type-badge">{{ item.lfart }}</span>
+          </td>
+          <td data-label="Delivery Date">{{ formatDate(item.lfdat) }}</td>
+          <td data-label="Item No">{{ item.posnr }}</td>
+          <td data-label="Material No">
+            <span class="material-code">{{ item.matnr }}</span>
+          </td>
+          <td data-label="Description" class="description-cell">{{ item.arktx }}</td>
+          <td data-label="Quantity" class="text-right quantity-cell">
+            <span class="quantity-value">{{ formatQuantity(item.lfimg) }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading delivery data...</p>
+  </div>
+
+  <!-- No Data State -->
+  <div class="no-data-container" *ngIf="!isLoading && deliveryData.length === 0">
+    <div class="no-data-icon">📦</div>
+    <h3 class="no-data-title">No Delivery Data Available</h3>
+    <p class="no-data-text">There are currently no delivery records to display.</p>
+    <button class="refresh-btn" (click)="fetchDeliveryData()">
+      <span class="refresh-icon">🔄</span>
+      Refresh Data
+    </button>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="errorMessage">
+    <div class="error-icon">⚠️</div>
+    <h3 class="error-title">Error Loading Data</h3>
+    <p class="error-text">{{ errorMessage }}</p>
+    <button class="retry-btn" (click)="fetchDeliveryData()">Try Again</button>
+  </div>
+</div>

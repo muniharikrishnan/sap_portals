@@ -1,0 +1,168 @@
+<div class="rfq-container">
+  <!-- Back Button Top Left -->
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">
+    <i class="back-icon">←</i>
+    Back
+  </button>
+
+  <div class="rfq-top-right">
+    <div class="rfq-top-section">
+      <h1 class="rfq-title rfq-title-center"><span style="font-size:2.2rem; margin-right: 0.5rem;">📑</span>Vendor RFQ List</h1>
+      <p class="rfq-subtitle">Manage and track your Request for Quotation items</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card (Tab) -->
+  <div class="content-card" *ngIf="!isLoading && paginatedRfqs.length; else noData">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0;">RFQ Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search PO Number..."
+        [(ngModel)]="poNumberSearch"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredRfqs.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
+      </div>
+    </div>
+    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
+      <button class="action-button" (click)="exportData()">
+        <i class="action-icon">📊</i>
+        Export
+      </button>
+      <button class="action-button" (click)="refreshData()">
+        <i class="action-icon">🔄</i>
+        Refresh
+      </button>
+    </div>
+    <div class="table-container">
+      <table class="rfq-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="toggleSort('poNumber')">
+              <div class="th-content">
+                <span>PO Number</span>
+                <i class="sort-icon">⬍</i>
+              </div>
+            </th>
+            <th class="sortable" (click)="toggleSort('vendorId')">
+              <div class="th-content">
+                <span>Vendor ID</span>
+                <i class="sort-icon">⬍</i>
+              </div>
+            </th>
+            <th class="sortable" (click)="toggleSort('docDate')">
+              <div class="th-content">
+                <span>Document Date</span>
+                <i class="sort-icon">⬍</i>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Item Number</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Material</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Unit</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Description</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Delivery Date</span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rfq of getDisplayedRfqs(); trackBy: trackByRfq" class="table-row">
+            <td class="po-number">{{ rfq.poNumber }}</td>
+            <td class="vendor-id">{{ rfq.vendorId }}</td>
+            <td class="doc-date">{{ rfq.docDate }}</td>
+            <td class="item-number">{{ rfq.itemNumber }}</td>
+            <td class="material">{{ rfq.material }}</td>
+            <td class="unit">{{ rfq.unit }}</td>
+            <td class="description">{{ rfq.description }}</td>
+            <td class="delivery-date">
+              <span class="date-badge" [class.no-date]="!rfq.deliveryDate">
+                {{ rfq.deliveryDate || 'N/A' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination Card -->
+    <div class="pagination-card" *ngIf="filteredRfqs.length > 0">
+      <div class="pagination-info">
+        <span class="pagination-text">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, filteredRfqs.length) }} of {{ filteredRfqs.length }} items
+        </span>
+      </div>
+      <div class="pagination-controls">
+        <button 
+          class="pagination-button" 
+          (click)="changePage(-1)" 
+          [disabled]="currentPage === 1"
+          [class.disabled]="currentPage === 1"
+        >
+          <i class="pagination-icon">←</i>
+          Previous
+        </button>
+        <div class="page-indicator">
+          <span class="current-page">{{ currentPage }}</span>
+          <span class="page-separator">/</span>
+          <span class="total-pages">{{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
+        </div>
+        <button 
+          class="pagination-button" 
+          (click)="changePage(1)" 
+          [disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
+          [class.disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
+        >
+          Next
+          <i class="pagination-icon">→</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="no-data-card">
+      <div class="no-data-content">
+        <i class="no-data-icon">📭</i>
+        <h3 class="no-data-title">No RFQ Data Found</h3>
+        <p class="no-data-message">There are no Request for Quotation items available for this vendor at the moment.</p>
+        <button class="refresh-button" (click)="refreshData()">
+          <i class="refresh-icon">🔄</i>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading RFQ data...</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="invoice-page">
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">← Back</button>
+  <div class="invoice-header-top-right">
+    <h2 class="header-title invoice-gradient-title">Invoice Data</h2>
+  </div>
+  <div class="content-card" *ngIf="filteredInvoiceData.length > 0">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0; background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent;">Invoice Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search invoice data..."
+        [(ngModel)]="searchTerm"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredInvoiceData.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">1 / 1</span>
+      </div>
+    </div>
+    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
+      <button class="action-button" (click)="exportData()">
+        <i class="action-icon">📊</i>
+        Export
+      </button>
+      <button class="action-button" (click)="refreshData()">
+        <i class="action-icon">🔄</i>
+        Refresh
+      </button>
+    </div>
+    <div class="table-container">
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Invoice No</th>
+            <th>Invoice Date</th>
+            <th>PO No</th>
+            <th>PO Item</th>
+            <th>Material No</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Unit Price</th>
+            <th>Total Amount</th>
+            <th>Currency</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of filteredInvoiceData">
+            <td>{{ invoice.invoiceNo }}</td>
+            <td>{{ formatDate(invoice.invoiceDate) }}</td>
+            <td>{{ invoice.poNo }}</td>
+            <td>{{ invoice.poItem }}</td>
+            <td>{{ invoice.materialNo }}</td>
+            <td>{{ invoice.description }}</td>
+            <td>{{ invoice.quantity }}</td>
+            <td>{{ invoice.unit }}</td>
+            <td>{{ invoice.unitPrice }}</td>
+            <td>{{ invoice.totalAmount }}</td>
+            <td>{{ invoice.currency }}</td>
+            <td>
+              <button class="pdf-button" (click)="downloadPdf(invoice.invoiceNo)">Download PDF</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading-text">Loading invoice data...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div class="table-wrapper">
+    <p *ngIf="filteredInvoiceData.length === 0 && !loading && !errorMessage" class="no-data-message">
+      No invoice data found for this vendor.
+    </p>
+  </div>
+</div>

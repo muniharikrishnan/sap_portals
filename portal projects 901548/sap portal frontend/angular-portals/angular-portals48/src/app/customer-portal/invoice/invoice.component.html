@@ -1,0 +1,56 @@
+<div class="invoice-container">
+  <h2>Customer Invoices</h2>
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>Invoice No</th>
+        <th>Date</th>
+        <th>Currency</th>
+        <th>Net Amount</th>
+        <th>Customer</th>
+        <th>Org</th>
+        <th>Doc Type</th>
+        <th>Material</th>
+        <th>Description</th>7=''
+        <th>Qty</th>
+        <th>Unit</th>
+        <th>Item Value</th>
+        <th>Created On</th>
+        <th>Created By</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invoice of invoices">
+        <td>{{ invoice.vbeln }}</td>
+        <td>{{ invoice.fkdat }}</td>
+        <td>{{ invoice.waerk }}</td>
+        <td>{{ invoice.netwr }}</td>
+        <td>{{ invoice.kunag }}</td>
+        <td>{{ invoice.vkorg }}</td>
+        <td>{{ invoice.fkart }}</td>
+        <td>{{ invoice.matnr }}</td>
+        <td>{{ invoice.arktx }}</td>
+        <td>{{ invoice.fkimg }}</td>
+        <td>{{ invoice.vrkme }}</td>
+        <td>{{ invoice.item_netwr }}</td>
+        <td>{{ invoice.erdat }}</td>
+        <td>{{ invoice.ernam }}</td>
+        <td>
+          <button 
+            (click)="downloadPDF(invoice.vbeln)" 
+            [disabled]="isDownloading(invoice.vbeln)"
+            [title]="isDownloading(invoice.vbeln) ? 'Downloading...' : 'Download PDF'"
+            class="download-btn">
+            <span *ngIf="!isDownloading(invoice.vbeln)">
+              <img src="assets/pdf-icon.png" alt="Download PDF" width="20" />
+            </span>
+            <span *ngIf="isDownloading(invoice.vbeln)" class="loading-spinner">
+              ⏳
+            </span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

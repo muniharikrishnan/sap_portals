@@ -1,0 +1,42 @@
+.sales-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  h2 {
+    margin-bottom: 16px;
+    color: #4b176a;
+  }
+  
+  .loading {
+    color: #7c2ae8;
+    font-weight: bold;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .sales-table th, .sales-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .sales-table th {
+    background-color: #7c2ae8;
+    color: white;
+  }
+  
+  .sales-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  

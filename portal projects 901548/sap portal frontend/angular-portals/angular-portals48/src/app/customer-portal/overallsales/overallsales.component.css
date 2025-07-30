@@ -1,0 +1,40 @@
+.overall-sales-container {
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 1200px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #4b176a;
+  }
+  
+  .sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .sales-table thead {
+    background: #7c2ae8;
+    color: #ffffff;
+  }
+  
+  .sales-table th,
+  .sales-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .sales-table tr:hover {
+    background-color: #f1f0ff;
+  }
+  

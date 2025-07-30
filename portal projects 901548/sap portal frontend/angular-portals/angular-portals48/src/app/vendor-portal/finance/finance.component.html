@@ -1,0 +1,34 @@
+<div class="finance-container">
+  <!-- Header -->
+  <div class="finance-header-card">
+    <div class="finance-header-row">
+      <div class="finance-header-content">
+        <div class="finance-header-avatar">💰</div>
+        <div class="finance-header-text">
+          <h2>Finance Module</h2>
+          <div class="finance-id">Vendor Financials</div>
+        </div>
+      </div>
+      <button class="back-button" (click)="goBack()">
+        <span class="back-icon">←</span> Back to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Tiles Section -->
+  <div class="finance-tile-grid">
+    <div class="tile" (click)="goTo('aging')">
+      <span class="tile-emoji">🧮</span>
+      <span>Aging</span>
+    </div>
+    <div class="tile" (click)="goTo('invoice')">
+      <span class="tile-emoji">🧾</span>
+      <span>Invoice</span>
+    </div>
+    <div class="tile" (click)="goTo('memo')">
+      <span class="tile-emoji">📝</span>
+      <span>Memo</span>
+    </div>
+  </div>
+</div>
+

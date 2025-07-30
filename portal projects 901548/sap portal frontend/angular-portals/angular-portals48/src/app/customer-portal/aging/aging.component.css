@@ -1,0 +1,39 @@
+.aging-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    color: #5a189a;
+    margin-bottom: 16px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+  }
+  
+  th {
+    background-color: #7c2ae8;
+    color: white;
+  }
+  
+  .loading {
+    color: #6c757d;
+    font-weight: bold;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  

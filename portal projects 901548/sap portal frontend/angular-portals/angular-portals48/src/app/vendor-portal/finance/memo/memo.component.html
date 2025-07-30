@@ -1,0 +1,70 @@
+<div class="memo-page">
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">← Back</button>
+  <div class="memo-header-top-right">
+    <h2 class="header-title memo-gradient-title">Credit/Debit Memo</h2>
+  </div>
+  <div class="content-card" *ngIf="filteredMemoData.length > 0">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0; background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent;">Memo Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search memo data..."
+        [(ngModel)]="searchTerm"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredMemoData.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">1 / 1</span>
+      </div>
+    </div>
+    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
+      <button class="action-button" (click)="exportData()">
+        <i class="action-icon">📊</i>
+        Export
+      </button>
+      <button class="action-button" (click)="refreshData()">
+        <i class="action-icon">🔄</i>
+        Refresh
+      </button>
+    </div>
+    <div class="table-container">
+      <table class="memo-table">
+        <thead>
+          <tr>
+            <th>Memo Doc</th>
+            <th>Doc Year</th>
+            <th>Posting Date</th>
+            <th>Entry Date</th>
+            <th>Vendor ID</th>
+            <th>Memo Type</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Doc Type</th>
+            <th>Company Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let memo of filteredMemoData">
+            <td>{{ memo.memoDoc }}</td>
+            <td>{{ memo.docYear }}</td>
+            <td>{{ formatSAPDate(memo.postingDate) }}</td>
+            <td>{{ formatSAPDate(memo.entryDate) }}</td>
+            <td>{{ memo.vendorId }}</td>
+            <td>{{ memo.memoType }}</td>
+            <td>{{ memo.amount }}</td>
+            <td>{{ memo.currency }}</td>
+            <td>{{ memo.docType }}</td>
+            <td>{{ memo.companyCode }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p *ngIf="filteredMemoData.length === 0" class="no-data-message">
+    No memo data available.
+  </p>
+</div>

@@ -1,0 +1,37 @@
+<div class="login-bg">
+  <div class="login-card">
+    <div class="icon-circle">
+      <span class="material-icons lock-icon">lock</span>
+    </div>
+    <h2 class="portal-title">SAP Customer Portal</h2>
+    <p class="portal-subtitle">Please sign in to continue</p>
+    <form>
+      <label class="input-label" for="customerId">CUSTOMER ID</label>
+      <div class="input-group">
+        <span class="material-icons input-icon">person</span>
+        <input
+          id="customerId"
+          type="text"
+          placeholder="0000000001"
+          autocomplete="username"
+          [(ngModel)]="customerId"
+          name="customerId"
+        />
+      </div>
+      <label class="input-label" for="password">PASSWORD</label>
+      <div class="input-group">
+        <span class="material-icons input-icon">lock</span>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          [(ngModel)]="password"
+          name="password"
+        />
+      </div>
+      <button (click)="onLogin()" type="button" class="sign-in-btn">SIGN IN</button>
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>

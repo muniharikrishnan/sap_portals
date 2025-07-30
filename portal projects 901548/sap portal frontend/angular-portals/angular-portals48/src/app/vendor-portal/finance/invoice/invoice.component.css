@@ -1,0 +1,341 @@
+/* --- Modern Glassmorphic Invoice Page (RFQ Style) --- */
+:root {
+  --kaar-primary: #7c2ae8;
+  --kaar-accent: #ff4e50;
+  --kaar-gradient: linear-gradient(135deg, #232526 0%, #414345 100%);
+  --kaar-card-bg: rgba(40, 42, 54, 0.85);
+  --kaar-card-glass: blur(24px);
+  --kaar-shadow: 0 12px 40px 0 rgba(44, 0, 80, 0.32), 0 1.5px 8px 0 rgba(255, 78, 80, 0.10);
+  --kaar-border: 2px solid #7c2ae8;
+  --kaar-label: #bdbdbd;
+  --kaar-label-light: #e0e6ed;
+  --kaar-input-bg: #23263a;
+  --kaar-input-border: #23263a;
+  --kaar-input-focus: #7c2ae8;
+  --kaar-placeholder: #bdbdbd;
+  --kaar-btn-bg: #e2e8f0;
+  --kaar-btn-color: #23263a;
+}
+body, .invoice-page {
+  min-height: 100vh;
+  background: var(--kaar-gradient);
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.invoice-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 0 32px 0;
+  gap: 32px;
+  position: relative;
+}
+.header {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--kaar-card-bg);
+  backdrop-filter: var(--kaar-card-glass);
+  -webkit-backdrop-filter: var(--kaar-card-glass);
+  border-radius: 2.2rem;
+  box-shadow: var(--kaar-shadow);
+  border: var(--kaar-border);
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -0.5px;
+  text-align: right;
+}
+.header-title i {
+  font-size: 2rem;
+  color: var(--kaar-primary);
+}
+.back-button {
+  background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%) !important;
+  color: #fff !important;
+  border: none;
+  padding: 14px 24px;
+  font-weight: 600;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 12px 0 #7c2ae888;
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+.back-button:hover {
+  background: linear-gradient(90deg, #ff4e50 0%, #7c2ae8 100%) !important;
+  transform: translateY(-2px) scale(1.04);
+  color: #fff !important;
+  box-shadow: 0 4px 18px 0 #ff4e5088;
+}
+.table-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--kaar-card-bg);
+  backdrop-filter: var(--kaar-card-glass);
+  -webkit-backdrop-filter: var(--kaar-card-glass);
+  border-radius: 2.2rem;
+  box-shadow: 0 12px 48px 0 rgba(124, 42, 232, 0.32), 0 2px 16px 0 rgba(255, 78, 80, 0.18), 0 0 32px 4px rgba(249, 212, 35, 0.10);
+  border: var(--kaar-border);
+  padding: 2rem;
+  overflow-x: auto;
+}
+.invoice-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+.invoice-table thead {
+  background: rgba(30, 32, 40, 0.92);
+}
+.invoice-table th {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  padding: 1.1rem 0.9rem;
+  border-bottom: 2.5px solid #7c2ae8;
+  text-align: left;
+}
+.invoice-table td {
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.08rem;
+  padding: 1.1rem 0.9rem;
+  border-bottom: 1.5px solid rgba(124, 42, 232, 0.10);
+  background: transparent;
+}
+.invoice-table tbody tr {
+  transition: background 0.2s;
+}
+.invoice-table tbody tr:hover {
+  background: rgba(124, 42, 232, 0.10);
+}
+.invoice-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+.pdf-button {
+  background: var(--kaar-primary);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.pdf-button:hover {
+  background: var(--kaar-accent);
+  transform: translateY(-1px);
+}
+.loading-text,
+.error-message,
+.no-data-message {
+  color: var(--kaar-label);
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 2rem;
+  margin: 0;
+  background: var(--kaar-card-bg);
+  backdrop-filter: var(--kaar-card-glass);
+  -webkit-backdrop-filter: var(--kaar-card-glass);
+  border-radius: 1.5rem;
+  box-shadow: var(--kaar-shadow);
+  border: var(--kaar-border);
+  width: 100%;
+  max-width: 1200px;
+}
+.error-message {
+  color: var(--kaar-accent);
+}
+.invoice-header-top-right {
+  position: absolute;
+  top: 24px;
+  right: 48px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+/* --- Invoice Search Bar (styled like Memo) --- */
+.search-container {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--kaar-card-bg);
+  backdrop-filter: var(--kaar-card-glass);
+  -webkit-backdrop-filter: var(--kaar-card-glass);
+  border-radius: 1.5rem;
+  box-shadow: var(--kaar-shadow);
+  border: var(--kaar-border);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.search-input {
+  background: var(--kaar-input-bg);
+  border: 1.5px solid var(--kaar-input-border);
+  border-radius: 0.8rem;
+  color: #fff;
+  font-size: 1rem;
+  padding: 12px 16px;
+  width: 400px;
+  transition: all 0.3s ease;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--kaar-input-focus);
+  box-shadow: 0 0 0 3px rgba(124, 42, 232, 0.1);
+}
+.search-input::placeholder {
+  color: var(--kaar-placeholder);
+}
+.invoice-gradient-title {
+  background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 12px 0 #7c2ae855;
+  opacity: 0.95;
+}
+/* Search Row (RFQ/Aging/Memo Style) */
+.po-search-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px !important;
+  margin: 8px 0 12px 0;
+  background: rgba(40, 42, 54, 0.92);
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 32px 0 rgba(124, 42, 232, 0.18), 0 1.5px 8px 0 rgba(255, 78, 80, 0.10);
+  padding: 18px 32px;
+}
+.po-search-input {
+  padding: 8px 14px;
+  border-radius: 0.8rem;
+  border: 1.5px solid var(--kaar-input-border);
+  background: var(--kaar-input-bg);
+  color: #fff;
+  font-size: 1rem;
+  min-width: 140px !important;
+  max-width: 200px !important;
+  width: 140px !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.po-search-input:focus {
+  outline: none;
+  border-color: var(--kaar-input-focus);
+  box-shadow: 0 0 0 2px rgba(124, 42, 232, 0.15);
+}
+.po-search-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-size: 1rem;
+}
+/* Table Actions (RFQ/Aging/Memo Style) */
+.table-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.action-button {
+  background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-weight: 600;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--kaar-glow);
+}
+.action-button:hover {
+  background: linear-gradient(90deg, #ff4e50 0%, #7c2ae8 100%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 18px 0 #ff4e5088;
+}
+.action-icon {
+  font-size: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .table-wrapper {
+    max-width: 98vw;
+  }
+}
+@media (max-width: 900px) {
+  .invoice-page {
+    padding: 24px 16px;
+  }
+  .header, .table-wrapper {
+    padding: 1.5rem;
+  }
+  .header-title {
+    font-size: 1.8rem;
+  }
+  .invoice-table th, .invoice-table td {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.95rem;
+  }
+  .search-container {
+    padding: 1.5rem;
+  }
+  .search-input {
+    width: 300px;
+  }
+}
+@media (max-width: 600px) {
+  .invoice-page {
+    padding: 16px 8px;
+  }
+  .header, .table-wrapper {
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  .header-title {
+    font-size: 1.5rem;
+  }
+  .invoice-table th, .invoice-table td {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.9rem;
+  }
+  .search-container {
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  .search-input {
+    width: 250px;
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,7 @@
+employee login details
+
+Z48EMPLOGIN - ztable for the login
+
+Z48PASSWORD - domain
+
+Z48PASSDT- data element   

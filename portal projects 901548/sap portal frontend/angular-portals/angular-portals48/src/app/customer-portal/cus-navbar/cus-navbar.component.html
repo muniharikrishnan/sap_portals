@@ -1,0 +1,25 @@
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo"><i class="fas fa-user-circle"></i></span>
+      <span class="sidebar-title">Customer<br/>Portal</span>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li routerLinkActive="active"><a [routerLink]="['/customer/dashboard']">Dashboard</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/customer/profile']">Profile</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/customer/delivery']">Delivery</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/customer/inquiry']">Inquiry</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/customer/sales']">Sales</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/customer/finance']">Finance</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <span style="cursor:pointer;">Light Mode</span>
+    </div>
+  </aside>
+  <main class="dashboard-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

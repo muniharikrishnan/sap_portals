@@ -1,0 +1,59 @@
+<div class="cdmemo-container">
+    <h2>Customer Debit/Credit Memo</h2>
+  
+    <div class="date-filters">
+      <label>
+        From Date:
+        <input type="date" [(ngModel)]="fromDate" />
+      </label>
+      <label>
+        To Date:
+        <input type="date" [(ngModel)]="toDate" />
+      </label>
+      <button (click)="fetchMemoData()">Fetch Memo</button>
+    </div>
+  
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  
+    <table *ngIf="memoData.length" class="memo-table">
+      <thead>
+        <tr>
+          <th>Memo ID</th>
+          <th>Type</th>
+          <th>Reference</th>
+          <th>Customer</th>
+          <th>Name</th>
+          <th>Billing Date</th>
+          <th>Created Date</th>
+          <th>Created By</th>
+          <th>Currency</th>
+          <th>Net Value</th>
+          <th>Tax</th>
+          <th>Sales Org</th>
+          <th>Channel</th>
+          <th>Division</th>
+          <th>Direction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let memo of memoData">
+          <td>{{ memo.memoId }}</td>
+          <td>{{ memo.memoType }}</td>
+          <td>{{ memo.referenceDoc }}</td>
+          <td>{{ memo.customerId }}</td>
+          <td>{{ memo.customerName }}</td>
+          <td>{{ memo.billingDate }}</td>
+          <td>{{ memo.createdDate }}</td>
+          <td>{{ memo.createdBy }}</td>
+          <td>{{ memo.currency }}</td>
+          <td>{{ memo.netValue }}</td>
+          <td>{{ memo.taxAmount }}</td>
+          <td>{{ memo.salesOrg }}</td>
+          <td>{{ memo.distChannel }}</td>
+          <td>{{ memo.division }}</td>
+          <td>{{ memo.memoDirection }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

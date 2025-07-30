@@ -1,0 +1,39 @@
+<!-- Back Button -->
+<button class="back-btn" (click)="goBack()">← Back</button>
+
+<!-- Profile Container -->
+<div class="profile-header" *ngIf="profileData; else loadingOrError">
+  <h2 class="profile-title">Customer Profile</h2>
+  <span class="profile-underline"></span>
+  <p class="profile-subtitle">Here are your registered details</p>
+</div>
+
+<!-- Profile Details -->
+<div class="profile-details" *ngIf="profileData">
+  <div class="profile-info-block">
+    <div class="profile-label">Name</div>
+    <div class="profile-value">{{ profileData.name1 }}</div>
+  </div>
+  <div class="profile-info-block">
+    <div class="profile-label">Street</div>
+    <div class="profile-value">{{ profileData.street }}</div>
+  </div>
+  <div class="profile-info-block">
+    <div class="profile-label">City</div>
+    <div class="profile-value">{{ profileData.city }}</div>
+  </div>
+  <div class="profile-info-block">
+    <div class="profile-label">Postcode</div>
+    <div class="profile-value">{{ profileData.postcode }}</div>
+  </div>
+  <div class="profile-info-block">
+    <div class="profile-label">Country</div>
+    <div class="profile-value">{{ profileData.country }}</div>
+  </div>
+</div>
+
+<!-- Error or Loading Template -->
+<ng-template #loadingOrError>
+  <p class="profile-subtitle" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="profile-subtitle" *ngIf="!errorMessage">Loading profile...</p>
+</ng-template>

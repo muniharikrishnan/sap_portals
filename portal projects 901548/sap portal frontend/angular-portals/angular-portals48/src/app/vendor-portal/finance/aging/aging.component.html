@@ -1,0 +1,67 @@
+<div class="aging-container">
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">← Back</button>
+  <div class="aging-header-top-right">
+    <h2 class="header-title aging-gradient-title">Aging Report</h2>
+  </div>
+  <div class="content-card" *ngIf="filteredAndSortedData.length > 0">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0; background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent;">Aging Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search Payment Doc, Vendor ID, Amount..."
+        [(ngModel)]="searchTerm"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredAndSortedData.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">1 / 1</span>
+      </div>
+    </div>
+    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
+      <button class="action-button" (click)="exportData()">
+        <i class="action-icon">📊</i>
+        Export
+      </button>
+      <button class="action-button" (click)="refreshData()">
+        <i class="action-icon">🔄</i>
+        Refresh
+      </button>
+    </div>
+    <div class="table-wrapper">
+    <table *ngIf="filteredAndSortedData.length > 0; else noData" class="aging-table">
+      <thead>
+        <tr>
+          <th (click)="onSort('paymentDoc')">Payment Doc</th>
+          <th (click)="onSort('docYear')">Doc Year</th>
+          <th (click)="onSort('paymentDate')">Payment Date</th>
+          <th (click)="onSort('enrtyDate')">Entry Date</th>
+          <th (click)="onSort('vendorId')">Vendor ID</th>
+          <th (click)="onSort('amountPaid')">Amount Paid</th>
+          <th (click)="onSort('currency')">Currency</th>
+          <th (click)="onSort('dueDate')">Due Date</th>
+          <th (click)="onSort('aging')">Aging</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredAndSortedData">
+          <td>{{ item.paymentDoc }}</td>
+          <td>{{ item.docYear }}</td>
+          <td>{{ formatDate(item.paymentDate) }}</td>
+          <td>{{ formatDate(item.enrtyDate) }}</td>
+          <td>{{ item.vendorId }}</td>
+          <td>{{ item.amountPaid }}</td>
+          <td>{{ item.currency }}</td>
+          <td>{{ formatDate(item.dueDate) }}</td>
+          <td>{{ item.aging }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noData>
+      <p class="no-data-message">No aging data found for this vendor.</p>
+    </ng-template>
+  </div>
+</div>

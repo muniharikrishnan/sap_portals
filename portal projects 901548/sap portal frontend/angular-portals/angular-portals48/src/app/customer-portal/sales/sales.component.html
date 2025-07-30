@@ -1,0 +1,42 @@
+<div class="sales-container">
+    <h2>Customer Sales Data</h2>
+  
+    <div *ngIf="isLoading" class="loading">Loading sales data...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  
+    <table *ngIf="!isLoading && salesData.length > 0" class="sales-table">
+      <thead>
+        <tr>
+          <th>VBELN</th>
+          <th>ERDAT</th>
+          <th>AUART</th>
+          <th>NETWR</th>
+          <th>WAERK</th>
+          <th>VDATU</th>
+          <th>ERNAM</th>
+          <th>POSNR</th>
+          <th>MATNR</th>
+          <th>ARKTX</th>
+          <th>KWMENG</th>
+          <th>VRKME</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of salesData">
+          <td>{{ item.vbeln }}</td>
+          <td>{{ item.erdat }}</td>
+          <td>{{ item.auart }}</td>
+          <td>{{ item.netwr }}</td>
+          <td>{{ item.waerk }}</td>
+          <td>{{ item.vdatu }}</td>
+          <td>{{ item.ernam }}</td>
+          <td>{{ item.posnr }}</td>
+          <td>{{ item.matnr }}</td>
+          <td>{{ item.arktx }}</td>
+          <td>{{ item.kwmeng }}</td>
+          <td>{{ item.vrkme }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

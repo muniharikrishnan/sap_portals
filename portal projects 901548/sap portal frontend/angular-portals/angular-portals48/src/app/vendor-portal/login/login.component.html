@@ -1,0 +1,43 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="lock-emoji-circle">🔒</div>
+    <div class="portal-title">SAP Vendor Portal</div>
+    <div class="portal-subtitle">Please sign in to continue</div>
+    <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
+      <!-- Vendor ID -->
+      <div class="form-group">
+        <label for="lifnr" class="form-label">Vendor ID</label>
+        <div class="input-wrapper">
+          <i class="input-icon">👤</i>
+          <input
+            type="text"
+            id="lifnr"
+            name="lifnr"
+            class="form-input"
+            placeholder="Enter your Vendor ID"
+            [(ngModel)]="lifnr"
+            required
+          />
+        </div>
+      </div>
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <i class="input-icon">🔒</i>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            placeholder="Enter your password"
+            [(ngModel)]="password"
+            required
+          />
+        </div>
+      </div>
+      <!-- Submit Button -->
+      <button type="submit" class="login-button">Sign In</button>
+    </form>
+  </div>
+</div>

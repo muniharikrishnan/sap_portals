@@ -1,0 +1,63 @@
+.cdmemo-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .date-filters {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .date-filters label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+  }
+  
+  .date-filters input {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    padding: 8px 16px;
+    background-color: #7c2ae8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #5e1cc1;
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+  
+  .memo-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .memo-table th,
+  .memo-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .memo-table thead {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  

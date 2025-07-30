@@ -1,0 +1,162 @@
+<div class="purchase-order-container">
+  <!-- Back Button Top Left -->
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">
+    <i class="back-icon">←</i>
+    Back
+  </button>
+
+  <!-- Title and Subtitle Top Right -->
+  <div class="rfq-top-right">
+    <div class="rfq-top-section">
+      <h1 class="purchase-order-title"><span style="font-size:2.2rem; margin-right: 0.5rem;">📦</span>Purchase Orders</h1>
+      <p class="purchase-order-subtitle">Manage and track your purchase order items</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card (Tab) -->
+  <div class="purchase-order-content" *ngIf="!loading && !error && filteredPurchase.length > 0">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0;">Purchase Order Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search PO Number..."
+        [(ngModel)]="poNumberSearch"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredPurchase.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredPurchase.length / itemsPerPage) }}</span>
+      </div>
+    </div>
+    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
+      <button class="action-button" (click)="exportData()">
+        <i class="action-icon">📊</i>
+        Export
+      </button>
+      <button class="action-button" (click)="refreshData()">
+        <i class="action-icon">🔄</i>
+        Refresh
+      </button>
+    </div>
+    <div class="table-container">
+      <table class="purchase-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="toggleSort()">
+              <div class="th-content">
+                <span>PO Number</span>
+                <i class="sort-icon">{{ sortAscending ? '↑' : '↓' }}</i>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Document Date</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Delivery Date</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Material</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Item Number</span>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>Unit</span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let po of displayedPurchaseData; trackBy: trackByPo" class="table-row">
+            <td class="po-number">{{ po.poNumber }}</td>
+            <td class="doc-date">{{ convertDate(po.docDate) }}</td>
+            <td class="delivery-date">{{ convertDate(po.deliveryDate) }}</td>
+            <td class="material">{{ po.material }}</td>
+            <td class="item-number">{{ po.itemNumber }}</td>
+            <td class="unit">{{ po.unit }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination Card -->
+    <div class="pagination-card" *ngIf="filteredPurchase.length > itemsPerPage">
+      <div class="pagination-info">
+        <span class="pagination-text">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, filteredPurchase.length) }} of {{ filteredPurchase.length }} items
+        </span>
+      </div>
+      <div class="pagination-controls">
+        <button 
+          class="pagination-button" 
+          (click)="changePage(-1)" 
+          [disabled]="currentPage === 1"
+          [class.disabled]="currentPage === 1"
+        >
+          <i class="pagination-icon">←</i>
+          Previous
+        </button>
+        <div class="page-indicator">
+          <span class="current-page">{{ currentPage }}</span>
+          <span class="page-separator">/</span>
+          <span class="total-pages">{{ Math.ceil(filteredPurchase.length / itemsPerPage) }}</span>
+        </div>
+        <button 
+          class="pagination-button" 
+          (click)="changePage(1)" 
+          [disabled]="currentPage === Math.ceil(filteredPurchase.length / itemsPerPage)"
+          [class.disabled]="currentPage === Math.ceil(filteredPurchase.length / itemsPerPage)"
+        >
+          Next
+          <i class="pagination-icon">→</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data Template -->
+  <div class="no-data-card" *ngIf="!loading && filteredPurchase.length === 0">
+    <div class="no-data-content">
+      <i class="no-data-icon">📄</i>
+      <h3 class="no-data-title">No Purchase Orders Found</h3>
+      <p class="no-data-message">There are no purchase orders available for this vendor at the moment.</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="refresh-icon">🔄</i>
+        Refresh Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="loading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading purchase orders...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-card" *ngIf="error">
+    <div class="error-content">
+      <i class="error-icon">⚠️</i>
+      <h3 class="error-title">Error Loading Data</h3>
+      <p class="error-message">{{ error }}</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="refresh-icon">🔄</i>
+        Try Again
+      </button>
+    </div>
+  </div>
+</div>

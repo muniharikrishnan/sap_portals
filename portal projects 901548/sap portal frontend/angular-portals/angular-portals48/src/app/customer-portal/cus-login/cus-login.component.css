@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.login-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(ellipse at top left, #23272f 60%, #181a20 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-radius: 2rem;
+  box-shadow: 0 0 40px 0 rgba(86, 204, 242, 0.25), 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 2px solid rgba(86, 204, 242, 0.3);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  padding: 3.5rem 2.5rem 2.5rem 2.5rem;
+  max-width: 370px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow:
+    0 0 0 4px rgba(86, 204, 242, 0.08),
+    0 0 40px 0 rgba(86, 204, 242, 0.25),
+    0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.icon-circle {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #56ccf2 60%, #2f80ed 100%);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  box-shadow: 0 0 32px 8px rgba(86, 204, 242, 0.35), 0 4px 16px 0 rgba(47, 128, 237, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-icon {
+  color: #fff;
+  font-size: 38px;
+  filter: drop-shadow(0 0 8px #56ccf2);
+}
+
+.portal-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #fff;
+  margin-top: 48px;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.portal-subtitle {
+  color: #b2c7e6;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.input-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #56ccf2;
+  margin-bottom: 0.3rem;
+  margin-top: 1.2rem;
+  display: block;
+  letter-spacing: 1px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: rgba(23, 32, 42, 0.85);
+  border-radius: 0.6rem;
+  box-shadow: 0 2px 8px 0 rgba(86, 204, 242, 0.04);
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.8rem;
+  border: 1.5px solid transparent;
+  transition: border 0.2s;
+}
+
+.input-group:focus-within {
+  border: 1.5px solid #56ccf2;
+}
+
+.input-icon {
+  color: #56ccf2;
+  font-size: 1.3rem;
+  margin-right: 0.7rem;
+}
+
+input[type="text"],
+input[type="password"] {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #eaf6fb;
+  font-size: 1.08rem;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.7rem 0;
+  width: 100%;
+  letter-spacing: 1px;
+}
+
+input::placeholder {
+  color: #b2c7e6;
+  opacity: 1;
+  font-size: 1rem;
+}
+
+.sign-in-btn {
+  width: 100%;
+  margin-top: 1.7rem;
+  padding: 0.85rem 0;
+  border: none;
+  border-radius: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  background: linear-gradient(to right, #56ccf2, #2f80ed);
+  box-shadow: 0 4px 24px 0 rgba(86, 204, 242, 0.25), 0 0 0 0 rgba(86, 204, 242, 0.0);
+  cursor: pointer;
+  transition: box-shadow 0.2s, background 0.2s;
+  letter-spacing: 1px;
+}
+
+.sign-in-btn:hover,
+.sign-in-btn:focus {
+  box-shadow: 0 0 16px 4px #56ccf2, 0 4px 24px 0 rgba(86, 204, 242, 0.25);
+  background: linear-gradient(to right, #2f80ed, #56ccf2);
+}
+
+@media (max-width: 500px) {
+  .login-card {
+    padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+    max-width: 98vw;
+  }
+  .icon-circle {
+    width: 62px;
+    height: 62px;
+    top: -32px;
+  }
+  .portal-title {
+    font-size: 1.2rem;
+    margin-top: 36px;
+  }
+}

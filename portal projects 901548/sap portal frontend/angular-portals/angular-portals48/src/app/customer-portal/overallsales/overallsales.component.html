@@ -1,0 +1,35 @@
+<div class="overall-sales-container">
+    <h2>Customer Overall Sales Report</h2>
+  
+    <table *ngIf="overallData.length > 0" class="sales-table">
+      <thead>
+        <tr>
+          <th>Document No</th>
+          <th>Doc Date</th>
+          <th>Currency</th>
+          <th>Sales Org</th>
+          <th>Order Type</th>
+          <th>Record Type</th>
+          <th>Total Orders</th>
+          <th>Total Order Value</th>
+          <th>Total Billed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of overallData">
+          <td>{{ item.document_no }}</td>
+          <td>{{ item.doc_date }}</td>
+          <td>{{ item.waerk }}</td>
+          <td>{{ item.vkorg }}</td>
+          <td>{{ item.auart }}</td>
+          <td>{{ item.record_type }}</td>
+          <td>{{ item.total_orders }}</td>
+          <td>{{ item.total_order_value | currency: item.waerk }}</td>
+          <td>{{ item.total_billed | currency: item.waerk }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <p *ngIf="overallData.length === 0">No data available for this customer.</p>
+  </div>
+  

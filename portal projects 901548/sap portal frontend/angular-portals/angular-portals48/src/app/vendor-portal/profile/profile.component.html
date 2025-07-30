@@ -1,0 +1,71 @@
+<div class="profile-container">
+  <!-- Back Button Top Left -->
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">
+    <i class="back-icon">←</i>
+    Back
+  </button>
+
+  <!-- Centered Header -->
+  <div class="profile-header">
+    <div class="header-content" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+      <div class="title-section" style="display: flex; flex-direction: column; align-items: center;">
+        <h1 class="profile-title">Vendor Profile</h1>
+        <div class="profile-title-underline"></div>
+        <p class="profile-subtitle">Your registered vendor information</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Card/Table -->
+  <div class="profile-table" *ngIf="profile">
+    <div class="profile-table-row">
+      <div class="profile-table-cell">
+        <span class="profile-table-label">VENDOR ID</span>
+        <span>{{ profile.VendorId || profile.vendorId }}</span>
+      </div>
+      <div class="profile-table-cell">
+        <span class="profile-table-label">NAME</span>
+        <span>{{ profile.Name || profile.name }}</span>
+      </div>
+      <div class="profile-table-cell">
+        <span class="profile-table-label">CITY</span>
+        <span>{{ profile.City || profile.city }}</span>
+      </div>
+    </div>
+    <div class="profile-table-row">
+      <div class="profile-table-cell">
+        <span class="profile-table-label">COUNTRY</span>
+        <span>{{ profile.Country || profile.country }}</span>
+      </div>
+      <div class="profile-table-cell">
+        <span class="profile-table-label">POSTAL CODE</span>
+        <span>{{ profile.Postcode || profile.postcode }}</span>
+      </div>
+      <div class="profile-table-cell">
+        <span class="profile-table-label">STREET ADDRESS</span>
+        <span>{{ profile.Street || profile.street }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="loading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading profile...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-card" *ngIf="errorMessage">
+    <div class="error-content">
+      <i class="error-icon">⚠️</i>
+      <h3 class="error-title">Error Loading Profile</h3>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="back-button" (click)="goBack()">
+        <i class="back-icon">←</i>
+        Back
+      </button>
+    </div>
+  </div>
+</div>

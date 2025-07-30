@@ -1,0 +1,66 @@
+.portal-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #F7F1EE;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 2rem;
+}
+
+.tiles {
+  display: flex;
+  gap: 2rem;
+}
+
+.tile {
+  width: 180px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FFFFFF;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(88, 86, 87, 0.12);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.tile.customer {
+  background: #B63A31;
+}
+
+.tile.vendor {
+  background: #585657;
+}
+
+.tile.employee {
+  background: #FFFFFF;
+  color: #B63A31;
+  border: 2px solid #B63A31;
+}
+
+.tile:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 8px 24px rgba(88, 86, 87, 0.18);
+}
+
+@media (max-width: 700px) {
+  .tiles {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .tile {
+    width: 90vw;
+    max-width: 320px;
+    height: 120px;
+    font-size: 1.1rem;
+  }
+}

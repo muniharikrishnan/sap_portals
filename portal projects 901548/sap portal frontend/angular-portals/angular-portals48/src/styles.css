@@ -1,0 +1,234 @@
+/* Kaar Tech Vendor Portal - Global Color Palette */
+:root {
+  /* Primary Colors - Professional Blue */
+  --kaar-primary: #1e40af;
+  --kaar-secondary: #3b82f6;
+  --kaar-accent: #60a5fa;
+  --kaar-dark: #1e293b;
+  --kaar-light: #f1f5f9;
+  
+  /* Supporting Colors */
+  --kaar-success: #10b981;
+  --kaar-warning: #f59e0b;
+  --kaar-error: #ef4444;
+  
+  /* Gradients */
+  --kaar-gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  --kaar-gradient-secondary: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  --kaar-gradient-accent: linear-gradient(90deg, #1e40af, #3b82f6, #1e40af);
+  
+  /* Neutral Colors */
+  --kaar-white: #ffffff;
+  --kaar-black: #000000;
+  --kaar-gray-50: #f9fafb;
+  --kaar-gray-100: #f3f4f6;
+  --kaar-gray-200: #e5e7eb;
+  --kaar-gray-300: #d1d5db;
+  --kaar-gray-400: #9ca3af;
+  --kaar-gray-500: #6b7280;
+  --kaar-gray-600: #4b5563;
+  --kaar-gray-700: #374151;
+  --kaar-gray-800: #1f2937;
+  --kaar-gray-900: #111827;
+  
+  /* Typography */
+  --kaar-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --kaar-font-size-xs: 0.75rem;
+  --kaar-font-size-sm: 0.875rem;
+  --kaar-font-size-base: 1rem;
+  --kaar-font-size-lg: 1.125rem;
+  --kaar-font-size-xl: 1.25rem;
+  --kaar-font-size-2xl: 1.5rem;
+  --kaar-font-size-3xl: 1.875rem;
+  --kaar-font-size-4xl: 2.25rem;
+  
+  /* Spacing */
+  --kaar-spacing-1: 0.25rem;
+  --kaar-spacing-2: 0.5rem;
+  --kaar-spacing-3: 0.75rem;
+  --kaar-spacing-4: 1rem;
+  --kaar-spacing-5: 1.25rem;
+  --kaar-spacing-6: 1.5rem;
+  --kaar-spacing-8: 2rem;
+  --kaar-spacing-10: 2.5rem;
+  --kaar-spacing-12: 3rem;
+  --kaar-spacing-16: 4rem;
+  --kaar-spacing-20: 5rem;
+  
+  /* Border Radius */
+  --kaar-radius-sm: 0.25rem;
+  --kaar-radius-md: 0.375rem;
+  --kaar-radius-lg: 0.5rem;
+  --kaar-radius-xl: 0.75rem;
+  --kaar-radius-2xl: 1rem;
+  --kaar-radius-3xl: 1.5rem;
+  
+  /* Shadows */
+  --kaar-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --kaar-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --kaar-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --kaar-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --kaar-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* Transitions */
+  --kaar-transition-fast: 0.15s ease;
+  --kaar-transition-normal: 0.3s ease;
+  --kaar-transition-slow: 0.5s ease;
+}
+
+/* Global Reset and Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  font-family: var(--kaar-font-family);
+  font-size: var(--kaar-font-size-base);
+  line-height: 1.6;
+  color: var(--kaar-dark);
+  background: linear-gradient(135deg, #232526 0%, #414345 100%) !important;
+  /* Remove background-color to prevent white */
+}
+
+/* Utility Classes */
+.kaar-text-primary { color: var(--kaar-primary); }
+.kaar-text-secondary { color: var(--kaar-secondary); }
+.kaar-text-accent { color: var(--kaar-accent); }
+.kaar-text-success { color: var(--kaar-success); }
+.kaar-text-warning { color: var(--kaar-warning); }
+.kaar-text-error { color: var(--kaar-error); }
+
+.kaar-bg-primary { background-color: var(--kaar-primary); }
+.kaar-bg-secondary { background-color: var(--kaar-secondary); }
+.kaar-bg-accent { background-color: var(--kaar-accent); }
+.kaar-bg-success { background-color: var(--kaar-success); }
+.kaar-bg-warning { background-color: var(--kaar-warning); }
+.kaar-bg-error { background-color: var(--kaar-error); }
+
+.kaar-gradient-primary { background: var(--kaar-gradient-primary); }
+.kaar-gradient-secondary { background: var(--kaar-gradient-secondary); }
+.kaar-gradient-accent { background: var(--kaar-gradient-accent); }
+
+/* Button Styles */
+.kaar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--kaar-spacing-3) var(--kaar-spacing-6);
+  border: none;
+  border-radius: var(--kaar-radius-lg);
+  font-family: var(--kaar-font-family);
+  font-size: var(--kaar-font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--kaar-transition-normal);
+  background: var(--kaar-gradient-primary);
+  color: var(--kaar-white);
+  box-shadow: var(--kaar-shadow-md);
+}
+
+.kaar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--kaar-shadow-lg);
+}
+
+.kaar-btn:active {
+  transform: translateY(0);
+}
+
+.kaar-btn-secondary {
+  background: var(--kaar-gradient-secondary);
+}
+
+.kaar-btn-success {
+  background: var(--kaar-success);
+}
+
+.kaar-btn-warning {
+  background: var(--kaar-warning);
+}
+
+.kaar-btn-error {
+  background: var(--kaar-error);
+}
+
+/* Card Styles */
+.kaar-card {
+  background: var(--kaar-white);
+  border-radius: var(--kaar-radius-xl);
+  box-shadow: var(--kaar-shadow-lg);
+  padding: var(--kaar-spacing-6);
+  border: 1px solid var(--kaar-gray-200);
+}
+
+.kaar-card-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Form Styles */
+.kaar-input {
+  width: 100%;
+  padding: var(--kaar-spacing-4);
+  border: 2px solid var(--kaar-gray-300);
+  border-radius: var(--kaar-radius-lg);
+  font-family: var(--kaar-font-family);
+  font-size: var(--kaar-font-size-base);
+  transition: all var(--kaar-transition-normal);
+  background: var(--kaar-white);
+}
+
+.kaar-input:focus {
+  outline: none;
+  border-color: var(--kaar-primary);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .kaar-hidden-mobile { display: none; }
+}
+
+@media (min-width: 769px) {
+  .kaar-hidden-desktop { display: none; }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kaar-light: #1e293b;
+    --kaar-dark: #f8fafc;
+    --kaar-gray-50: #111827;
+    --kaar-gray-100: #1f2937;
+    --kaar-gray-200: #374151;
+    --kaar-gray-300: #4b5563;
+    --kaar-gray-400: #6b7280;
+    --kaar-gray-500: #9ca3af;
+    --kaar-gray-600: #d1d5db;
+    --kaar-gray-700: #e5e7eb;
+    --kaar-gray-800: #f3f4f6;
+    --kaar-gray-900: #f9fafb;
+  }
+  
+  body {
+    background-color: var(--kaar-gray-900);
+    color: var(--kaar-gray-100);
+  }
+  
+  .kaar-card {
+    background: var(--kaar-gray-800);
+    border-color: var(--kaar-gray-700);
+  }
+  
+  .kaar-input {
+    background: var(--kaar-gray-800);
+    border-color: var(--kaar-gray-600);
+    color: var(--kaar-gray-100);
+  }
+}

@@ -1,0 +1,30 @@
+<div class="dashboard-header-card">
+  <div class="dashboard-header-content">
+    <div class="dashboard-header-avatar">C</div>
+    <div class="dashboard-header-text">
+      <h2>Welcome back, Customer for Kaar!</h2>
+      <div class="welcome-id">Customer ID: 200000</div>
+    </div>
+  </div>
+  <button class="logout-button" (click)="logout()">
+    <span class="logout-emoji">🔒</span>
+    <span class="logout-text">LOGOUT</span>
+  </button>
+</div>
+<section class="business-objects-section">
+  <h3>Business Objects</h3>
+  <div class="business-tiles-grid">
+    <a class="business-tile tile-blue" [routerLink]="['/customer/inquiry']">
+      <span style="font-size:2.2rem;">📄</span>
+      <span>Inquiry</span>
+    </a>
+    <a class="business-tile tile-green" [routerLink]="['/customer/sales']">
+      <span style="font-size:2.2rem;">💼</span>
+      <span>Sales</span>
+    </a>
+    <a class="business-tile tile-orange" [routerLink]="['/customer/delivery']">
+      <span style="font-size:2.2rem;">🚚</span>
+      <span>Delivery</span>
+    </a>
+  </div>
+</section>

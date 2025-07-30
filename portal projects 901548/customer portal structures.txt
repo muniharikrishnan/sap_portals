@@ -1,0 +1,605 @@
+function group for the custmomer portal
+
+ZCU_PORTAL_FG- function group for the customer portal
+
+
+
+profile details
+
+ZCU_PROFILE_FM- function module for the customer portal profile
+KNA1- table used for the customer profile to fecth the customer detalis and description of the table is General Data in Customer Master
+zsrv_cu_profile_901548- service defintion for the profile
+xml url for the profile - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_profile_901548?sap-client=100
+post man url: http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_profile_901548?sap-client=100
+
+body for the profile- post man xml
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_PROFILE_FM>
+         <!-- Insert your input parameters here -->
+         <KUNNR>0000000001</KUNNR>
+      </urn:ZCU_PROFILE_FM>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+
+
+login details
+
+ZCU_LOGIN_901548  - z table for the customer login 
+ZCU_LOGIN_FM- function module for the customer portal login
+wsdl link with ws policy: http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_login_901548?sap-client=100
+Access URL: http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_login_901548?sap-client=100
+postman url : http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_login_901548?sap-client=100
+postman xml: <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_LOGIN_FM>
+         <WF_CUSTOMER>0000000001</WF_CUSTOMER>
+         <WF_PASSWORD>ONE</WF_PASSWORD>
+      </urn:ZCU_LOGIN_FM>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+
+
+
+delivery details
+
+table used : LIKP - DELIVERY HEADED DATA TABLE (SD Document: Delivery Header Data)
+             LIPS - DELIVERY ITEM DATA TABLE (SD document: Delivery: Item data)
+
+
+
+📦 Table: LIKP – Delivery Header Data
+Property	Detail
+Table Name	LIKP
+Description	SD Document: Delivery Header Data
+Module	SAP SD (Sales and Distribution)
+Type	Transparent Table
+Primary Key	VBELN – Delivery Document Number
+Used For	Stores header-level information for outbound and inbound deliveries in the Logistics Execution (LE) module.
+
+🔍 Common Use Case
+The LIKP table is used when you want to:
+
+Track or report delivery documents (e.g., shipment tracking)
+
+Interface with Warehouse Management (WM), Transportation (LE-TRA), or Billing (SD-BIL)
+
+Analyze delivery performance or status
+
+🗂️ Important Fields in LIKP:
+Field Name	Description	Data Type
+VBELN	Delivery Document Number	CHAR(10)
+ERDAT	Creation Date of the Delivery	DATS
+ERNAM	Name of the Person Who Created the Delivery	CHAR(12)
+VKORG	Sales Organization	CHAR(4)
+VTWEG	Distribution Channel	CHAR(2)
+SPART	Division	CHAR(2)
+KUNNR	Ship-To Party (Customer Number)	CHAR(10)
+LIFNR	Vendor Number (for inbound delivery)	CHAR(10)
+VSTEL	Shipping Point	CHAR(4)
+WADAT_IST	Actual Goods Issue Date	DATS
+FKSTK	Billing Status of Delivery	CHAR(1)
+LFGSK	Overall Delivery Status	CHAR(1)
+LFART	Delivery Type	CHAR(4)
+ROUTE	Route for Delivery	CHAR(6)
+
+📘 How LIKP Relates to Other Tables:
+Related Table	Description	Join Key
+LIPS	Delivery Item Data (item-level details)	VBELN
+VBAK	Sales Document Header	VBELV (reference)
+VBFA	Document Flow (Links LIKP to sales/billing)	VBELN
+VBRK	Billing Document Header	via VBFA
+MKPF / MSEG	For material movements (Post GI)	VBELN reference
+
+
+
+
+📦 Table: LIPS – Delivery Item Data
+Property	Detail
+Table Name	LIPS
+Description	SD Document: Delivery – Item Data
+Module	SAP SD (Sales and Distribution)
+Type	Transparent Table
+Primary Keys	VBELN (Delivery Number), POSNR (Item Number)
+Used For	Stores item-level details for delivery documents in SD/LE.
+
+🔍 When is LIPS used?
+LIPS contains one entry per delivery item in a delivery document. It’s used when:
+
+You want to know which materials were delivered.
+
+You need the quantities, batch numbers, or delivery status at item level.
+
+You’re linking delivery documents to sales orders, material documents, or billing.
+
+🗂️ Important Fields in LIPS:
+Field Name	Description	Data Type
+VBELN	Delivery Document Number	CHAR(10)
+POSNR	Item Number of the Delivery	CHAR(6)
+MATNR	Material Number	CHAR(18)
+LFIMG	Actual Delivered Quantity	DEC
+VRKME	Sales Unit	UNIT
+VGBEL	Reference Document (e.g., Sales Order Number)	CHAR(10)
+VGPOS	Item Number in the Reference Document	CHAR(6)
+CHARG	Batch Number	CHAR(10)
+WERKS	Plant	CHAR(4)
+LGORT	Storage Location	CHAR(4)
+LGMNG	Delivery Quantity (in base unit)	DEC
+UMVKZ/UMVKN	Numerator/Denominator for unit conversion	INT
+UECHA	Unloading Point	CHAR(25)
+PSTYV	Item Category in Delivery	CHAR(4)
+VKBUR	Sales Office	CHAR(4)
+
+🧩 Relationship Between LIKP and LIPS:
+Table	Key	Description
+LIKP	VBELN	Delivery Header
+LIPS	VBELN + POSNR	Delivery Items
+
+A delivery (LIKP) can have multiple items (LIPS) – One-to-Many relationship.
+
+🔄 Related Tables
+Related Table	Description	Join Key
+LIKP	Delivery Header	VBELN
+VBAK/VBAP	Sales Order Header/Item	VGBEL/VGPOS
+MSEG	Material Document Segment (for goods movement)	VBELN
+VBRP	Billing Document Item	via VBFA
+VBFA	Document Flow	VBELN, VGBEL
+
+
+
+ZSDS_CUST_DELIVERY_48- structure for the delivery 
+ZSDS_CUST_DELIVERY_TT_48 - Table type for the delivery that we are going to use in a export parameter and table type is a internal table 
+ZCU_DELIVERY_FM_48 - fm for the delivery
+zsrv_cu_del_901548 - service definiton for the delivery
+With WS Policy: http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_del_901548?sap-client=100
+access url : http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_del_901548?sap-client=100
+postman url : http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_del_901548?sap-client=100
+postman body : <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_DELIVERY_FM_48>
+         <KUNNR>0000000002</KUNNR>
+      </urn:ZCU_DELIVERY_FM_48>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+inquiry details:
+
+
+ Final Fields to Use (No Weight Fields)
+📘 From VBAK (Header):
+VBELN – Inquiry number
+
+ERDAT – Created on
+
+AUART – Document type
+
+NETWR – Net value (total)
+
+WAERK – Currency
+
+VDATU – Requested delivery date
+
+KNUMV – (For pricing join only)
+
+🧑 From VBPA (Partner):
+VBELN – Inquiry number
+
+KUNNR – Customer number
+
+PARVW – Partner function (e.g. AG, WE)
+
+📦 From VBAP (Item):
+POSNR – Item number
+
+MATNR – Material number
+
+ARKTX – Material description
+
+KWMENG – Requested quantity
+
+VRKME – Sales unit
+
+💲 From KONV (Pricing conditions):
+KPOSN – Item number
+
+KSCHL – Pricing condition (filter PR00)
+
+KBETR – Price value
+
+KPEIN – Pricing unit
+ 
+WAERS – Currency (can also rely on VBAK-WAERK) - this table have no datas
+
+
+
+ZSDS_CUST_INQUIRY_48 - structure name 
+
+ZSDS_CUST_INQUIRY_TT_48 - table type 
+
+ZCU_INQUIRY2_FM_48 - fm name
+
+zsrv_cu_inquiry2_901548 - service definition
+
+Access URL - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_inquiry2_901548?sap-client=100
+
+With WS Policy - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_inquiry2_901548?sap-client=100
+
+postman url - 	http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_inquiry2_901548?sap-client=100
+
+postman body  - <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_INQUIRY2_FM_48>
+         <KUNNR>0000000002</KUNNR>
+      </urn:ZCU_INQUIRY2_FM_48>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+sales details
+
+ZSDS_CUST_SALES_48 - structure for the sales
+
+ZSDS_CUST_SALES_TT_48 - table type for the sales
+
+ZCU_SALES_FM_48 - FM NAME
+
+postman url - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_sales_901548?sap-client=100
+
+postman body - <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_SALES_FM_48>
+         <!-- Provide your customer number here -->
+         <KUNNR>0000000003</KUNNR>
+      </urn:ZCU_SALES_FM_48>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+With WS Policy : http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_sales_901548?sap-client=100
+
+
+
+
+✅ 📦 Tables Used in Sales Function Module
+Table	Description
+VBAK	Sales document header data
+VBAP	Sales document item data
+VBPA	Sales document partner data (customer link)
+
+✅ 🧾 Final Fields Used
+🔹 From VBAK – Sales Document Header
+Field	Description	Example
+VBELN	Sales document number	3000000123
+ERDAT	Document creation date	2025-07-22
+AUART	Sales document type (e.g., TA = order)	TA
+NETWR	Net value of the sales document	1000.00
+WAERK	Currency used	INR
+VDATU	Requested delivery date	2025-07-25
+ERNAM	Created by (SAP User ID)	SALESC01
+
+🔹 From VBAP – Sales Document Item
+Field	Description	Example
+POSNR	Item number within the sales doc	000010
+MATNR	Material number	MAT001
+ARKTX	Item description (free text)	Laptop XYZ
+KWMENG	Order quantity	10.000
+VRKME	Sales unit	EA (Each)
+
+🔹 From VBPA – Partner Information
+Field	Description	Purpose
+KUNNR	Customer number (who placed order)	Imported in FM
+PARVW	Partner role (e.g., AG = sold-to)	Used to filter only sold-to roles
+VBELN	Sales document number	For join with VBAK
+
+🔍 Summary Table of All Fields
+Field Name	Table	Description
+VBELN	VBAK	Sales document number
+ERDAT	VBAK	Creation date
+AUART	VBAK	Sales document type
+NETWR	VBAK	Net value
+WAERK	VBAK	Currency
+VDATU	VBAK	Requested delivery date
+ERNAM	VBAK	Created by (user ID)
+POSNR	VBAP	Item number within the document
+MATNR	VBAP	Material number
+ARKTX	VBAP	Item description
+KWMENG	VBAP	Order quantity
+VRKME	VBAP	Sales unit
+KUNNR	VBPA	Customer number (input to function)
+PARVW	VBPA	Partner role ('AG' = Sold-To Party)
+
+
+invoice details
+
+ZSDS_CUST_INVOICE_48 - structure 
+
+ZSDS_CUST_INVOICE_TT_48 - table type 
+
+ZCU_INVOICE_FM_48 - fm 
+
+Access URL - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_invoice_901548?sap-client=100
+
+With WS Policy - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_invoice_901548?sap-client=100
+
+postman url : http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_invoice_901548?sap-client=100
+
+xml :  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_INVOICE_FM_48>
+         <KUNNR>0000000003</KUNNR>
+      </urn:ZCU_INVOICE_FM_48>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+table contents :
+
+
+📄 Invoice Functionality – Tables, Fields, and Purpose
+🔷 1. VBRK – Billing Document Header Table
+This table contains header-level details of billing documents such as invoices, credit memos, etc. It stores general info that applies to the entire invoice.
+
+✅ Fields Used from VBRK:
+Field	Description	Purpose
+VBELN	Billing Document Number	Unique ID of the invoice (used as key to link with item table VBRP)
+FKDAT	Billing Date	Date on which the billing document was created
+KUNAG	Customer Number (Sold-to Party)	Identifies the customer being billed
+NETWR	Total Net Value	Total value of the billing document at the header level
+WAERK	Currency	Currency used in the invoice (e.g., INR, USD)
+VKORG	Sales Organization	Sales area responsible for the billing
+FKART	Billing Type	Type of invoice (e.g., F2 = Standard Invoice)
+ERDAT	Created On	Date when the billing document was created in the system
+ERNAM	Created By	Username of the person who created the billing document
+
+🔷 2. VBRP – Billing Document Item Table
+This table contains item-level data of billing documents, i.e., each material/service billed in the invoice.
+
+✅ Fields Used from VBRP:
+Field	Description	Purpose
+POSNR	Item Number	Identifies the line item in the invoice
+MATNR	Material Number	Code of the product/material being billed
+ARKTX	Description	Free-text description of the item
+FKIMG	Billing Quantity	Quantity of the item billed
+VRKME	Sales Unit (Unit of Measure)	Unit in which the quantity is expressed (e.g., EA = Each, KG = Kilogram)
+NETWR	Net Value (item level)	Value of the specific item (line item net amount)
+PRSDT	Pricing Date	Date when the pricing was calculated or valid
+
+🔸 Purpose of Using These Tables
+Table	Purpose
+VBRK	To get general invoice details at the document level
+VBRP	To get individual item-level details of the invoice
+
+These two tables are linked using the field VBELN (Billing Document Number). Each invoice (VBRK) can have multiple line items (VBRP), hence we use an INNER JOIN between them.
+
+📝 Summary
+You use VBRK for header data like invoice number, date, customer, and total value.
+
+You use VBRP for line-item data like materials, quantity, unit, and price.
+
+Together, they provide a complete view of the customer invoice in both summary and detail form.
+
+
+aging details: 
+
+
+✅ 1. VBRK – Billing Document: Header Data
+Purpose
+The VBRK table contains billing header-level information for invoices, credit memos, and debit memos.
+It holds key data like billing date, customer number, total amount, currency, and billing type.
+
+Key Fields Used	Description
+VBELN	Billing Document Number (primary key)
+FKDAT	Billing Date (when invoice was posted)
+NETWR	Net Value of the invoice
+WAERK	Currency (e.g., INR, EUR, USD)
+FKART	Billing Type (F2 = standard invoice)
+
+Usage in code:
+You are retrieving all invoices (FKART = 'F2') issued to a particular customer (KUNNR) and calculating aging based on the FKDAT (billing date).
+
+✅ 2. VBPA – Sales Document: Partner Function
+Purpose
+The VBPA table stores partner function data related to sales and billing documents. This includes identifying who the customer is in different roles like payer, sold-to, bill-to, etc.
+
+Key Fields Used	Description
+VBELN	Document Number (billing/sales)
+KUNNR	Customer Number
+PARVW	Partner Role (e.g., 'RE' = Payer, 'AG' = Sold-To Party)
+
+Usage in code:
+You are filtering where PARVW = 'RE' (payer), which means we want the invoices for which the customer is responsible for payment.
+
+✅ How These Two Work Together
+You join VBRK and VBPA using the billing document number (VBELN) to ensure that:
+
+You're looking at billing documents (invoices) from VBRK
+
+That are associated with the customer (payer) from VBPA (KUNNR and PARVW = 'RE')
+
+🔄 Example Use Case:
+Let’s say:
+
+VBELN	FKDAT	KUNNR	NETWR	WAERK
+0090000010	2025-06-01	100000	1000	INR
+
+Customer 100000 (payer) has an invoice 0090000010 dated 01-Jun-2025.
+
+If today's date is 25-Jul-2025, then:
+
+Aging = 54 days
+
+Meaning = "Overdue by 54 days"
+
+Summary
+Table	Used For
+VBRK	To get invoice details: date, value, currency
+VBPA	To filter invoices where the given customer is the payer
+
+
+ZSDS_CUST_AGING_48 - structure
+
+ZSDS_CUST_AGING_TT_48 - table type
+
+ZCU_AGING_FM_48 - fm
+
+zsrv_cu_aging_901548 - service definition
+
+With WS Policy - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_aging_901548?sap-client=100
+
+Access URL - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_aging_901548?sap-client=100
+
+postman url - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_aging_901548?sap-client=100
+
+postman xml - <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_AGING_FM_48>
+         <KUNNR>0000000002</KUNNR> 
+      </urn:ZCU_AGING_FM_48>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+
+
+memo details: 
+
+ZCU_CUST_MEMO2_FM_48 - function module
+
+ZSDS_CUST_MEMO2_TT_48 - table type
+
+ZSDS_CUST_MEMO2_48 - structure
+
+Access URL - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_memo2_901548?sap-client=100
+
+With WS Policy - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/wsdl/flv_10002A1111D1/bndg_url/sap/bc/srt/scs/sap/zsrv_cu_memo2_901548?sap-client=100
+
+postman url - http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv_cu_memo2_901548?sap-client=100
+
+postman body - <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:sap-com:document:sap:rfc:functions">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ZCU_CUST_MEMO2_FM_48>
+         <!-- Optional: provide customer number -->
+         <IV_KUNNR>0000000002</IV_KUNNR>
+         <!-- Optional: provide date range -->
+         <IV_DATE_FROM>2025-01-01</IV_DATE_FROM>
+         <IV_DATE_TO>2025-07-25</IV_DATE_TO>
+      </urn:ZCU_CUST_MEMO2_FM_48>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+ 1. VBRK – Billing Document: Header Data
+Table Name: VBRK
+
+Purpose:
+Contains header-level information for all billing documents (invoices, credit memos, debit memos, etc.) created in SD (Sales and Distribution).
+
+Why it's used:
+To fetch:
+
+Billing document number (VBELN)
+
+Billing type (FKART) → e.g. G2 (Credit Memo), L2 (Debit Memo)
+
+Reference document (XBLNR)
+
+Sold-to party (KUNAG)
+
+Billing date (FKDAT)
+
+Document creation date (ERDAT)
+
+Created by (ERNAM)
+
+Currency (WAERK)
+
+Net value (NETWR)
+
+Tax amount (MWSBK)
+
+Sales org (VKORG)
+
+Distribution channel (VTWEG)
+
+Division (SPART)
+
+🔹 2. KNA1 – General Data in Customer Master
+Table Name: KNA1
+
+Purpose:
+Holds general customer master data, applicable across all company codes and sales areas.
+
+Why it's used:
+To get:
+
+Customer name (NAME1) for the sold-to party (KUNAG from VBRK)
+
+🔹 Function Module Purpose Summary
+The FM ZCU_CUST_MEMO_FM_48 is used to:
+
+Extract credit and debit memo header-level data for customers.
+
+Add optional filters (customer, date range).
+
+Return data in a clean structure (ZSDS_CUST_MEMO_48) for further use, such as display in reports or web services.
+
+
+invoice pdf details
+
+Z48_INOICEHEADER_STRUCT - header structure
+
+Z48_CUS_INOICEITEM_STRUCT - ITEM STRUCT
+
+Z48_CUS_INOICEITEM_TT - ITEM TABLE TYPE
+
+Z48_INVOICE_INTF - INTERFACE
+
+Z48_CUS_INVOICE_FORMS - FORMS
+
+z48_invoice_intf - interface
+
+ZCU_INVOICEPDF_FM_48 - fm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

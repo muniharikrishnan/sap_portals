@@ -1,0 +1,30 @@
+<div class="finance-container">
+  <div class="finance-header-card">
+    <div class="finance-header-content">
+      <div class="finance-header-avatar">💳</div>
+      <div class="finance-header-text">
+        <h2>Customer Finance Panel</h2>
+        <div class="finance-id">Click any card to view finance details</div>
+      </div>
+    </div>
+  </div>
+  <div class="finance-tile-grid">
+    <a class="tile" [routerLink]="['/customer/invoice']">
+      <span class="tile-emoji">🧾</span>
+      <span><b>Invoice</b></span>
+    </a>
+    <a class="tile" [routerLink]="['/customer/aging']">
+      <span class="tile-emoji">⏳</span>
+      <span><b>Aging</b></span>
+    </a>
+    <a class="tile" [routerLink]="['/customer/memo']">
+      <span class="tile-emoji">📝</span>
+      <span><b>Memo</b></span>
+    </a>
+    <a class="tile" [routerLink]="['/customer/overallsales']">
+      <span class="tile-emoji">💰</span>
+      <span><b>Overall Sales</b></span>
+    </a>
+  </div>
+</div>
+<router-outlet></router-outlet>

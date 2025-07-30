@@ -1,0 +1,41 @@
+<div class="inquiry-container">
+    <h2>Customer Inquiry List</h2>
+  
+    <table *ngIf="inquiries.length > 0; else noData">
+      <thead>
+        <tr>
+          <th>Inquiry No</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Net Value</th>
+          <th>Currency</th>
+          <th>Valid Date</th>
+          <th>Item No</th>
+          <th>Material</th>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>UOM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inquiry of inquiries">
+          <td>{{ inquiry.vbeln }}</td>
+          <td>{{ inquiry.erdat }}</td>
+          <td>{{ inquiry.auart }}</td>
+          <td>{{ inquiry.netwr }}</td>
+          <td>{{ inquiry.waerk }}</td>
+          <td>{{ inquiry.vdate }}</td>
+          <td>{{ inquiry.posnr }}</td>
+          <td>{{ inquiry.matnr }}</td>
+          <td>{{ inquiry.arktx }}</td>
+          <td>{{ inquiry.kwmeng }}</td>
+          <td>{{ inquiry.vrkme }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <ng-template #noData>
+      <p>No inquiries available for this customer.</p>
+    </ng-template>
+  </div>
+  
