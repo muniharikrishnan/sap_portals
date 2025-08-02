@@ -71,8 +71,8 @@ Desktop.ini
 jest_coverage/
 
 # Completely ignore these specific folders
-employee-portal/
-sap-portal/
+# employee-portal/ - Removed to allow employee portal tracking
+# sap-portal/ - Removed to allow sap portal tracking
 
 # Angular specific
 .angular/

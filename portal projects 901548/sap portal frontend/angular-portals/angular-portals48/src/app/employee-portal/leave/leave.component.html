@@ -1,0 +1,185 @@
+<div class="leave-container">
+  <!-- Header Section -->
+  <div class="leave-header">
+    <div class="header-content">
+      <h2><i class="fas fa-calendar-alt"></i> Leave Management</h2>
+      <p>View your leave history, balance, and track leave applications</p>
+    </div>
+    <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+      <i class="fas fa-sync-alt" [class.spinning]="isLoading"></i>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    <p>Loading leave data from SAP...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <div class="error-card">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Error Loading Leave Data</h3>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="refreshData()">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading && !error" class="leave-content">
+    
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card total-leaves">
+        <div class="stat-icon">
+          <i class="fas fa-list-ul"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ totalLeaves }}</h3>
+          <p>Total Leave Records</p>
+        </div>
+      </div>
+
+      <div class="stat-card total-days">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ totalDays }}</h3>
+          <p>Total Days Taken</p>
+        </div>
+      </div>
+
+      <div class="stat-card leave-types">
+        <div class="stat-icon">
+          <i class="fas fa-chart-pie"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ getObjectKeys(leaveTypes).length }}</h3>
+          <p>Leave Types Used</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leave Types Breakdown -->
+    <div *ngIf="getObjectKeys(leaveTypes).length > 0" class="leave-types-section">
+      <h3><i class="fas fa-chart-bar"></i> Leave Types Breakdown</h3>
+      <div class="types-grid">
+        <div *ngFor="let type of getObjectKeys(leaveTypes)" class="type-card">
+          <div class="type-header">
+            <span class="type-name">{{ getLeaveTypeDisplay(type) }}</span>
+            <span class="type-count">{{ leaveTypes[type] }}</span>
+          </div>
+          <div class="type-bar">
+            <div class="type-fill" [style.width.%]="(leaveTypes[type] / totalLeaves) * 100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leave Records Table -->
+    <div class="leave-records-section">
+      <div class="section-header">
+        <h3><i class="fas fa-history"></i> Leave History</h3>
+        <span class="record-count">{{ leaveRecords.length }} records found</span>
+      </div>
+
+      <!-- No Records State -->
+      <div *ngIf="leaveRecords.length === 0" class="no-records">
+        <div class="no-records-card">
+          <i class="fas fa-calendar-times"></i>
+          <h3>No Leave Records Found</h3>
+          <p>No leave records are available for Employee ID: {{ employeeId }}</p>
+        </div>
+      </div>
+
+      <!-- Records Table -->
+      <div *ngIf="leaveRecords.length > 0" class="table-container">
+        <div class="table-wrapper">
+          <table class="leave-table">
+            <thead>
+              <tr>
+                <th><i class="fas fa-calendar-alt"></i> Period</th>
+                <th><i class="fas fa-tag"></i> Type</th>
+                <th><i class="fas fa-clock"></i> Days</th>
+                <th><i class="fas fa-comment"></i> Reason</th>
+                <th><i class="fas fa-info-circle"></i> Status</th>
+                <th><i class="fas fa-calendar-check"></i> Quota Period</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let leave of leaveRecords; trackBy: trackByLeave" class="leave-row">
+                <td class="period-cell">
+                  <div class="date-range">
+                    <div class="start-date">
+                      <i class="fas fa-play"></i>
+                      {{ formatDate(leave.startDate) }}
+                    </div>
+                    <div class="date-separator">
+                      <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="end-date">
+                      <i class="fas fa-stop"></i>
+                      {{ formatDate(leave.endDate) }}
+                    </div>
+                  </div>
+                </td>
+                
+                <td class="type-cell">
+                  <div class="leave-type-badge" [attr.data-type]="leave.absenceType">
+                    <i class="fas fa-tag"></i>
+                    {{ getLeaveTypeDisplay(leave.absenceType) }}
+                  </div>
+                </td>
+                
+                <td class="days-cell">
+                  <div class="days-badge">
+                    <i class="fas fa-calendar-day"></i>
+                    {{ leave.absenceDays || '0' }} days
+                  </div>
+                </td>
+                
+                <td class="reason-cell">
+                  <div class="reason-text" [title]="leave.reason">
+                    {{ leave.reason || 'No reason provided' }}
+                  </div>
+                </td>
+                
+                <td class="status-cell">
+                  <div class="status-badge" [ngClass]="getLeaveStatus(leave.startDate, leave.endDate).class">
+                    <i class="fas fa-circle"></i>
+                    {{ getLeaveStatus(leave.startDate, leave.endDate).status }}
+                  </div>
+                </td>
+                
+                <td class="quota-cell">
+                  <div class="quota-info" *ngIf="leave.quotaStart && leave.quotaEnd">
+                    <div class="quota-period">
+                      <i class="fas fa-calendar"></i>
+                      {{ formatDate(leave.quotaStart) }} - {{ formatDate(leave.quotaEnd) }}
+                    </div>
+                    <div class="quota-number" *ngIf="leave.quotaNumber">
+                      <i class="fas fa-hashtag"></i>
+                      {{ leave.quotaNumber }}
+                    </div>
+                  </div>
+                  <div *ngIf="!leave.quotaStart || !leave.quotaEnd" class="no-quota">
+                    <i class="fas fa-minus"></i>
+                    N/A
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

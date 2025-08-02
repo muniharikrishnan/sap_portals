@@ -1,0 +1,271 @@
+<div class="profile-container">
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-user-circle"></i>
+        Employee Profile
+      </h1>
+      <p class="page-subtitle">Manage your personal information and employment details</p>
+    </div>
+    
+    <div class="header-actions">
+      <button class="refresh-btn" (click)="refreshProfile()" [disabled]="loading">
+        <i class="fas fa-sync-alt refresh-icon" [class.spinning]="loading"></i>
+        {{ loading ? 'Refreshing...' : 'Refresh Profile' }}
+      </button>
+      <button class="edit-btn" (click)="toggleEditMode()" [disabled]="loading">
+        <i class="fas fa-edit"></i>
+        {{ editMode ? 'Cancel Edit' : 'Edit Profile' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading && !profile" class="loading-container">
+    <div class="loading-spinner"></div>
+    <h3>Loading Profile</h3>
+    <p>Please wait while we fetch your information...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>Unable to Load Profile</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="refreshProfile()">
+      <i class="fas fa-redo"></i>
+      Try Again
+    </button>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="profile && !loading" class="profile-content">
+    <!-- Profile Summary Card -->
+    <div class="profile-summary-card">
+      <div class="profile-avatar">
+        <div class="avatar-placeholder">
+          <i class="fas fa-user"></i>
+        </div>
+        <button class="avatar-upload-btn" title="Upload Photo">
+          <i class="fas fa-camera"></i>
+        </button>
+      </div>
+      
+      <div class="profile-summary-info">
+        <h2 class="employee-name">{{ profile.fullName || 'Not Available' }}</h2>
+        <p class="employee-position">{{ profile.position || 'Position Not Available' }}</p>
+        <p class="employee-department">{{ profile.department || 'Department Not Available' }}</p>
+        <div class="employee-id-badge">
+          <i class="fas fa-id-badge"></i>
+          ID: {{ employeeId }}
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat-item">
+          <i class="fas fa-building"></i>
+          <span class="stat-label">Company</span>
+          <span class="stat-value">{{ profile.compCode || 'N/A' }}</span>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-users"></i>
+          <span class="stat-label">Org Unit</span>
+          <span class="stat-value">{{ profile.orgUnit || 'N/A' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Details Cards -->
+    <div class="profile-details-grid">
+      <!-- Personal Information Card -->
+      <div class="detail-card">
+        <div class="card-header">
+          <h3>
+            <i class="fas fa-user-circle"></i>
+            Personal Information
+          </h3>
+          <div class="card-actions">
+            <button class="card-action-btn" title="Edit Personal Info">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-signature"></i>
+                Full Name
+              </label>
+              <div class="info-value">{{ profile.fullName || 'Not Available' }}</div>
+            </div>
+            
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-venus-mars"></i>
+                Gender
+              </label>
+              <div class="info-value">{{ getGenderDisplay(profile.gender) }}</div>
+            </div>
+            
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-birthday-cake"></i>
+                Date of Birth
+              </label>
+              <div class="info-value">{{ formatDate(profile.dob) }}</div>
+            </div>
+            
+            <div class="info-item full-width">
+              <label class="info-label">
+                <i class="fas fa-map-marker-alt"></i>
+                Address
+              </label>
+              <div class="info-value">{{ profile.address || 'Not Available' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information Card -->
+      <div class="detail-card">
+        <div class="card-header">
+          <h3>
+            <i class="fas fa-address-book"></i>
+            Contact Information
+          </h3>
+          <div class="card-actions">
+            <button class="card-action-btn" title="Edit Contact Info">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-envelope"></i>
+                Email Address
+              </label>
+              <div class="info-value email">
+                {{ profile.email || 'Not Available' }}
+                <button *ngIf="profile.email" class="copy-btn" (click)="copyToClipboard(profile.email)" title="Copy Email">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-phone"></i>
+                Phone Number
+              </label>
+              <div class="info-value phone">
+                {{ profile.phone || 'Not Available' }}
+                <button *ngIf="profile.phone" class="copy-btn" (click)="copyToClipboard(profile.phone)" title="Copy Phone">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employment Details Card -->
+      <div class="detail-card">
+        <div class="card-header">
+          <h3>
+            <i class="fas fa-briefcase"></i>
+            Employment Details
+          </h3>
+          <div class="card-actions">
+            <button class="card-action-btn" title="View Employment History">
+              <i class="fas fa-history"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-user-tie"></i>
+                Position
+              </label>
+              <div class="info-value position">{{ profile.position || 'Not Available' }}</div>
+            </div>
+            
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-sitemap"></i>
+                Department
+              </label>
+              <div class="info-value">{{ profile.department || 'Not Available' }}</div>
+            </div>
+            
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-building"></i>
+                Company Code
+              </label>
+              <div class="info-value">{{ profile.compCode || 'Not Available' }}</div>
+            </div>
+            
+            <div class="info-item">
+              <label class="info-label">
+                <i class="fas fa-network-wired"></i>
+                Organization Unit
+              </label>
+              <div class="info-value">{{ profile.orgUnit || 'Not Available' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Card -->
+      <div class="detail-card quick-actions-card">
+        <div class="card-header">
+          <h3>
+            <i class="fas fa-bolt"></i>
+            Quick Actions
+          </h3>
+        </div>
+        
+        <div class="card-content">
+          <div class="quick-actions-grid">
+            <button class="quick-action-btn">
+              <i class="fas fa-download"></i>
+              <span>Download Profile</span>
+            </button>
+            
+            <button class="quick-action-btn">
+              <i class="fas fa-print"></i>
+              <span>Print Profile</span>
+            </button>
+            
+            <button class="quick-action-btn">
+              <i class="fas fa-share-alt"></i>
+              <span>Share Profile</span>
+            </button>
+            
+            <button class="quick-action-btn">
+              <i class="fas fa-key"></i>
+              <span>Change Password</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="success-message">
+    <i class="fas fa-check-circle"></i>
+    {{ successMessage }}
+  </div>
+</div>
