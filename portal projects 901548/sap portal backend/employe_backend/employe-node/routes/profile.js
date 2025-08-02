@@ -34,7 +34,7 @@ router.post('/employee-profile', async (req, res) => {
       {
         headers: {
           'Content-Type': 'text/xml;charset=UTF-8',
-          'SOAPAction': 'urn:sap-com:document:sap:rfc:functions:ZJP_EMP_PROF_FM',
+          'SOAPAction': 'urn:sap-com:document:sap:rfc:functions:Z48_EMP_PROFILE_FM',
         },
         auth: {
           username: process.env.SAP_USERNAME,

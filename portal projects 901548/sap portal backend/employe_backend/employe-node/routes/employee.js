@@ -60,7 +60,7 @@
 
     } catch (error) {
       console.error('Login Error:', error.message);
-      res.status(500).json({ error: 'SAP PI/PO Login Call Failed' });
+      res.status(500).json({ error: 'SAP RFC Login Call Failed' });
     }
   });
 

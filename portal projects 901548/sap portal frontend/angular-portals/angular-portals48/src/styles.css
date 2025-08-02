@@ -12,6 +12,15 @@
   --kaar-warning: #f59e0b;
   --kaar-error: #ef4444;
   
+  /* Employee Portal - Teal Theme */
+  --kaar-employee-primary: #14b8a6;
+  --kaar-employee-secondary: #0d9488;
+  --kaar-employee-accent: #5eead4;
+  --kaar-employee-dark: #134e4a;
+  --kaar-employee-light: #f0fdfa;
+  --kaar-employee-gradient: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  --kaar-employee-gradient-accent: linear-gradient(135deg, #5eead4 0%, #14b8a6 100%);
+  
   /* Gradients */
   --kaar-gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
   --kaar-gradient-secondary: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
@@ -90,104 +99,62 @@ body, html {
   font-size: var(--kaar-font-size-base);
   line-height: 1.6;
   color: var(--kaar-dark);
-  background: linear-gradient(135deg, #232526 0%, #414345 100%) !important;
-  /* Remove background-color to prevent white */
+  overflow-x: hidden;
 }
 
-/* Utility Classes */
-.kaar-text-primary { color: var(--kaar-primary); }
-.kaar-text-secondary { color: var(--kaar-secondary); }
-.kaar-text-accent { color: var(--kaar-accent); }
-.kaar-text-success { color: var(--kaar-success); }
-.kaar-text-warning { color: var(--kaar-warning); }
-.kaar-text-error { color: var(--kaar-error); }
-
-.kaar-bg-primary { background-color: var(--kaar-primary); }
-.kaar-bg-secondary { background-color: var(--kaar-secondary); }
-.kaar-bg-accent { background-color: var(--kaar-accent); }
-.kaar-bg-success { background-color: var(--kaar-success); }
-.kaar-bg-warning { background-color: var(--kaar-warning); }
-.kaar-bg-error { background-color: var(--kaar-error); }
-
-.kaar-gradient-primary { background: var(--kaar-gradient-primary); }
-.kaar-gradient-secondary { background: var(--kaar-gradient-secondary); }
-.kaar-gradient-accent { background: var(--kaar-gradient-accent); }
-
-/* Button Styles */
-.kaar-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--kaar-spacing-3) var(--kaar-spacing-6);
-  border: none;
-  border-radius: var(--kaar-radius-lg);
-  font-family: var(--kaar-font-family);
-  font-size: var(--kaar-font-size-sm);
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all var(--kaar-transition-normal);
-  background: var(--kaar-gradient-primary);
-  color: var(--kaar-white);
-  box-shadow: var(--kaar-shadow-md);
+html {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
 }
 
-.kaar-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--kaar-shadow-lg);
+/* Scoped theme backgrounds */
+body.vendor-theme {
+  background: #1a202c !important;
 }
 
-.kaar-btn:active {
-  transform: translateY(0);
-}
-
-.kaar-btn-secondary {
-  background: var(--kaar-gradient-secondary);
-}
-
-.kaar-btn-success {
-  background: var(--kaar-success);
-}
-
-.kaar-btn-warning {
-  background: var(--kaar-warning);
-}
-
-.kaar-btn-error {
-  background: var(--kaar-error);
-}
-
-/* Card Styles */
-.kaar-card {
-  background: var(--kaar-white);
-  border-radius: var(--kaar-radius-xl);
-  box-shadow: var(--kaar-shadow-lg);
-  padding: var(--kaar-spacing-6);
-  border: 1px solid var(--kaar-gray-200);
-}
-
-.kaar-card-glass {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Form Styles */
-.kaar-input {
+body.employee-theme {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
+  min-height: 100vh;
   width: 100%;
-  padding: var(--kaar-spacing-4);
-  border: 2px solid var(--kaar-gray-300);
-  border-radius: var(--kaar-radius-lg);
-  font-family: var(--kaar-font-family);
-  font-size: var(--kaar-font-size-base);
-  transition: all var(--kaar-transition-normal);
-  background: var(--kaar-white);
 }
 
-.kaar-input:focus {
-  outline: none;
-  border-color: var(--kaar-primary);
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+body.customer-theme {
+  background: var(--kaar-gray-800) !important;
+}
+
+/* Essential Layout Utilities */
+.kaar-container {
+  width: 100%;
+  max-width: 100%;
+  padding: var(--kaar-spacing-4);
+  box-sizing: border-box;
+}
+
+.kaar-flex {
+  display: flex;
+}
+
+.kaar-flex-col {
+  flex-direction: column;
+}
+
+.kaar-flex-1 {
+  flex: 1;
+}
+
+.kaar-grid {
+  display: grid;
+}
+
+.kaar-w-full {
+  width: 100%;
+}
+
+.kaar-h-full {
+  height: 100%;
+}
+
+.kaar-min-h-screen {
+  min-height: 100vh;
 }
 
 /* Responsive Utilities */

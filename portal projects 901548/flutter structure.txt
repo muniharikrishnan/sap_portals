@@ -1,0 +1,87 @@
+## 🏗️ __Your Flutter Project Structure Explained__
+
+### __1. Frontend Code Location (Flutter/Dart)__
+
+Your __frontend code__ is located in the `lib/` directory. This is where all your Flutter UI and business logic lives:
+
+```javascript
+lib/
+├── main.dart                    # App entry point
+├── core/                        # Shared components
+│   ├── constants/
+│   │   ├── app_colors.dart     # Color definitions (your "CSS colors")
+│   │   ├── app_theme.dart      # App-wide styling (your "CSS styles")
+│   │   └── app_dims.dart       # Dimensions/spacing
+│   └── widgets/                # Reusable UI components
+│       ├── custom_button.dart
+│       └── custom_text_field.dart
+└── features/                   # Feature-based modules
+    ├── auth/                   # Login functionality
+    ├── dashboard/              # Main dashboard
+    ├── notifications/          # Notifications
+    ├── plants/                 # Plant management
+    ├── workorders/             # Work orders
+    └── profile/                # User profile
+```
+
+### __2. Node.js Code Location__
+
+Your __Node.js backend/proxy server__ code is located in:
+
+- `web/dev_server.js` - Express server with SAP API proxy
+- `package.json` - Node.js dependencies and scripts
+
+### __3. CSS/Styling in Flutter__
+
+Flutter doesn't use traditional CSS. Instead, styling is done through:
+
+__🎨 Colors:__ `lib/core/constants/app_colors.dart`
+
+```dart
+static const primary = Color(0xFFFF6F00);       // Orange theme
+static const secondary = Color(0xFFFFA726);     // Light orange
+static const surface = Color(0xFFF5F5F5);       // Background
+```
+
+__🎨 Themes:__ `lib/core/constants/app_theme.dart`
+
+```dart
+// This is like your main CSS file - defines:
+- Button styles
+- Text styles  
+- Input field styles
+- Colors scheme
+- App bar styling
+```
+
+### __4. How to Modify Styling__
+
+__To change colors:__
+
+- Edit `lib/core/constants/app_colors.dart`
+- Change hex color values (e.g., `0xFFFF6F00` for orange)
+
+__To change overall app styling:__
+
+- Edit `lib/core/constants/app_theme.dart`
+- Modify button styles, text styles, etc.
+
+__To change specific screen layouts:__
+
+- Go to the specific screen file (e.g., `lib/features/auth/presentation/login_screen.dart`)
+- Modify the Widget styling directly
+
+### __5. Project Architecture__
+
+This follows __Clean Architecture__ pattern:
+
+- `presentation/` - UI screens and widgets
+- `domain/` - Business logic and use cases
+- `data/` - API calls and data sources
+
+### __6. Development Setup__
+
+You have both Flutter and Node.js:
+
+- __Flutter app:__ Runs the mobile/web UI
+- __Node.js proxy:__ Handles SAP API authentication and CORS

@@ -1,0 +1,23 @@
+maintainenance portal details
+
+
+LOGIN URL IN GATEWAY CLIENT - /sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/LOGINSet(MaintenanceEngineer='00000001',Password='MAINT1')?$format=json
+
+login url postman - https://AZKTLDS5CP.kcloud.com:44300/sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/LOGINSet(MaintenanceEngineer='00000001',Password='MAINT1')?$format=json
+
+
+notify url gateway client - /sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/notifySet?$filter=Swerk eq '1009'&$format=json
+
+notify url postman - https://AZKTLDS5CP.kcloud.com:44300/sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/notifySet?$filter=Swerk eq '1009'&$format=json
+
+
+workorder url gateway client - /sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/workorderSet?$filter=Sowrk eq '1009'&$format=json
+
+workorder url postman - https://AZKTLDS5CP.kcloud.com:44300/sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/workorderSet?$filter=Sowrk eq '1009'&$format=json
+
+
+plantlist url gateway client - /sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/plantlistSet?$filter=MaintenanceEngineer eq '00000001'&$format=json
+
+plantlist url postman - https://AZKTLDS5CP.kcloud.com:44300/sap/opu/odata/SAP/Z48_MAINT_PORTAL_SRV/plantlistSet?$filter=MaintenanceEngineer eq'00000001' &$format=json
+
+

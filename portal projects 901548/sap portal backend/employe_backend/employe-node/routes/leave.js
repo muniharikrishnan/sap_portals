@@ -14,6 +14,7 @@ const SAP_LEAVE_URL = 'http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zsrv
 
 router.post('/employee-leave', async (req, res) => {
   const { employeeId } = req.body;
+  console.log(employeeId)
 
   const soapEnvelope = `
     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"

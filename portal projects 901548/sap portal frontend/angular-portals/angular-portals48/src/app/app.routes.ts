@@ -64,5 +64,27 @@ export const routes: Routes = [
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
+  },
+
+  // Employee Login
+  {
+    path: 'employee/login',
+    loadComponent: () =>
+      import('./employee-portal/emp-login/emp-login.component').then(m => m.EmpLoginComponent)
+  },
+
+  // Employee Portal
+  {
+    path: 'employee',
+    loadComponent: () =>
+      import('./employee-portal/emp-navbar/emp-navbar.component').then(m => m.EmpNavbarComponent),
+    children: [
+      { path: 'dashboard', loadComponent: () => import('./employee-portal/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+      { path: 'profile', loadComponent: () => import('./employee-portal/profile/profile.component').then(m => m.ProfileComponent) },
+      { path: 'leave', loadComponent: () => import('./employee-portal/leave/leave.component').then(m => m.LeaveComponent) },
+      { path: 'pay', loadComponent: () => import('./employee-portal/pay/pay.component').then(m => m.PayComponent) },
+
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
   }
 ];
