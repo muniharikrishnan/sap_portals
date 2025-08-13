@@ -115,10 +115,6 @@ export class RfqComponent implements OnInit {
     this.applySearchSortPaginate();
   }
 
-  goBack(): void {
-    this.router.navigate(['/vendor/dashboard']);
-  }
-
   get paginatedRfqs(): any[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredRfqs.slice(start, start + this.itemsPerPage);

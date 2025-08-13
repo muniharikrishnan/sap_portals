@@ -121,18 +121,20 @@ body, .rfq-container {
 /* Controls Card */
 .controls-card {
   width: 100%;
-  max-width: 1100px;
-  background: var(--kaar-card-bg);
-  backdrop-filter: var(--kaar-card-glass);
-  -webkit-backdrop-filter: var(--kaar-card-glass);
-  border-radius: 1.5rem;
-  box-shadow: var(--kaar-shadow);
-  border: var(--kaar-border);
-  padding: 1.2rem 2rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  max-width: 1200px;
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 2rem;
+  padding: 1.5rem 2rem;
+  box-shadow: 
+    0 0 0 1px rgba(124, 58, 237, 0.2),
+    0 20px 60px -12px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(124, 58, 237, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  position: relative;
+  z-index: 10;
 }
 
 .search-section {
@@ -209,23 +211,20 @@ body, .rfq-container {
 /* Content Card */
 .content-card {
   width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  background: var(--kaar-card-bg);
-  backdrop-filter: var(--kaar-card-glass);
-  -webkit-backdrop-filter: var(--kaar-card-glass);
-  border-radius: 2.2rem;
-  box-shadow: var(--kaar-shadow);
-  border: var(--kaar-border);
-  padding: 1.2rem 2rem 2rem 2rem;
-  margin-top: -24px !important;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  box-sizing: border-box;
-  overflow-x: auto;
+  max-width: 1200px;
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 2rem;
+  padding: 1.5rem 2rem;
+  box-shadow: 
+    0 0 0 1px rgba(124, 58, 237, 0.2),
+    0 20px 60px -12px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(124, 58, 237, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  position: relative;
+  z-index: 10;
 }
 .table-container {
   width: 100%;
@@ -238,9 +237,28 @@ body, .rfq-container {
   margin-bottom: 0.2rem;
   box-sizing: border-box;
 }
+
 .pagination-card {
-  padding-top: 0.2rem;
-  margin-top: 0;
+  width: 100%;
+  max-width: 1200px;
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 2rem;
+  padding: 1.2rem 2rem;
+  box-shadow: 
+    0 0 0 1px rgba(124, 58, 237, 0.2),
+    0 20px 60px -12px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(124, 58, 237, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  position: relative;
+  z-index: 10;
 }
 
 .table-header {
@@ -252,12 +270,18 @@ body, .rfq-container {
 }
 
 .table-title {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  color: #fff;
+  color: #f8fafc;
   margin: 0;
-  text-shadow: var(--kaar-text-glow);
-  filter: drop-shadow(0 0 6px rgba(124, 42, 232, 0.4));
+  text-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+.table-subtitle {
+  color: #cbd5e1;
+  font-size: 1rem;
+  margin: 0;
+  margin-top: 4px;
 }
 
 .table-actions {
@@ -396,6 +420,12 @@ body, .rfq-container {
 }
 
 /* Pagination Card */
+.pagination-card {
+  padding-top: 0.2rem;
+  margin-top: 0;
+}
+
+/* Pagination Card */
 .pagination-text {
   color: #fff !important;
   font-size: 1rem;
@@ -452,14 +482,22 @@ body, .rfq-container {
 .no-data-card {
   width: 100%;
   max-width: 1200px;
-  background: var(--kaar-card-bg);
-  backdrop-filter: var(--kaar-card-glass);
-  -webkit-backdrop-filter: var(--kaar-card-glass);
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 2rem;
-  padding: 4rem 2rem;
-  box-shadow: var(--kaar-shadow);
-  border: var(--kaar-border);
-  text-align: center;
+  padding: 3rem 2rem;
+  box-shadow: 
+    0 0 0 1px rgba(124, 58, 237, 0.2),
+    0 20px 60px -12px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(124, 58, 237, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
 .no-data-content {
@@ -517,14 +555,22 @@ body, .rfq-container {
 .loading-card {
   width: 100%;
   max-width: 1200px;
-  background: var(--kaar-card-bg);
-  backdrop-filter: var(--kaar-card-glass);
-  -webkit-backdrop-filter: var(--kaar-card-glass);
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 2rem;
-  padding: 4rem 2rem;
-  box-shadow: var(--kaar-shadow);
-  border: var(--kaar-border);
-  text-align: center;
+  padding: 3rem 2rem;
+  box-shadow: 
+    0 0 0 1px rgba(124, 58, 237, 0.2),
+    0 20px 60px -12px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(124, 58, 237, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
 .loading-content {
