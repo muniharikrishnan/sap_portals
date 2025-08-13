@@ -443,12 +443,52 @@ p {
 .inquiry-container {
   width: 100%;
   max-width: 100%;
+  min-height: calc(100vh - 96px);
   display: flex;
   flex-direction: column;
   gap: 32px;
   animation: fadeInUp 0.6s ease-out;
   font-family: 'Inter', sans-serif;
+  position: relative;
+  margin: -48px -48px -32px -48px;
+  padding: 48px 48px 32px 48px;
+  background: inherit;
+  overflow-x: hidden;
 }
+
+/* .inquiry-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.inquiry-container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(147, 197, 253, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(96, 165, 250, 0.05) 0%, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+} */
 
 @keyframes fadeInUp {
   0% {
@@ -682,10 +722,7 @@ p {
 }
 
 /* Export Dropdown */
-.export-dropdown {
-  position: relative;
-}
-
+/* Export Button */
 .export-btn {
   background: rgba(16, 185, 129, 0.15);
   border-color: rgba(16, 185, 129, 0.3);
@@ -694,68 +731,6 @@ p {
 .export-btn:hover:not(:disabled) {
   background: rgba(16, 185, 129, 0.2);
   border-color: rgba(16, 185, 129, 0.4);
-}
-
-.dropdown-icon {
-  width: 14px;
-  height: 14px;
-  margin-left: 4px;
-}
-
-.export-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-  min-width: 180px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  margin-top: 8px;
-}
-
-.export-dropdown:hover .export-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.export-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 14px 18px;
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-  font-family: 'Inter', sans-serif;
-}
-
-.export-option:hover:not(:disabled) {
-  background-color: rgba(59, 130, 246, 0.1);
-}
-
-.export-option:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.option-icon {
-  width: 16px;
-  height: 16px;
-  color: #60a5fa;
 }
 
 /* Loading Overlays */
@@ -899,7 +874,6 @@ tbody tr:hover {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.05)) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-  cursor: pointer;
 }
 
 tbody tr:hover td {
@@ -1106,7 +1080,7 @@ td:nth-child(5) {
 }
 
 /* Enhanced Visual Effects */
-.inquiry-container::before {
+/* .inquiry-container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1116,7 +1090,7 @@ td:nth-child(5) {
   background: linear-gradient(90deg, #3b82f6, #60a5fa, #10b981);
   border-radius: 20px 20px 0 0;
   z-index: 2;
-}
+} */
 
 /* Smooth transitions for all interactive elements */
 * {
