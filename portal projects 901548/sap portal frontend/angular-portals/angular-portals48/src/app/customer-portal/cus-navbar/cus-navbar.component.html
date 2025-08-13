@@ -1,25 +1,76 @@
+
 <div class="dashboard-layout">
-  <!-- Sidebar -->
+  <!-- Enhanced Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <span class="sidebar-logo"><i class="fas fa-user-circle"></i></span>
-      <span class="sidebar-title">Customer<br/>Portal</span>
+      <div class="logo-container">
+        <span class="sidebar-logo">
+          <span class="material-icons">account_circle</span>
+        </span>
+        <div class="logo-text">
+          <span class="sidebar-title">Customer</span>
+          <span class="sidebar-subtitle">Portal</span>
+        </div>
+      </div>
     </div>
+    
     <nav class="sidebar-nav">
       <ul>
-        <li routerLinkActive="active"><a [routerLink]="['/customer/dashboard']">Dashboard</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/customer/profile']">Profile</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/customer/delivery']">Delivery</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/customer/inquiry']">Inquiry</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/customer/sales']">Sales</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/customer/finance']">Finance</a></li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/customer/dashboard']">
+            <span class="material-icons nav-icon">dashboard</span>
+            <span class="nav-text">Dashboard</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/customer/profile']">
+            <span class="material-icons nav-icon">person</span>
+            <span class="nav-text">Profile</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/customer/delivery']">
+            <span class="material-icons nav-icon">local_shipping</span>
+            <span class="nav-text">Delivery</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/customer/inquiry']">
+            <span class="material-icons nav-icon">help_outline</span>
+            <span class="nav-text">Inquiry</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/customer/sales']">
+            <span class="material-icons nav-icon">trending_up</span>
+            <span class="nav-text">Sales</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/customer/finance']">
+            <span class="material-icons nav-icon">account_balance</span>
+            <span class="nav-text">Finance</span>
+          </a>
+        </li>
       </ul>
     </nav>
+    
     <div class="sidebar-footer">
-      <span style="cursor:pointer;">Light Mode</span>
+      <div class="user-info">
+        <div class="user-avatar">
+          <span class="material-icons">person</span>
+        </div>
+        <div class="user-details">
+          <span class="user-name">Customer</span>
+          <span class="user-id">ID: 200000</span>
+        </div>
+      </div>
     </div>
   </aside>
+  
   <main class="dashboard-main">
     <router-outlet></router-outlet>
   </main>
 </div>
+
+
