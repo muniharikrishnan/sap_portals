@@ -16,8 +16,10 @@ export class InquiryComponent implements OnInit {
   customerId: string = '';
   searchTerm: string = '';
   isLoading: boolean = false;
+  isExporting: boolean = false;
 
   constructor(private http: HttpClient) {}
+
   ngOnInit(): void {
     // Get customerId from localStorage
     this.customerId = localStorage.getItem('customerId') || '';
@@ -26,7 +28,8 @@ export class InquiryComponent implements OnInit {
       this.fetchInquiries(this.customerId);
     }
   }
-fetchInquiries(kunnr: string): void {
+
+  fetchInquiries(kunnr: string): void {
     this.isLoading = true;
     this.http.get<any>(`http://localhost:3001/api/inquiry/${kunnr}`).subscribe({
       next: (res) => {
@@ -75,5 +78,78 @@ fetchInquiries(kunnr: string): void {
   clearSearch(): void {
     this.searchTerm = '';
     this.filterInquiries();
+  }
+
+  exportToCSV(): void {
+    this.isExporting = true;
+    
+    // Simulate export delay
+    setTimeout(() => {
+      const headers = ['Inquiry No', 'Date', 'Type', 'Net Value', 'Currency', 'Valid Date', 'Item No', 'Material', 'Description', 'Quantity', 'UOM'];
+      const csvContent = [
+        headers.join(','),
+        ...this.filteredInquiries.map(inquiry => [
+          inquiry.vbeln,
+          inquiry.erdat,
+          inquiry.auart,
+          inquiry.netwr,
+          inquiry.waerk,
+          inquiry.vdate,
+          inquiry.posnr,
+          inquiry.matnr,
+          inquiry.arktx,
+          inquiry.kwmeng,
+          inquiry.vrkme
+        ].join(','))
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `customer_inquiries_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      
+      this.isExporting = false;
+    }, 1500);
+  }
+
+  exportToExcel(): void {
+    this.isExporting = true;
+    
+    // Simulate export delay
+    setTimeout(() => {
+      const headers = ['Inquiry No', 'Date', 'Type', 'Net Value', 'Currency', 'Valid Date', 'Item No', 'Material', 'Description', 'Quantity', 'UOM'];
+      let excelContent = '<table>';
+      excelContent += '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+      
+      this.filteredInquiries.forEach(inquiry => {
+        excelContent += '<tr>';
+        excelContent += `<td>${inquiry.vbeln}</td>`;
+        excelContent += `<td>${inquiry.erdat}</td>`;
+        excelContent += `<td>${inquiry.auart}</td>`;
+        excelContent += `<td>${inquiry.netwr}</td>`;
+        excelContent += `<td>${inquiry.waerk}</td>`;
+        excelContent += `<td>${inquiry.vdate}</td>`;
+        excelContent += `<td>${inquiry.posnr}</td>`;
+        excelContent += `<td>${inquiry.matnr}</td>`;
+        excelContent += `<td>${inquiry.arktx}</td>`;
+        excelContent += `<td>${inquiry.kwmeng}</td>`;
+        excelContent += `<td>${inquiry.vrkme}</td>`;
+        excelContent += '</tr>';
+      });
+      excelContent += '</table>';
+
+      const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `customer_inquiries_${new Date().toISOString().split('T')[0]}.xls`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      
+      this.isExporting = false;
+    }, 1500);
   }
 }
