@@ -1,0 +1,330 @@
+
+<div class="leave-visual-container">
+  <!-- Header Section -->
+  <div class="visual-header">
+    <div class="header-content">
+      <h2>
+        <i class="fas fa-chart-pie header-icon"></i>
+        Leave Analytics & Visualizations
+      </h2>
+      <p>Interactive charts and insights for your leave data patterns</p>
+    </div>
+    <div class="header-actions">
+      <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt refresh-icon" [class.spinning]="isLoading"></i>
+        {{ isLoading ? 'Loading...' : 'Refresh Data' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && leaveRecords.length === 0" class="loading-container">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner"></i>
+    </div>
+    <p>Loading leave analytics...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <div class="error-card">
+      <i class="fas fa-exclamation-triangle error-icon"></i>
+      <h3>Unable to Load Leave Analytics</h3>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="refreshData()">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Analytics Content -->
+  <div *ngIf="leaveRecords.length > 0 && !isLoading" class="analytics-content">
+    
+    <!-- Summary Statistics -->
+    <div class="stats-overview">
+      <div class="stat-card total-leaves">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ analytics.totalLeaves }}</h3>
+          <p>Total Leave Records</p>
+        </div>
+      </div>
+
+      <div class="stat-card total-days">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ analytics.totalDays }}</h3>
+          <p>Total Days Taken</p>
+        </div>
+      </div>
+
+      <div class="stat-card leave-types">
+        <div class="stat-icon">
+          <i class="fas fa-chart-pie"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ getObjectKeys(analytics.leaveTypes).length }}</h3>
+          <p>Leave Types Used</p>
+        </div>
+      </div>
+
+      <div class="stat-card avg-duration">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ analytics.totalLeaves > 0 ? (analytics.totalDays / analytics.totalLeaves).toFixed(1) : '0' }}</h3>
+          <p>Avg Days per Leave</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      
+      <!-- Leave Types Distribution (Pie Chart) -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="fas fa-chart-pie"></i>
+            Leave Types Distribution
+          </h3>
+          <div class="chart-actions">
+            <button class="export-btn" (click)="exportChart('pie')" title="Export Chart">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #pieChart></canvas>
+        </div>
+        <div class="chart-insights">
+          <div class="insight-item" *ngFor="let type of getObjectKeys(analytics.leaveTypes)">
+            <span class="insight-label">{{ type }}:</span>
+            <span class="insight-value">{{ analytics.leaveTypes[type] }} leaves</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Duration Distribution (Bar Chart) -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="fas fa-chart-bar"></i>
+            Leave Duration Analysis
+          </h3>
+          <div class="chart-actions">
+            <button class="export-btn" (click)="exportChart('bar')" title="Export Chart">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #barChart></canvas>
+        </div>
+        <div class="chart-insights">
+          <div class="insight-item" *ngFor="let duration of getObjectKeys(analytics.durationDistribution)">
+            <span class="insight-label">{{ duration }}:</span>
+            <span class="insight-value">{{ analytics.durationDistribution[duration] }} leaves</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Trends (Line Chart) -->
+      <div class="chart-card full-width">
+        <div class="chart-header">
+          <h3>
+            <i class="fas fa-chart-line"></i>
+            Monthly Leave Trends
+          </h3>
+          <div class="chart-actions">
+            <button class="export-btn" (click)="exportChart('line')" title="Export Chart">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container large">
+          <canvas #lineChart></canvas>
+        </div>
+        <div class="chart-insights horizontal">
+          <div class="insight-item" *ngFor="let month of getObjectKeys(analytics.monthlyTrends)">
+            <span class="insight-label">{{ month }}:</span>
+            <span class="insight-value">{{ analytics.monthlyTrends[month] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leave Status Breakdown (Donut Chart) -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="fas fa-chart-donut"></i>
+            Leave Status Overview
+          </h3>
+          <div class="chart-actions">
+            <button class="export-btn" (click)="exportChart('donut')" title="Export Chart">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #donutChart></canvas>
+        </div>
+        <div class="chart-center-info">
+          <div class="center-stat">
+            <span class="center-number">{{ analytics.totalLeaves }}</span>
+            <span class="center-label">Total Leaves</span>
+          </div>
+        </div>
+        <div class="chart-insights">
+          <div class="insight-item" *ngFor="let status of getObjectKeys(analytics.statusBreakdown)">
+            <span class="insight-label">{{ status }}:</span>
+            <span class="insight-value">{{ analytics.statusBreakdown[status] }} leaves</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quarterly Comparison (Column Chart) -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="fas fa-chart-column"></i>
+            Quarterly Comparison
+          </h3>
+          <div class="chart-actions">
+            <button class="export-btn" (click)="exportChart('column')" title="Export Chart">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #columnChart></canvas>
+        </div>
+        <div class="chart-insights">
+          <div class="insight-item" *ngFor="let quarter of getObjectKeys(analytics.quarterlyComparison)">
+            <span class="insight-label">{{ quarter }}:</span>
+            <span class="insight-value">{{ analytics.quarterlyComparison[quarter] }} leaves</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Insights Panel -->
+    <div class="insights-panel">
+      <div class="panel-header">
+        <h3>
+          <i class="fas fa-lightbulb"></i>
+          Key Insights
+        </h3>
+      </div>
+      <div class="insights-grid">
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Most Used Leave Type</h4>
+            <p>
+              <span class="highlight">{{ getMostUsedLeaveType() }}</span>
+              with {{ getMaxLeaveTypeCount() }} applications
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Average Leave Duration</h4>
+            <p>
+              <span class="highlight">{{ (analytics.totalDays / analytics.totalLeaves).toFixed(1) }} days</span>
+              per leave application on average
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Peak Leave Month</h4>
+             <p>
+              <span class="highlight">{{ getPeakLeaveMonth() }}</span>
+              had the highest leave activity
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-percentage"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Leave Pattern</h4>
+            <p>
+              <span class="highlight">
+                {{ ((analytics.statusBreakdown['Completed'] || 0) / analytics.totalLeaves * 100).toFixed(0) }}%
+              </span>
+              of your leaves have been completed
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export All Section -->
+    <div class="export-section">
+      <div class="export-header">
+        <h3>
+          <i class="fas fa-file-export"></i>
+          Export Options
+        </h3>
+      </div>
+      <div class="export-actions">
+        <button class="export-all-btn" (click)="exportChart('pie')">
+          <i class="fas fa-chart-pie"></i>
+          Export Pie Chart
+        </button>
+        <button class="export-all-btn" (click)="exportChart('bar')">
+          <i class="fas fa-chart-bar"></i>
+          Export Bar Chart
+        </button>
+        <button class="export-all-btn" (click)="exportChart('line')">
+          <i class="fas fa-chart-line"></i>
+          Export Line Chart
+        </button>
+        <button class="export-all-btn" (click)="exportChart('donut')">
+          <i class="fas fa-chart-donut"></i>
+          Export Donut Chart
+        </button>
+        <button class="export-all-btn" (click)="exportChart('column')">
+          <i class="fas fa-chart-column"></i>
+          Export Column Chart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data State -->
+  <div *ngIf="leaveRecords.length === 0 && !isLoading && !error" class="no-data">
+    <div class="no-data-card">
+      <i class="fas fa-chart-pie no-data-icon"></i>
+      <h3>No Leave Data Available</h3>
+      <p>There are currently no leave records available for visualization.</p>
+      <p>Once you have leave data, beautiful charts and insights will appear here!</p>
+      <button class="refresh-btn" (click)="refreshData()">
+        <i class="fas fa-sync-alt"></i>
+        Refresh Data
+      </button>
+    </div>
+  </div>
+</div>
+
+

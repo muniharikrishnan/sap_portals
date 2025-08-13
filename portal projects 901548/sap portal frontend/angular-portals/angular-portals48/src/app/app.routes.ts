@@ -82,6 +82,7 @@ export const routes: Routes = [
       { path: 'dashboard', loadComponent: () => import('./employee-portal/dashboard/dashboard.component').then(m => m.DashboardComponent) },
       { path: 'profile', loadComponent: () => import('./employee-portal/profile/profile.component').then(m => m.ProfileComponent) },
       { path: 'leave', loadComponent: () => import('./employee-portal/leave/leave.component').then(m => m.LeaveComponent) },
+      { path: 'leave-visual', loadComponent: () => import('./employee-portal/leave-visual/leave-visual.component').then(m => m.LeaveVisualComponent) },
       { path: 'pay', loadComponent: () => import('./employee-portal/pay/pay.component').then(m => m.PayComponent) },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
