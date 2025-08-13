@@ -50,7 +50,7 @@ export const routes: Routes = [
       import('./customer-portal/cus-navbar/cus-navbar.component').then(m => m.CusNavbarComponent),
     children: [
       { path: 'dashboard', loadComponent: () => import('./customer-portal/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-      { path: 'profile', loadComponent: () => import('./customer-portal/profile/profile.component').then(m => m.CustomerProfileComponent) },
+      { path: 'profile', loadComponent: () => import('./customer-portal/profile/profile.component').then(m => m.ProfileComponent) },
       { path: 'delivery', loadComponent: () => import('./customer-portal/delivery/delivery.component').then(m => m.DeliveryComponent) },
       { path: 'sales', loadComponent: () => import('./customer-portal/sales/sales.component').then(m => m.SalesComponent) },
       { path: 'inquiry', loadComponent: () => import('./customer-portal/inquiry/inquiry.component').then(m => m.InquiryComponent) },

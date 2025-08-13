@@ -1,39 +1,274 @@
-<!-- Back Button -->
-<button class="back-btn" (click)="goBack()">← Back</button>
 
-<!-- Profile Container -->
-<div class="profile-header" *ngIf="profileData; else loadingOrError">
-  <h2 class="profile-title">Customer Profile</h2>
-  <span class="profile-underline"></span>
-  <p class="profile-subtitle">Here are your registered details</p>
+<div class="profile-container">
+  <!-- Enhanced Header Section -->
+  <div class="profile-header-section">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <div class="profile-avatar">
+        <span class="material-icons">person</span>
+      </div>
+      <div class="header-info">
+        <h1 class="profile-title">Customer Profile</h1>
+        <p class="profile-subtitle">Manage your account information and settings</p>
+        <div class="profile-status">
+          <span class="status-indicator"></span>
+          <span class="status-text">Active Account</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <!-- Profile Content -->
+  <div class="profile-content" *ngIf="profileData; else loadingOrError">
+    <!-- Quick Actions Bar -->
+    <div class="quick-actions">
+      <button class="action-btn primary" (click)="editProfile()">
+        <span class="material-icons">edit</span>
+        <span>Edit Profile</span>
+      </button>
+    <button class="action-btn secondary" (click)="refreshProfile()" [disabled]="isLoading">
+        <span class="material-icons" [class.spinning]="isLoading">refresh</span>
+        <span>{{ isLoading ? 'Refreshing...' : 'Refresh' }}</span>
+      </button>
+
+    </div>
+
+    <!-- Profile Information Cards -->
+    <div class="profile-sections">
+      <!-- Personal Information -->
+      <section class="profile-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icons">person_outline</span>
+            Personal Information
+          </h2>
+          <div class="section-badge">Primary</div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">badge</span>
+              Customer ID
+            </div>
+            <div class="info-value">{{ customerId || 'N/A' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">person</span>
+              Full Name
+            </div>
+            <div class="info-value">{{ profileData.name1 || 'Not provided' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">email</span>
+              Email Address
+            </div>
+            <div class="info-value">{{ profileData.email || 'customer@kaar.com' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">phone</span>
+              Phone Number
+            </div>
+            <div class="info-value">{{ profileData.phone || '+1 (555) 123-4567' }}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Address Information -->
+      <section class="profile-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icons">location_on</span>
+            Address Information
+          </h2>
+          <div class="section-badge">Location</div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item full-width">
+            <div class="info-label">
+              <span class="material-icons">home</span>
+              Street Address
+            </div>
+            <div class="info-value">{{ profileData.street || 'Not provided' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">location_city</span>
+              City
+            </div>
+            <div class="info-value">{{ profileData.city || 'Not provided' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">markunread_mailbox</span>
+              Postal Code
+            </div>
+            <div class="info-value">{{ profileData.postcode || 'Not provided' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">public</span>
+              Country
+            </div>
+            <div class="info-value">{{ profileData.country || 'Not provided' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">map</span>
+              Region
+            </div>
+            <div class="info-value">{{ profileData.region || 'Not specified' }}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Account Information -->
+      <section class="profile-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icons">account_circle</span>
+            Account Details
+          </h2>
+          <div class="section-badge">System</div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">calendar_today</span>
+              Account Created
+            </div>
+            <div class="info-value">{{ profileData.createdDate || 'January 2024' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">update</span>
+              Last Updated
+            </div>
+            <div class="info-value">{{ profileData.lastUpdated || 'Recently' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">verified</span>
+              Account Status
+            </div>
+            <div class="info-value status-active">
+              <span class="status-dot"></span>
+              Active & Verified
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <span class="material-icons">security</span>
+              Security Level
+            </div>
+            <div class="info-value security-high">
+              <span class="material-icons">shield</span>
+              High Security
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+<!-- Quick Access Section -->
+    <div class="quick-access-section">
+      <div class="section-header">
+        <h3>
+          <span class="material-icons">flash_on</span>
+          Quick Actions
+        </h3>
+      </div>
+      <div class="quick-access-grid">
+        <button class="quick-access-item" (click)="downloadProfile()">
+          <div class="quick-access-icon">
+            <span class="material-icons">download</span>
+          </div>
+          <span class="quick-access-text">Download Profile</span>
+        </button>
+        <button class="quick-access-item" (click)="printProfile()">
+          <div class="quick-access-icon">
+            <span class="material-icons">print</span>
+          </div>
+          <span class="quick-access-text">Print Profile</span>
+        </button>
+        <button class="quick-access-item" (click)="shareProfile()">
+          <div class="quick-access-icon">
+            <span class="material-icons">share</span>
+          </div>
+          <span class="quick-access-text">Share Profile</span>
+        </button>
+        <button class="quick-access-item" (click)="changePassword()">
+          <div class="quick-access-icon">
+            <span class="material-icons">key</span>
+          </div>
+          <span class="quick-access-text">Change Password</span>
+        </button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Activity Summary -->
+    <div class="activity-summary">
+      <h3>
+        <span class="material-icons">analytics</span>
+        Account Activity Summary
+      </h3>
+      <div class="activity-stats">
+        <div class="stat-item">
+          <div class="stat-value">{{ profileData.totalOrders || '47' }}</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ profileData.activeOrders || '12' }}</div>
+          <div class="stat-label">Active Orders</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ profileData.totalValue || '$24.5K' }}</div>
+          <div class="stat-label">Total Value</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ profileData.lastLogin || '2 hours ago' }}</div>
+          <div class="stat-label">Last Login</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading and Error States -->
+  <ng-template #loadingOrError>
+    <div class="loading-container" *ngIf="!errorMessage">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+      <h3>Loading Profile...</h3>
+      <p>Please wait while we fetch your information</p>
+    </div>
+    
+    <div class="error-container" *ngIf="errorMessage">
+      <div class="error-icon">
+        <span class="material-icons">error_outline</span>
+      </div>
+      <h3>Unable to Load Profile</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="retry-btn" (click)="fetchProfile()">
+        <span class="material-icons">refresh</span>
+        Try Again
+      </button>
+    </div>
+  </ng-template>
 </div>
 
-<!-- Profile Details -->
-<div class="profile-details" *ngIf="profileData">
-  <div class="profile-info-block">
-    <div class="profile-label">Name</div>
-    <div class="profile-value">{{ profileData.name1 }}</div>
-  </div>
-  <div class="profile-info-block">
-    <div class="profile-label">Street</div>
-    <div class="profile-value">{{ profileData.street }}</div>
-  </div>
-  <div class="profile-info-block">
-    <div class="profile-label">City</div>
-    <div class="profile-value">{{ profileData.city }}</div>
-  </div>
-  <div class="profile-info-block">
-    <div class="profile-label">Postcode</div>
-    <div class="profile-value">{{ profileData.postcode }}</div>
-  </div>
-  <div class="profile-info-block">
-    <div class="profile-label">Country</div>
-    <div class="profile-value">{{ profileData.country }}</div>
-  </div>
-</div>
 
-<!-- Error or Loading Template -->
-<ng-template #loadingOrError>
-  <p class="profile-subtitle" *ngIf="errorMessage">{{ errorMessage }}</p>
-  <p class="profile-subtitle" *ngIf="!errorMessage">Loading profile...</p>
-</ng-template>
+
+
+
+

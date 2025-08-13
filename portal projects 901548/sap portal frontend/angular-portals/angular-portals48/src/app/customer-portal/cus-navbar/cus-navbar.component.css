@@ -259,16 +259,13 @@
 }
 
 .dashboard-main {
-  margin-left: 280px;
   flex: 1;
-  padding: 48px 48px 32px 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  margin-left: 280px;
   min-height: 100vh;
-  min-width: 0;
+  padding: 48px 48px 32px 48px;
   background: transparent;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .dashboard-main::before {
@@ -401,6 +398,8 @@
   .dashboard-main {
     margin-left: 0;
     padding: 20px 16px;
+    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -459,7 +458,11 @@
     transition-duration: 0.01ms !important;
   }
   
-  .dashboard-layout {
-    animation: none;
-  }
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
 }

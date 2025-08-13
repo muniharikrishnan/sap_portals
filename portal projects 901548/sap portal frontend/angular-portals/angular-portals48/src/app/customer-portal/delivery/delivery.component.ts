@@ -135,9 +135,6 @@ export class DeliveryComponent implements OnInit {
   }
 
   // Navigation method
-  goBack(): void {
-    this.location.back();
-  }
 
   // Track by function for ngFor performance
   trackByDeliveryId(index: number, item: DeliveryItem): string {
@@ -190,12 +187,25 @@ export class DeliveryComponent implements OnInit {
     this.filteredDeliveryData = [...this.deliveryData];
   }
 
-  // Refresh data
+  // Enhanced refresh data functionality
   refreshData(): void {
+    // Show loading state
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    // Clear search and current data
     this.searchTerm = '';
-    this.fetchDeliveryData();
+    this.deliveryData = [];
+    this.filteredDeliveryData = [];
+    
+    // Add a small delay to show the refresh action
+    setTimeout(() => {
+      this.fetchDeliveryData();
+    }, 500);
+    
+    // Show user feedback
+    console.log('Refreshing delivery data...');
   }
-
   // Export to CSV
   exportToCSV(): void {
     if (this.filteredDeliveryData.length === 0) {
