@@ -1,14 +1,16 @@
+
 <div class="login-page">
   <div class="login-container">
-    <div class="lock-emoji-circle">🔒</div>
+    <div class="lock-emoji-circle"></div>
     <div class="portal-title">SAP Vendor Portal</div>
     <div class="portal-subtitle">Please sign in to continue</div>
+    
     <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
       <!-- Vendor ID -->
       <div class="form-group">
         <label for="lifnr" class="form-label">Vendor ID</label>
         <div class="input-wrapper">
-          <i class="input-icon">👤</i>
+          <i class="fas fa-user input-icon"></i>
           <input
             type="text"
             id="lifnr"
@@ -17,14 +19,16 @@
             placeholder="Enter your Vendor ID"
             [(ngModel)]="lifnr"
             required
+            autocomplete="username"
           />
         </div>
       </div>
+      
       <!-- Password -->
       <div class="form-group">
         <label for="password" class="form-label">Password</label>
         <div class="input-wrapper">
-          <i class="input-icon">🔒</i>
+          <i class="fas fa-lock input-icon"></i>
           <input
             type="password"
             id="password"
@@ -33,11 +37,21 @@
             placeholder="Enter your password"
             [(ngModel)]="password"
             required
+            autocomplete="current-password"
           />
         </div>
       </div>
+      
       <!-- Submit Button -->
-      <button type="submit" class="login-button">Sign In</button>
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid">
+        Sign In
+      </button>
     </form>
+
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ errorMessage }}
+    </div>
   </div>
 </div>
