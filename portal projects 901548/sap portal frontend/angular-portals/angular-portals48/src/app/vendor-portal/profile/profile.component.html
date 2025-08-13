@@ -1,4 +1,3 @@
-
 <div class="profile-container">
   <div class="profile-content">
     <!-- Profile Header -->
@@ -32,28 +31,28 @@
               <i class="fas fa-building"></i>
               <span>Company Name</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.companyName || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.companyName ? vendorProfile.companyName : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-hashtag"></i>
               <span>Vendor ID</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.vendorId || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.vendorId ? vendorProfile.vendorId : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-user-tie"></i>
               <span>Contact Person</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.contactPerson || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.contactPerson ? vendorProfile.contactPerson : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-envelope"></i>
               <span>Email</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.email || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.email ? vendorProfile.email : 'Not specified' }}</div>
           </div>
         </div>
       </div>
@@ -70,28 +69,28 @@
               <i class="fas fa-phone"></i>
               <span>Phone Number</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.phone || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.phone ? vendorProfile.phone : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-fax"></i>
               <span>Fax Number</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.fax || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.fax ? vendorProfile.fax : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-globe"></i>
               <span>Website</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.website || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.website ? vendorProfile.website : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-map-marker-alt"></i>
               <span>Address</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.address || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.address ? vendorProfile.address : 'Not specified' }}</div>
           </div>
         </div>
       </div>
@@ -108,28 +107,30 @@
               <i class="fas fa-industry"></i>
               <span>Industry Type</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.industryType || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.industryType ? vendorProfile.industryType : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-certificate"></i>
               <span>Registration Number</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.registrationNumber || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.registrationNumber ? vendorProfile.registrationNumber : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-file-invoice"></i>
               <span>Tax ID</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.taxId || 'Not specified' }}</div>
+            <div class="info-value">{{ vendorProfile && vendorProfile.taxId ? vendorProfile.taxId : 'Not specified' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">
               <i class="fas fa-calendar-alt"></i>
               <span>Registration Date</span>
             </div>
-            <div class="info-value">{{ vendorProfile?.registrationDate | date:'MMM d, yyyy' || 'Not specified' }}</div>
+            <div class="info-value">
+              {{ vendorProfile && vendorProfile.registrationDate ? (vendorProfile.registrationDate | date:'MMM d, yyyy') : 'Not specified' }}
+            </div>
           </div>
         </div>
       </div>

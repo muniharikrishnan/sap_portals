@@ -83,5 +83,3 @@ export class CusLoginComponent {
     }, 1500); // 1.5 second delay to show authentication process
   }
 }
-
-
