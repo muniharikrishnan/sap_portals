@@ -3,6 +3,77 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EmployeeService, PayslipRecord } from '../../services/employee.service';
 
+// Company code mapping
+const COMPANY_CODE_MAP: Record<string, string> = {
+  "0001": "SAP SE",
+  "0003": "SAP US (GS-HT-SW)",
+  "0MB1": "IS-B Musterbank Deutschl.",
+  "1001": "Amul",
+  "6789": "DLR",
+  "AE01": "Country Template AE",
+  "AR01": "Country Template AR",
+  "AT01": "Country Template AT",
+  "AU01": "Country Template AU",
+  "BE01": "Country Template BE",
+  "BR01": "Country Template BR",
+  "CA01": "Country Template CA",
+  "CH01": "Country Template CH",
+  "CL01": "Country Template CL",
+  "CO01": "Country Template CO",
+  "CN01": "Country Template CN",
+  "CZ01": "Country Template CZ",
+  "DE01": "Country Template DE",
+  "EG01": "Country Template Egypt",
+  "ES01": "Country Template ES",
+  "FI01": "Country Template FI",
+  "FR01": "Country Template FR",
+  "GB01": "Country Template GB",
+  "HK01": "Country Template HK",
+  "HU01": "Country Template HU",
+  "ID01": "Country Template ID",
+  "IE01": "Country Template IE",
+  "IN01": "India Model Company, IN",
+  "IT01": "Country Template IT",
+  "IT77": "Country Template IT",
+  "JP01": "Country Template JP",
+  "KR01": "Country Template KR",
+  "KW01": "Country Template KW",
+  "KZ01": "Country Template KZ",
+  "LU01": "Country Template LU",
+  "MCA1": "MCA Bank Backpack (bal.)",
+  "MCA2": "MCA Bank Backpack (doc.)",
+  "MCA3": "MCA Bank 4-pack (bal.)",
+  "MCA4": "MCA Bank 4-pack (doc.)",
+  "MX01": "Country Template MX",
+  "MY01": "Country Template MY",
+  "NL01": "Country Template NL",
+  "NO01": "Country Template NO",
+  "NZ01": "Country Template NZ",
+  "PE01": "Country Template PE",
+  "PH01": "Country Template PH",
+  "PL01": "Country Template PL",
+  "PT01": "Country Template PT",
+  "PT02": "Country Template PT (SNC)",
+  "QA01": "Country Template QA",
+  "REC0": "Sonderenptgeltnorm(WEG)",
+  "REOF": "Referenzobjectmandate",
+  "RERF": "WEG Referenzbuchungskreis",
+  "RS01": "Country template RS",
+  "RU01": "Country Template RU",
+  "SE01": "Country Template SE",
+  "SG01": "SAP Asia",
+  "SK01": "Country Template SK",
+  "SLE0": "Musterbank",
+  "TH01": "Country Template TH",
+  "TR01": "Country Template TR",
+  "TW01": "Country Template TW",
+  "UA01": "Country Template UA",
+  "US01": "Country Template US",
+  "VE01": "Country Template VE",
+  "Z001": "SAP SE",
+  "ZA01": "Country Template ZA"
+};
+
 @Component({
   selector: 'app-pay',
   standalone: true,
@@ -242,6 +313,14 @@ export class PayComponent implements OnInit {
     } catch {
       return dateString;
     }
+  }
+
+  /**
+   * Get company description from company code
+   */
+  getCompanyDescription(companyCode: string): string {
+    if (!companyCode) return 'N/A';
+    return COMPANY_CODE_MAP[companyCode] || companyCode;
   }
 
   /**

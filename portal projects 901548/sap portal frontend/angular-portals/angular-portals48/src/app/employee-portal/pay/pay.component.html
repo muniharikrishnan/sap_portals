@@ -165,7 +165,7 @@
               <tr *ngFor="let record of payslipRecords; trackBy: trackByRecord" class="payslip-row">
                 <td>
                   <div class="company-cell">
-                    <span class="company-code">{{ record.companyCode || 'N/A' }}</span>
+                    <span class="company-code">{{ getCompanyDescription(record.companyCode) }}</span>
                   </div>
                 </td>
                 <td>
