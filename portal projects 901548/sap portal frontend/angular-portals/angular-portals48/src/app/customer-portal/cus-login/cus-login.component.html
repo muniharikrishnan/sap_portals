@@ -5,33 +5,78 @@
     </div>
     <h2 class="portal-title">SAP Customer Portal</h2>
     <p class="portal-subtitle">Please sign in to continue</p>
-    <form>
-      <label class="input-label" for="customerId">CUSTOMER ID</label>
-      <div class="input-group">
-        <span class="material-icons input-icon">person</span>
-        <input
-          id="customerId"
-          type="text"
-          placeholder="0000000001"
-          autocomplete="username"
-          [(ngModel)]="customerId"
-          name="customerId"
-        />
+    
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <div class="form-group">
+        <label class="input-label" for="customerId">Customer ID</label>
+        <div class="input-group">
+          <span class="material-icons input-icon">person</span>
+          <input
+            id="customerId"
+            type="text"
+            placeholder="Enter your customer ID"
+            autocomplete="username"
+            [(ngModel)]="customerId"
+            name="customerId"
+            required
+            #customerIdInput="ngModel"
+          />
+        </div>
+        <div class="input-error" *ngIf="customerIdInput.invalid && customerIdInput.touched">
+          Customer ID is required
+        </div>
       </div>
-      <label class="input-label" for="password">PASSWORD</label>
-      <div class="input-group">
-        <span class="material-icons input-icon">lock</span>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          autocomplete="current-password"
-          [(ngModel)]="password"
-          name="password"
-        />
+
+      <div class="form-group">
+        <label class="input-label" for="password">Password</label>
+        <div class="input-group">
+          <span class="material-icons input-icon">lock</span>
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            #passwordInput="ngModel"
+          />
+          <button 
+            type="button" 
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
+            <span class="material-icons">
+              {{ showPassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </button>
+        </div>
+        <div class="input-error" *ngIf="passwordInput.invalid && passwordInput.touched">
+          Password is required
+        </div>
       </div>
-      <button (click)="onLogin()" type="button" class="sign-in-btn">SIGN IN</button>
-      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+      <button 
+        type="submit" 
+        class="sign-in-btn"
+        [class.loading]="isLoading"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading">Signing In...</span>
+      </button>
+
+      <div class="error-message" *ngIf="errorMessage">
+        <span class="material-icons error-icon">error_outline</span>
+        {{ errorMessage }}
+      </div>
     </form>
+
+    <div class="login-footer">
+      <p class="help-text">
+        Need help? Contact your system administrator
+      </p>
+    </div>
   </div>
 </div>
