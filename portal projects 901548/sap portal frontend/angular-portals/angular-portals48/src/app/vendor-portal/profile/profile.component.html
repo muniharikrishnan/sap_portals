@@ -1,71 +1,175 @@
+
 <div class="profile-container">
-  <!-- Back Button Top Left -->
-  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">
-    <i class="back-icon">←</i>
-    Back
-  </button>
-
-  <!-- Centered Header -->
-  <div class="profile-header">
-    <div class="header-content" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-      <div class="title-section" style="display: flex; flex-direction: column; align-items: center;">
+  <div class="profile-content">
+    <!-- Profile Header -->
+    <div class="profile-header-card">
+      <div class="profile-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="profile-header-info">
         <h1 class="profile-title">Vendor Profile</h1>
-        <div class="profile-title-underline"></div>
-        <p class="profile-subtitle">Your registered vendor information</p>
+        <p class="profile-subtitle">Manage your vendor information and settings</p>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-primary" (click)="editProfile()">
+          <i class="fas fa-edit"></i>
+          <span>Edit Profile</span>
+        </button>
       </div>
     </div>
-  </div>
 
-  <!-- Profile Card/Table -->
-  <div class="profile-table" *ngIf="profile">
-    <div class="profile-table-row">
-      <div class="profile-table-cell">
-        <span class="profile-table-label">VENDOR ID</span>
-        <span>{{ profile.VendorId || profile.vendorId }}</span>
+    <!-- Profile Information Grid -->
+    <div class="profile-grid">
+      <!-- Basic Information -->
+      <div class="profile-section">
+        <div class="section-header">
+          <i class="fas fa-id-card"></i>
+          <h2>Basic Information</h2>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-building"></i>
+              <span>Company Name</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.companyName || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-hashtag"></i>
+              <span>Vendor ID</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.vendorId || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-user-tie"></i>
+              <span>Contact Person</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.contactPerson || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-envelope"></i>
+              <span>Email</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.email || 'Not specified' }}</div>
+          </div>
+        </div>
       </div>
-      <div class="profile-table-cell">
-        <span class="profile-table-label">NAME</span>
-        <span>{{ profile.Name || profile.name }}</span>
-      </div>
-      <div class="profile-table-cell">
-        <span class="profile-table-label">CITY</span>
-        <span>{{ profile.City || profile.city }}</span>
-      </div>
-    </div>
-    <div class="profile-table-row">
-      <div class="profile-table-cell">
-        <span class="profile-table-label">COUNTRY</span>
-        <span>{{ profile.Country || profile.country }}</span>
-      </div>
-      <div class="profile-table-cell">
-        <span class="profile-table-label">POSTAL CODE</span>
-        <span>{{ profile.Postcode || profile.postcode }}</span>
-      </div>
-      <div class="profile-table-cell">
-        <span class="profile-table-label">STREET ADDRESS</span>
-        <span>{{ profile.Street || profile.street }}</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- Loading State -->
-  <div class="loading-card" *ngIf="loading">
-    <div class="loading-content">
-      <div class="loading-spinner"></div>
-      <p class="loading-text">Loading profile...</p>
-    </div>
-  </div>
+      <!-- Contact Information -->
+      <div class="profile-section">
+        <div class="section-header">
+          <i class="fas fa-address-book"></i>
+          <h2>Contact Information</h2>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-phone"></i>
+              <span>Phone Number</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.phone || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-fax"></i>
+              <span>Fax Number</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.fax || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-globe"></i>
+              <span>Website</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.website || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Address</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.address || 'Not specified' }}</div>
+          </div>
+        </div>
+      </div>
 
-  <!-- Error State -->
-  <div class="error-card" *ngIf="errorMessage">
-    <div class="error-content">
-      <i class="error-icon">⚠️</i>
-      <h3 class="error-title">Error Loading Profile</h3>
-      <p class="error-message">{{ errorMessage }}</p>
-      <button class="back-button" (click)="goBack()">
-        <i class="back-icon">←</i>
-        Back
-      </button>
+      <!-- Business Information -->
+      <div class="profile-section">
+        <div class="section-header">
+          <i class="fas fa-briefcase"></i>
+          <h2>Business Information</h2>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-industry"></i>
+              <span>Industry Type</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.industryType || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-certificate"></i>
+              <span>Registration Number</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.registrationNumber || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-file-invoice"></i>
+              <span>Tax ID</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.taxId || 'Not specified' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Registration Date</span>
+            </div>
+            <div class="info-value">{{ vendorProfile?.registrationDate | date:'MMM d, yyyy' || 'Not specified' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Status -->
+      <div class="profile-section">
+        <div class="section-header">
+          <i class="fas fa-shield-alt"></i>
+          <h2>Account Status</h2>
+        </div>
+        <div class="status-grid">
+          <div class="status-item">
+            <div class="status-icon active">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="status-content">
+              <h3>Account Status</h3>
+              <p class="status-active">Active</p>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="status-icon verified">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="status-content">
+              <h3>Verification Status</h3>
+              <p class="status-verified">Verified</p>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="status-icon rating">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="status-content">
+              <h3>Vendor Rating</h3>
+              <p class="status-rating">4.8/5.0</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
