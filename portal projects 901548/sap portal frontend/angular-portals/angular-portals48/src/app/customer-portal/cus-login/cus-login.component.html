@@ -1,5 +1,53 @@
+
 <div class="login-bg">
-  <div class="login-card">
+  <!-- Dashboard Preview Sidebar -->
+  <div class="dashboard-preview" [class.show-preview]="showDashboardPreview">
+    <div class="preview-header">
+      <div class="portal-logo">
+        <span class="material-icons">account_circle</span>
+        <div class="logo-text">
+          <h3>Customer Portal</h3>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="preview-nav">
+      <div class="nav-item active">
+        <span class="material-icons">dashboard</span>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">person</span>
+        <span>Profile</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">local_shipping</span>
+        <span>Delivery</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">help_outline</span>
+        <span>Inquiry</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">trending_up</span>
+        <span>Sales</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">account_balance</span>
+        <span>Finance</span>
+      </div>
+    </nav>
+    
+    <div class="preview-footer">
+      <div class="theme-toggle">
+        <span class="material-icons">light_mode</span>
+        <span>Light Mode</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Login Card -->
+  <div class="login-card" [class.card-shifted]="showDashboardPreview">
     <div class="icon-circle">
       <span class="material-icons lock-icon">lock</span>
     </div>
@@ -20,6 +68,7 @@
             name="customerId"
             required
             #customerIdInput="ngModel"
+            (focus)="showDashboardPreview = true"
           />
         </div>
         <div class="input-error" *ngIf="customerIdInput.invalid && customerIdInput.touched">
@@ -63,8 +112,9 @@
         [class.loading]="isLoading"
         [disabled]="loginForm.invalid || isLoading"
       >
-        <span *ngIf="!isLoading">Sign In</span>
-        <span *ngIf="isLoading">Signing In...</span>
+        <span *ngIf="!isLoading && !isAuthenticating && !loginSuccess">Sign In</span>
+        <span *ngIf="isAuthenticating">Authenticating...</span>
+        <span *ngIf="loginSuccess">Login Successful!</span>
       </button>
 
       <div class="error-message" *ngIf="errorMessage">
@@ -79,4 +129,29 @@
       </p>
     </div>
   </div>
+
+  <!-- Authentication Overlay -->
+  <div class="auth-overlay" *ngIf="isAuthenticating || loginSuccess" [class.success]="loginSuccess">
+    <div class="auth-content">
+      <div class="auth-spinner" *ngIf="isAuthenticating">
+        <div class="spinner"></div>
+        <h3>Authenticating</h3>
+        <p>Please wait while we verify your credentials...</p>
+      </div>
+      
+      <div class="auth-success" *ngIf="loginSuccess">
+        <div class="success-icon">
+          <span class="material-icons">check_circle</span>
+        </div>
+        <h3>Login Successful!</h3>
+        <p>Redirecting to dashboard...</p>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+

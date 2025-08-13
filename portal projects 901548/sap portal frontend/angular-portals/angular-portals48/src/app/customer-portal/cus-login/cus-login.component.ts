@@ -19,6 +19,9 @@ export class CusLoginComponent {
   errorMessage: string = '';
   showPassword: boolean = false;
   isLoading: boolean = false;
+  showDashboardPreview: boolean = false;
+  isAuthenticating: boolean = false;
+  loginSuccess: boolean = false;
 
   constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {}
 
@@ -32,33 +35,52 @@ export class CusLoginComponent {
       return;
     }
 
+    // Start authentication process
     this.isLoading = true;
+    this.isAuthenticating = true;
     this.errorMessage = '';
+    this.loginSuccess = false;
 
     const payload = {
       username: this.customerId,  // Match server.js key
       password: this.password
     };
 
-    this.http.post<any>('http://localhost:3001/api/login', payload).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        if (res.status && res.message === 'Successful') {
-          console.log('Login successful');
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('customerId', this.customerId);
+    // Simulate authentication delay for better UX
+    setTimeout(() => {
+      this.http.post<any>('http://localhost:3001/api/login', payload).subscribe({
+        next: (res) => {
+          this.isAuthenticating = false;
+          
+          if (res.status && res.message === 'Successful') {
+            this.loginSuccess = true;
+            console.log('Login successful');
+            
+            if (isPlatformBrowser(this.platformId)) {
+              localStorage.setItem('customerId', this.customerId);
+            }
+            
+            // Show success message for 2 seconds before redirecting
+            setTimeout(() => {
+              this.isLoading = false;
+              this.loginSuccess = false;
+              this.router.navigate(['/customer']); // Navigate to cus-navbar
+            }, 2000);
+            
+          } else {
+            this.isLoading = false;
+            this.errorMessage = 'Invalid credentials or SAP login failed';
           }
-          this.router.navigate(['/customer']); // Navigate to cus-navbar
-        } else {
-          this.errorMessage = 'Invalid credentials or SAP login failed';
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.isAuthenticating = false;
+          this.loginSuccess = false;
+          this.errorMessage = 'Server error. Please try again later.';
+          console.error('Login Error:', err);
         }
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = 'Server error. Please try again later.';
-        console.error('Login Error:', err);
-      }
-    });
+      });
+    }, 1500); // 1.5 second delay to show authentication process
   }
 }
 
