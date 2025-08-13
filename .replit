@@ -6,3 +6,15 @@ channel = "stable-25_05"
 
 [deployment]
 run = ["sh", "-c", "ng serve"]
+
+[workflows]
+runButton = "Angular Dev Server"
+
+[[workflows.workflow]]
+name = "Angular Dev Server"
+author = 45663919
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd \"portal projects 901548/sap portal frontend/angular-portals/angular-portals48\" && ng serve --host 0.0.0.0 --port 4200"
