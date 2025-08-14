@@ -12,6 +12,47 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./aging.component.css']
 })
 export class AgingComponent implements OnInit {
+  errorMessage: string = '';
+  Math = Math;
+
+  onSearchChange(): void {
+    this.currentPage = 1;
+    // Optionally, add more logic if needed
+  }
+
+  trackByAging(index: number, item: any): any {
+    return item.id || index;
+  }
+
+  changePage(offset: number): void {
+    const totalPages = Math.ceil(this.filteredAging.length / this.itemsPerPage);
+    this.currentPage = Math.max(1, Math.min(this.currentPage + offset, totalPages));
+  }
+  isLoading: boolean = false;
+
+  get filteredAging(): any[] {
+    return this.filteredAndSortedData;
+  }
+
+  get paginatedAging(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredAging.slice(startIndex, endIndex);
+  }
+
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  sortField: string = '';
+  sortAscending: boolean = true;
+  sortData(field: string): void {
+    if (this.sortField === field) {
+      this.sortAscending = !this.sortAscending;
+    } else {
+      this.sortField = field;
+      this.sortAscending = true;
+    }
+    // Optionally, update filteredAndSortedData if needed
+  }
   agingData: any[] = [];
   vendorId: string | null = '';
   searchTerm = '';
@@ -65,18 +106,21 @@ export class AgingComponent implements OnInit {
         String(val).toLowerCase().includes(this.searchTerm.toLowerCase())
       )
     );
-
-    if (this.sortKey) {
-      filtered = filtered.sort((a, b) => {
-        const valA = a[this.sortKey];
-        const valB = b[this.sortKey];
-
-        if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-        if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-        return 0;
+    if (this.sortField) {
+      filtered = [...filtered].sort((a, b) => {
+        const aValue = a[this.sortField];
+        const bValue = b[this.sortField];
+        if (aValue == null && bValue == null) return 0;
+        if (aValue == null) return this.sortAscending ? -1 : 1;
+        if (bValue == null) return this.sortAscending ? 1 : -1;
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return this.sortAscending ? aValue - bValue : bValue - aValue;
+        }
+        return this.sortAscending
+          ? String(aValue).localeCompare(String(bValue))
+          : String(bValue).localeCompare(String(aValue));
       });
     }
-
     return filtered;
   }
 

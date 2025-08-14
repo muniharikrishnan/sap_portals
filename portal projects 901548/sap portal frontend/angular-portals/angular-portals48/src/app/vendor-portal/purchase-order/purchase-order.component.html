@@ -122,14 +122,14 @@
           <tr class="table-row-3d" *ngFor="let po of paginatedPurchaseOrders; trackBy: trackByPurchaseOrder">
             <td class="po-number">{{ po.poNumber }}</td>
             <td class="vendor-id">{{ po.vendorId }}</td>
-            <td class="doc-date">{{ po.documentDate | date:'yyyy-MM-dd' }}</td>
+            <td class="doc-date">{{ convertDate(po.docDate) }}</td>
             <td class="item-number">{{ po.itemNumber }}</td>
             <td class="material">{{ po.material }}</td>
             <td class="unit">{{ po.unit }}</td>
-            <td class="description" [title]="po.description">{{ po.description }}</td>
+            <td class="description" >{{ getMaterialDescription(po.material) }}</td>
             <td class="delivery-date">
               <span class="date-badge" [class.no-date]="!po.deliveryDate">
-                {{ po.deliveryDate ? (po.deliveryDate | date:'MMM d, y') : 'N/A' }}
+                {{ po.deliveryDate ? convertDate(po.deliveryDate) : 'N/A' }}
               </span>
             </td>
           </tr>

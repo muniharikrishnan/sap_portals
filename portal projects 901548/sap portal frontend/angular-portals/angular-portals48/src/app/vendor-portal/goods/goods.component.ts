@@ -31,9 +31,9 @@ interface GoodsItem {
 export class GoodsComponent implements OnInit {
   goodsData: GoodsItem[] = [];
   filteredGoods: GoodsItem[] = [];
-  isLoading = false;
   errorMessage = '';
   searchKey: string = '';
+  isLoading: boolean = false;
 
   // Pagination
   currentPage = 1;
@@ -208,7 +208,6 @@ export class GoodsComponent implements OnInit {
   }
 
   searchTerm = '';
-  isLoading = false;
 
   // Template compatibility methods
   onSearchChange() {

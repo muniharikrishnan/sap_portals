@@ -12,6 +12,70 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  isLoading: boolean = false;
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  Math = Math;
+
+  get filteredInvoices(): any[] {
+    return this.filteredInvoiceData;
+  }
+
+  get paginatedInvoices(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredInvoices.slice(startIndex, endIndex);
+  }
+
+  onSearchChange(): void {
+    this.currentPage = 1;
+  }
+
+  sortField: string = '';
+  sortAscending: boolean = true;
+  sortData(field: string): void {
+    if (this.sortField === field) {
+      this.sortAscending = !this.sortAscending;
+    } else {
+      this.sortField = field;
+      this.sortAscending = true;
+    }
+  }
+
+  get sortedInvoiceData(): any[] {
+    let data = this.filteredInvoiceData;
+    if (this.sortField) {
+      data = [...data].sort((a, b) => {
+        const aValue = a[this.sortField];
+        const bValue = b[this.sortField];
+        if (aValue == null && bValue == null) return 0;
+        if (aValue == null) return this.sortAscending ? -1 : 1;
+        if (bValue == null) return this.sortAscending ? 1 : -1;
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return this.sortAscending ? aValue - bValue : bValue - aValue;
+        }
+        return this.sortAscending
+          ? String(aValue).localeCompare(String(bValue))
+          : String(bValue).localeCompare(String(aValue));
+      });
+    }
+    return data;
+  }
+
+  trackByInvoice(index: number, item: any): any {
+    return item.id || index;
+  }
+
+  changePage(offset: number): void {
+    const totalPages = Math.ceil(this.filteredInvoices.length / this.itemsPerPage);
+    this.currentPage = Math.max(1, Math.min(this.currentPage + offset, totalPages));
+  }
+
+  isOverdue(invoice: any): boolean {
+    if (!invoice.dueDate) return false;
+    const due = new Date(invoice.dueDate);
+    return due < new Date();
+  }
   invoiceData: any[] = [];
   errorMessage: string = '';
   loading: boolean = false;

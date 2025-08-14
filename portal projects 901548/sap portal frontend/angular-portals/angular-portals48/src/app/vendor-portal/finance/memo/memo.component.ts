@@ -12,6 +12,12 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./memo.component.css']
 })
 export class MemoComponent implements OnInit {
+  onSearchChange(): void {
+    this.currentPage = 1;
+    // Optionally, you can trigger any additional logic here if needed
+  }
+  sortField: string = '';
+  sortAscending: boolean = true;
   memoData: any[] = [];
   searchTerm: string = '';
 
@@ -43,11 +49,35 @@ export class MemoComponent implements OnInit {
   }
 
   get filteredMemoData(): any[] {
-    return this.memoData.filter(item =>
+    let data = this.memoData.filter(item =>
       Object.values(item).some(val =>
         String(val).toLowerCase().includes(this.searchTerm.toLowerCase())
       )
     );
+    if (this.sortField) {
+      data = [...data].sort((a, b) => {
+        const aValue = a[this.sortField];
+        const bValue = b[this.sortField];
+        if (aValue == null && bValue == null) return 0;
+        if (aValue == null) return this.sortAscending ? -1 : 1;
+        if (bValue == null) return this.sortAscending ? 1 : -1;
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return this.sortAscending ? aValue - bValue : bValue - aValue;
+        }
+        return this.sortAscending
+          ? String(aValue).localeCompare(String(bValue))
+          : String(bValue).localeCompare(String(aValue));
+      });
+    }
+    return data;
+  }
+  sortData(field: string): void {
+    if (this.sortField === field) {
+      this.sortAscending = !this.sortAscending;
+    } else {
+      this.sortField = field;
+      this.sortAscending = true;
+    }
   }
 
   // Template compatibility properties that map to existing data
