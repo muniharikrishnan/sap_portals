@@ -26,12 +26,13 @@ export class PurchaseOrderComponent implements OnInit {
   // Search & Sort
   searchTerm = '';
   sortAscending = true;
+  sortField: string = ''; // Added for sortData method
 
   // Add this property to the class
   poNumberSearch: string = '';
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
@@ -62,7 +63,7 @@ export class PurchaseOrderComponent implements OnInit {
       next: (res) => {
         if (res.status === 'success') {
           this.purchaseData = res.purchase;
-          this.applyFilters();
+          this.applyFilters(); // Apply filters initially
         } else {
           this.error = 'Failed to load data.';
         }
@@ -81,7 +82,14 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   convertDate(dateString: string): string {
+    // Ensure dateString is valid before parsing
+    if (!dateString || !dateString.startsWith('/Date(') || !dateString.endsWith(')/')) {
+      return 'Invalid Date';
+    }
     const timestamp = parseInt(dateString.replace('/Date(', '').replace(')/', ''), 10);
+    if (isNaN(timestamp)) {
+      return 'Invalid Date';
+    }
     return new Date(timestamp).toLocaleDateString();
   }
 
@@ -94,10 +102,10 @@ export class PurchaseOrderComponent implements OnInit {
         const valB = b.poNumber;
         return this.sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
       });
+    this.currentPage = 1; // Reset to first page on filter change
   }
 
   onSearchChange() {
-    this.currentPage = 1;
     this.applyFilters();
   }
 
@@ -106,9 +114,31 @@ export class PurchaseOrderComponent implements OnInit {
     this.applyFilters();
   }
 
-  changePage(offset: number) {
+  // This method is for the template-provided sort functionality
+  sortPurchaseOrders() {
+    if (this.sortField) {
+      this.filteredPurchase.sort((a, b) => {
+        const valA = a[this.sortField];
+        const valB = b[this.sortField];
+
+        if (valA === undefined || valB === undefined) return 0;
+
+        if (typeof valA === 'string' && typeof valB === 'string') {
+          return this.sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else if (typeof valA === 'number' && typeof valB === 'number') {
+          return this.sortAscending ? valA - valB : valB - valA;
+        } else {
+          // Fallback for other types or mixed types
+          return this.sortAscending ? String(valA).localeCompare(String(valB)) : String(valB).localeCompare(String(valA));
+        }
+      });
+    }
+  }
+
+  // This method is for the template-provided pagination
+  changePage(direction: number) {
     const totalPages = Math.ceil(this.filteredPurchase.length / this.itemsPerPage);
-    this.currentPage = Math.min(Math.max(this.currentPage + offset, 1), totalPages);
+    this.currentPage = Math.max(1, Math.min(this.currentPage + direction, totalPages));
   }
 
   get paginatedData() {
@@ -187,5 +217,39 @@ export class PurchaseOrderComponent implements OnInit {
   // TrackBy function for ngFor optimization
   trackByPo(index: number, po: any): string {
     return po.poNumber || index;
+  }
+
+  // Template compatibility properties that map to existing data
+  get filteredPurchaseOrders(): any[] {
+    return this.filteredPurchase || [];
+  }
+
+  // This getter is for template compatibility and uses the existing filteredPurchase data
+  get paginatedPurchaseOrders(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredPurchaseOrders.slice(startIndex, endIndex);
+  }
+
+  get isLoading(): boolean {
+    return this.loading;
+  }
+
+  // Template compatibility methods
+  // This method is for the template-provided sort functionality, it calls the existing sort logic
+  sortData(field: string) {
+    this.sortField = field;
+    this.sortAscending = !this.sortAscending;
+    this.sortPurchaseOrders();
+  }
+
+  // This method is for the template-provided pagination
+  // changePage(direction: number) {
+  //   const totalPages = Math.ceil(this.filteredPurchaseOrders.length / this.itemsPerPage);
+  //   this.currentPage = Math.max(1, Math.min(this.currentPage + direction, totalPages));
+  // }
+
+  trackByPurchaseOrder(index: number, po: any): any {
+    return po.id || index;
   }
 }

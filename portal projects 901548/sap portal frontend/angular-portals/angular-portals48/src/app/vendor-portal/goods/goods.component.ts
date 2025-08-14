@@ -199,4 +199,41 @@ export class GoodsComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/vendor/dashboard']);
   }
+
+  // Template compatibility properties
+  get paginatedGoods(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredGoods.slice(startIndex, endIndex);
+  }
+
+  searchTerm = '';
+  isLoading = false;
+
+  // Template compatibility methods
+  onSearchChange() {
+    this.filterData();
+  }
+
+  sortData(field: string) {
+    this.sortField = field;
+    this.sortAscending = !this.sortAscending;
+    this.sortGoods();
+  }
+
+  // Alias method for template compatibility
+  trackByGood = this.trackByGoods;
+
+  // Placeholder for filterData and sortGoods methods if they are used in the template
+  filterData() {
+    // This method should be implemented to update filteredGoods based on searchTerm
+    // For now, it calls applyFilter which uses this.searchKey
+    this.applyFilter();
+  }
+
+  sortGoods() {
+    // This method should be implemented to sort filteredGoods based on sortField and sortAscending
+    // For now, it calls applySort
+    this.applySort();
+  }
 }

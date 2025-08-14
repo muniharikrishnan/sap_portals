@@ -50,6 +50,33 @@ export class MemoComponent implements OnInit {
     );
   }
 
+  // Template compatibility properties that map to existing data
+  get filteredMemos(): any[] {
+    return this.filteredMemoData || [];
+  }
+
+  get paginatedMemos(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredMemos.slice(startIndex, endIndex);
+  }
+
+  currentPage = 1;
+  itemsPerPage = 10;
+  isLoading = false;
+  errorMessage = '';
+  Math = Math;
+
+  // Template compatibility methods
+  changePage(direction: number) {
+    const totalPages = Math.ceil(this.filteredMemos.length / this.itemsPerPage);
+    this.currentPage = Math.max(1, Math.min(this.currentPage + direction, totalPages));
+  }
+
+  trackByMemo(index: number, memo: any): any {
+    return memo.id || index;
+  }
+
   exportData(): void {
     // Export filtered data as CSV
     const data = this.filteredMemoData;
