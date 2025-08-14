@@ -164,7 +164,7 @@ export class PurchaseOrderComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.currentPage = 1;
-    
+
     if (isPlatformBrowser(this.platformId)) {
       try {
         const VendorId = localStorage.getItem('VendorId');

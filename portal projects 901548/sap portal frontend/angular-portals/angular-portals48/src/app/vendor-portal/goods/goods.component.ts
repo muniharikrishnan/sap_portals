@@ -110,8 +110,8 @@ export class GoodsComponent implements OnInit {
     this.filteredGoods.sort((a, b) => {
       const aVal = a[this.sortField as keyof GoodsItem];
       const bVal = b[this.sortField as keyof GoodsItem];
-      return this.sortAscending ? 
-        String(aVal).localeCompare(String(bVal)) : 
+      return this.sortAscending ?
+        String(aVal).localeCompare(String(bVal)) :
         String(bVal).localeCompare(String(aVal));
     });
   }
@@ -175,7 +175,7 @@ export class GoodsComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     this.currentPage = 1;
-    
+
     if (isPlatformBrowser(this.platformId)) {
       try {
         const rawId = localStorage.getItem('VendorId') || '';
