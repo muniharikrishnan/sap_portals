@@ -1,34 +1,140 @@
 <div class="finance-container">
-  <!-- Header -->
-  <div class="finance-header-card">
-    <div class="finance-header-row">
+  <div class="finance-content">
+    <!-- Enhanced Header Card -->
+    <div class="finance-header-card">
+      <div class="header-background"></div>
       <div class="finance-header-content">
-        <div class="finance-header-avatar">💰</div>
+        <div class="finance-header-avatar"></div>
         <div class="finance-header-text">
-          <h2>Finance Module</h2>
-          <div class="finance-id">Vendor Financials</div>
+          <h2 class="finance-gradient-title">Finance Dashboard</h2>
+          <div class="welcome-id">
+            Vendor ID: {{ vendorProfile?.vendorId || 'V001' }}
+          </div>
+          <div class="welcome-status">
+            <span class="status-indicator"></span>
+            Financial Overview
+          </div>
         </div>
       </div>
       <button class="back-button" (click)="goBack()">
-        <span class="back-icon">←</span> Back to Dashboard
+        <span class="back-icon"></span>
+        <span class="back-text">BACK TO DASHBOARD</span>
       </button>
     </div>
-  </div>
 
-  <!-- Tiles Section -->
-  <div class="finance-tile-grid">
-    <div class="tile" (click)="goTo('aging')">
-      <span class="tile-emoji">🧮</span>
-      <span>Aging</span>
+    <!-- Quick Stats Section -->
+    <div class="quick-stats-section">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ financeStats?.pendingInvoices || 0 }}</h3>
+            <p>Pending Invoices</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ financeStats?.overdueInvoices || 0 }}</h3>
+            <p>Overdue Invoices</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ financeStats?.totalOutstanding || '$0' }}</h3>
+            <p>Total Outstanding</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ financeStats?.totalPaid || '$0' }}</h3>
+            <p>Total Paid</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tile" (click)="goTo('invoice')">
-      <span class="tile-emoji">🧾</span>
-      <span>Invoice</span>
-    </div>
-    <div class="tile" (click)="goTo('memo')">
-      <span class="tile-emoji">📝</span>
-      <span>Memo</span>
-    </div>
+
+    <!-- Finance Modules Section -->
+    <section class="finance-modules-section">
+      <div class="section-header">
+        <h3>Finance Modules</h3>
+        <p>Access your financial data and manage operations</p>
+      </div>
+      
+      <div class="finance-tiles-grid">
+        <a class="finance-tile" [routerLink]="['/vendor/aging']">
+          <div class="tile-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="tile-content">
+            <h4>Aging Analysis</h4>
+            <p>View payment aging and due dates</p>
+            <div class="tile-badge">{{ financeStats?.agingRecords || 0 }} Records</div>
+          </div>
+          <div class="tile-arrow"></div>
+        </a>
+
+        <a class="finance-tile" [routerLink]="['/vendor/invoice']">
+          <div class="tile-icon">
+            <i class="fas fa-file-invoice"></i>
+          </div>
+          <div class="tile-content">
+            <h4>Invoice Management</h4>
+            <p>Manage your invoices and payments</p>
+            <div class="tile-badge">{{ financeStats?.totalInvoices || 0 }} Invoices</div>
+          </div>
+          <div class="tile-arrow"></div>
+        </a>
+
+        <a class="finance-tile" [routerLink]="['/vendor/memo']">
+          <div class="tile-icon">
+            <i class="fas fa-sticky-note"></i>
+          </div>
+          <div class="tile-content">
+            <h4>Memo Management</h4>
+            <p>View financial memos and adjustments</p>
+            <div class="tile-badge">{{ financeStats?.totalMemos || 0 }} Memos</div>
+          </div>
+          <div class="tile-arrow"></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Recent Financial Activity Section -->
+    <section class="recent-activity-section" *ngIf="recentFinancialActivities && recentFinancialActivities.length > 0">
+      <div class="section-header">
+        <h3>Recent Financial Activity</h3>
+        <p>Latest financial updates and transactions</p>
+      </div>
+      
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentFinancialActivities">
+          <div class="activity-icon">
+            <i [class]="getActivityIcon(activity.type)"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-description">{{ activity.description }}</div>
+          </div>
+          <div class="activity-time">
+            {{ activity.timestamp | date:'MMM d, y - h:mm a' }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Router Outlet for Finance Sub-components -->
+    <router-outlet></router-outlet>
   </div>
 </div>
 

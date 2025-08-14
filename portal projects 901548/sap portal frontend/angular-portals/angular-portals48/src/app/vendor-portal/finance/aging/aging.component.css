@@ -676,8 +676,30 @@
   max-height: 400px;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: rgba(15, 15, 35, 0.3);
 }
-.table-container::-webkit-scrollbar { display: none; }
+
+.table-container::-webkit-scrollbar { 
+  display: block; 
+  height: 8px;
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: rgba(124, 58, 237, 0.1);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #a855f7, #c084fc);
+}
 
 /* Aging Badge Styles */
 .aging-badge {
@@ -731,7 +753,7 @@
 /* Table */
 .rfq-table {
   width: 100%;
-  min-width: 0;
+  min-width: 1400px; /* Increased minimum width to show all column names */
   max-width: 100%;
   table-layout: fixed;
   border-collapse: separate;
@@ -741,6 +763,7 @@
   box-shadow: 0 12px 48px 0 rgba(124, 42, 232, 0.32), 0 2px 16px 0 rgba(255, 78, 80, 0.18), 0 0 32px 4px rgba(249, 212, 35, 0.10);
   box-sizing: border-box;
 }
+
 .rfq-table th {
   position: sticky;
   top: 0;
@@ -748,14 +771,30 @@
   background: rgba(30, 30, 40, 0.92);
   color: #fff;
   font-weight: 700;
-  font-size: 1.08rem;
+  font-size: 0.95rem; /* Slightly smaller font for better fit */
   text-transform: uppercase;
-  letter-spacing: 0.7px;
-  padding: 1.1rem 0.9rem;
+  letter-spacing: 0.5px; /* Reduced letter spacing */
+  padding: 1rem 0.8rem; /* Slightly reduced padding */
   border-bottom: 2.5px solid #7c2ae8;
   text-align: left;
   box-shadow: 0 2px 8px 0 #23263a22;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+/* Specific column widths to prevent collision and show full column names */
+.rfq-table th:nth-child(1) { width: 160px; } /* PAYMENT DOC */
+.rfq-table th:nth-child(2) { width: 100px; } /* YEAR */
+.rfq-table th:nth-child(3) { width: 140px; } /* PAYMENT DATE */
+.rfq-table th:nth-child(4) { width: 140px; } /* ENTRY DATE */
+.rfq-table th:nth-child(5) { width: 120px; } /* VENDOR ID */
+.rfq-table th:nth-child(6) { width: 140px; } /* AMOUNT PAID */
+.rfq-table th:nth-child(7) { width: 100px; } /* CURRENCY */
+.rfq-table th:nth-child(8) { width: 140px; } /* CLEARING DOC */
+.rfq-table th:nth-child(9) { width: 140px; } /* REF DOC NO */
+.rfq-table th:nth-child(10) { width: 140px; } /* DUE DATE */
+.rfq-table th:nth-child(11) { width: 160px; } /* AGING STATUS */
 .th-content {
   display: flex;
   align-items: center;
@@ -769,10 +808,47 @@
 .rfq-table td {
   color: #fff;
   font-weight: 500;
-  font-size: 1.08rem;
-  padding: 1.1rem 0.9rem;
+  font-size: 0.95rem; /* Match header font size */
+  padding: 1rem 0.8rem; /* Match header padding */
   border-bottom: 1.5px solid rgba(124, 42, 232, 0.10);
   background: transparent;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0; /* Force text truncation */
+}
+
+/* Specific cell styling for better readability */
+.rfq-table td.payment-doc {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.rfq-table td.doc-year {
+  text-align: center;
+  color: #cbd5e1;
+}
+
+.rfq-table td.vendor-id {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.rfq-table td.amount-paid {
+  font-weight: 600;
+  color: #10b981;
+}
+
+.rfq-table td.currency {
+  text-align: center;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+.rfq-table td.clearing-doc,
+.rfq-table td.ref-doc-no {
+  color: #94a3b8;
+  font-style: italic;
 }
 .table-row { transition: background 0.2s; }
 .table-row:hover { background: rgba(124, 42, 232, 0.10); }
