@@ -51,6 +51,10 @@ export class RfqComponent implements OnInit {
     }
   }
 
+   sortData(field: string): void {
+    this.toggleSort(field);
+    this.applySearchSortPaginate();
+  }
   fetchRFQs(vendorId: string): void {
     this.isLoading = true;
     this.http.get<any>(`http://localhost:3000/api/rfq/${vendorId}`).subscribe({

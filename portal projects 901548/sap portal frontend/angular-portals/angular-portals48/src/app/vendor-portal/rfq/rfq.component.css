@@ -26,18 +26,24 @@ body, .rfq-container {
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100vh;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.rfq-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
+
 .rfq-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
   padding: 48px 0 32px 0;
   gap: 32px;
   padding-top: 0 !important;
-  width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -356,12 +362,13 @@ body, .rfq-container {
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
-  background: rgba(40, 42, 54, 0.92) !important;
-  border-radius: 1.2rem !important;
-  box-shadow: 0 12px 48px 0 rgba(124, 42, 232, 0.32), 0 2px 16px 0 rgba(255, 78, 80, 0.18), 0 0 32px 4px rgba(249, 212, 35, 0.10) !important;
-  border: var(--kaar-border) !important;
-  margin-bottom: 0.2rem;
-  box-sizing: border-box;
+  overflow-y: auto;
+  max-height: 400px; /* Adjust as needed */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.table-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* Pagination Card */

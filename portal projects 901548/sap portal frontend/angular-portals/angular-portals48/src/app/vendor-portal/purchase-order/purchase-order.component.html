@@ -1,102 +1,105 @@
+<!-- Purchase Order Management Page -->
 <div class="purchase-order-container">
-  <!-- Back Button Top Left -->
-  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">
-    <i class="back-icon">←</i>
-    Back
-  </button>
-
-  <!-- Title and Subtitle Top Right -->
-  <div class="rfq-top-right">
-    <div class="rfq-top-section">
-      <h1 class="purchase-order-title"><span style="font-size:2.2rem; margin-right: 0.5rem;">📦</span>Purchase Orders</h1>
-      <p class="purchase-order-subtitle">Manage and track your purchase order items</p>
+  <!-- Header Section -->
+  <div class="purchase-order-header">
+    <div class="header-content">
+      <div class="title-section">
+        <div class="header-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h1 class="purchase-order-title">Welcome to Purchase Order Management!</h1>
+        <p class="purchase-order-subtitle">Purchase Order Portal</p>
+      </div>
+      <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left back-icon"></i>
+        BACK
+      </button>
     </div>
   </div>
 
-  <!-- Main Content Card (Tab) -->
-  <div class="purchase-order-content" *ngIf="!loading && !error && filteredPurchase.length > 0">
-    <div class="po-search-row" style="gap: 18px; align-items: center;">
-      <h3 class="table-title" style="margin-bottom: 0;">Purchase Order Items</h3>
-      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
-      <input
-        class="po-search-input"
-        type="text"
-        placeholder="Search PO Number..."
-        [(ngModel)]="poNumberSearch"
-        style="width: 140px; min-width: 140px; max-width: 140px;"
-      />
-      <div class="po-search-stats">
-        <span class="stat-label">Total Items</span>
-        <span class="stat-value">{{ filteredPurchase.length }}</span>
-        <span class="stat-label" style="margin-left: 24px;">Page</span>
-        <span class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredPurchase.length / itemsPerPage) }}</span>
+  <!-- Controls -->
+  <div class="controls-card">
+    <div class="search-section">
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search PO Number..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+        />
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">TOTAL ITEMS</div>
+        <div class="stat-value">{{ filteredPurchase.length }}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">PAGE</div>
+        <div class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredPurchase.length / itemsPerPage) }}</div>
       </div>
     </div>
-    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
-      <button class="action-button" (click)="exportData()">
-        <i class="action-icon">📊</i>
-        Export
-      </button>
-      <button class="action-button" (click)="refreshData()">
-        <i class="action-icon">🔄</i>
-        Refresh
-      </button>
-    </div>
+  </div>
+
+  <!-- Content Card with Table -->
+  <div class="content-card" *ngIf="!loading && !error && filteredPurchase.length > 0">
     <div class="table-container">
+      <div class="table-header">
+        <h2 class="table-title">Purchase Order Items</h2>
+        <div class="table-actions">
+          <button class="action-button" (click)="exportData()">
+            <i class="fas fa-download"></i>
+            EXPORT
+          </button>
+          <button class="action-button" (click)="refreshData()">
+            <i class="fas fa-sync-alt"></i>
+            REFRESH
+          </button>
+        </div>
+      </div>
+
       <table class="purchase-table">
         <thead>
           <tr>
             <th class="sortable" (click)="toggleSort()">
               <div class="th-content">
-                <span>PO Number</span>
-                <i class="sort-icon">{{ sortAscending ? '↑' : '↓' }}</i>
+                PO NUMBER
+                <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th>
-              <div class="th-content">
-                <span>Document Date</span>
-              </div>
-            </th>
-            <th>
-              <div class="th-content">
-                <span>Delivery Date</span>
-              </div>
-            </th>
-            <th>
-              <div class="th-content">
-                <span>Material</span>
-              </div>
-            </th>
-            <th>
-              <div class="th-content">
-                <span>Item Number</span>
-              </div>
-            </th>
-            <th>
-              <div class="th-content">
-                <span>Unit</span>
-              </div>
-            </th>
+            <th>VENDOR ID</th>
+            <th>DOCUMENT DATE</th>
+            <th>ITEM NUMBER</th>
+            <th>MATERIAL</th>
+            <th>UNIT</th>
+            <th>DESCRIPTION</th>
+            <th>DELIVERY DATE</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let po of displayedPurchaseData; trackBy: trackByPo" class="table-row">
+          <tr class="table-row" *ngFor="let po of paginatedData; trackBy: trackByPo">
             <td class="po-number">{{ po.poNumber }}</td>
+            <td class="vendor-id">{{ po.vendorId }}</td>
             <td class="doc-date">{{ convertDate(po.docDate) }}</td>
-            <td class="delivery-date">{{ convertDate(po.deliveryDate) }}</td>
+            <td>{{ po.itemNumber }}</td>
             <td class="material">{{ po.material }}</td>
-            <td class="item-number">{{ po.itemNumber }}</td>
             <td class="unit">{{ po.unit }}</td>
+            <td class="description">{{ po.description }}</td>
+            <td>
+              <span class="date-badge" [class.no-date]="!po.deliveryDate || po.deliveryDate === 'N/A'">
+                {{ po.deliveryDate ? convertDate(po.deliveryDate) : 'N/A' }}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- Pagination Card -->
-    <div class="pagination-card" *ngIf="filteredPurchase.length > itemsPerPage">
-      <div class="pagination-info">
-        <span class="pagination-text">
-          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, filteredPurchase.length) }} of {{ filteredPurchase.length }} items
-        </span>
+
+    <!-- Pagination -->
+    <div class="pagination-card">
+      <div class="pagination-text">
+        Page {{ currentPage }} of {{ Math.ceil(filteredPurchase.length / itemsPerPage) }} - 
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, filteredPurchase.length) }} of {{ filteredPurchase.length }} items
       </div>
       <div class="pagination-controls">
         <button 
@@ -105,7 +108,7 @@
           [disabled]="currentPage === 1"
           [class.disabled]="currentPage === 1"
         >
-          <i class="pagination-icon">←</i>
+          <i class="fas fa-chevron-left pagination-icon"></i>
           Previous
         </button>
         <div class="page-indicator">
@@ -120,22 +123,9 @@
           [class.disabled]="currentPage === Math.ceil(filteredPurchase.length / itemsPerPage)"
         >
           Next
-          <i class="pagination-icon">→</i>
+          <i class="fas fa-chevron-right pagination-icon"></i>
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- No Data Template -->
-  <div class="no-data-card" *ngIf="!loading && filteredPurchase.length === 0">
-    <div class="no-data-content">
-      <i class="no-data-icon">📄</i>
-      <h3 class="no-data-title">No Purchase Orders Found</h3>
-      <p class="no-data-message">There are no purchase orders available for this vendor at the moment.</p>
-      <button class="refresh-button" (click)="refreshData()">
-        <i class="refresh-icon">🔄</i>
-        Refresh Data
-      </button>
     </div>
   </div>
 
@@ -143,19 +133,32 @@
   <div class="loading-card" *ngIf="loading">
     <div class="loading-content">
       <div class="loading-spinner"></div>
-      <p class="loading-text">Loading purchase orders...</p>
+      <p class="loading-text">Loading purchase order data...</p>
     </div>
   </div>
 
   <!-- Error State -->
   <div class="error-card" *ngIf="error">
     <div class="error-content">
-      <i class="error-icon">⚠️</i>
+      <i class="fas fa-exclamation-triangle error-icon"></i>
       <h3 class="error-title">Error Loading Data</h3>
       <p class="error-message">{{ error }}</p>
       <button class="refresh-button" (click)="refreshData()">
-        <i class="refresh-icon">🔄</i>
+        <i class="fas fa-redo refresh-icon"></i>
         Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- No Data State -->
+  <div class="no-data-card" *ngIf="!loading && !error && filteredPurchase.length === 0">
+    <div class="no-data-content">
+      <i class="fas fa-shopping-cart no-data-icon"></i>
+      <h3 class="no-data-title">No Purchase Orders Found</h3>
+      <p class="no-data-message">There are no purchase orders available for this vendor at the moment.</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="fas fa-sync-alt refresh-icon"></i>
+        Refresh Data
       </button>
     </div>
   </div>
