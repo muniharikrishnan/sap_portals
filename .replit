@@ -1,4 +1,4 @@
-modules = ["web", "nodejs-20", "angular-node-24", "angular-node-20", "bash", "nodejs-24", "nodejs-23", "nodejs-22", "nodejs-19", "nodejs-18"]
+modules = ["web", "nodejs-20"]
 run = "node index.js"
 
 [nix]

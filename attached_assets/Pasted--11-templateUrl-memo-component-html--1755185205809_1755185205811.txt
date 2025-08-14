@@ -1,0 +1,838 @@
+   11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredMemos' does not exist on type 'MemoComponent'. Did you mean 'filteredMemoData'? [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:180:20:
+      180 │         - Total: {{ filteredMemos.length }} items
+          ╵                     ~~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'currentPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:185:28:
+      185 │           [class.disabled]="currentPage === 1"
+          ╵                             ~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'currentPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:186:22:
+      186 │           [disabled]="currentPage === 1"
+          ╵                       ~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'changePage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:187:19:
+      187 │           (click)="changePage(-1)">
+          ╵                    ~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'currentPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:192:40:
+      192 │           <span class="current-page">{{ currentPage }}</span>      
+          ╵                                         ~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'Math' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:194:39:
+      194 │ ...<span class="total-pages">{{ Math.ceil(filteredMemos.length / ...
+          ╵                                 ~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredMemos' does not exist on type 'MemoComponent'. Did you mean 'filteredMemoData'? [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:194:49:
+      194 │ ...otal-pages">{{ Math.ceil(filteredMemos.length / itemsPerPage) ...
+          ╵                             ~~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'itemsPerPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:194:72:
+      194 │ ...ages">{{ Math.ceil(filteredMemos.length / itemsPerPage) }}</span>
+          ╵                                              ~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'currentPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:198:28:
+      198 │           [class.disabled]="currentPage === Math.ceil(filteredMem...
+          ╵                             ~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'Math' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:198:44:
+      198 │ ...s.disabled]="currentPage === Math.ceil(filteredMemos.length / ...
+          ╵                                 ~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredMemos' does not exist on type 'MemoComponent'. Did you mean 'filteredMemoData'? [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:198:54:
+      198 │ ...="currentPage === Math.ceil(filteredMemos.length / itemsPerPage)"
+          ╵                                ~~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'itemsPerPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:198:77:
+      198 │ ...="currentPage === Math.ceil(filteredMemos.length / itemsPerPage)"
+          ╵                                                       ~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'currentPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:199:22:
+      199 │           [disabled]="currentPage === Math.ceil(filteredMemos.len...
+          ╵                       ~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'Math' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:199:38:
+      199 │ ... [disabled]="currentPage === Math.ceil(filteredMemos.length / ...
+          ╵                                 ~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredMemos' does not exist on type 'MemoComponent'. Did you mean 'filteredMemoData'? [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:199:48:
+      199 │ ...="currentPage === Math.ceil(filteredMemos.length / itemsPerPage)"
+          ╵                                ~~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'itemsPerPage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:199:71:
+      199 │ ...="currentPage === Math.ceil(filteredMemos.length / itemsPerPage)"
+          ╵                                                       ~~~~~~~~~~~~ 
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'changePage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:200:19:
+      200 │           (click)="changePage(1)">
+          ╵                    ~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'isLoading' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:224:35:
+      224 │   <div class="loading-card" *ngIf="isLoading">
+          ╵                                    ~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'errorMessage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:232:33:
+      232 │   <div class="error-card" *ngIf="errorMessage && !isLoading">      
+          ╵                                  ~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'isLoading' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:232:50:
+      232 │   <div class="error-card" *ngIf="errorMessage && !isLoading">      
+          ╵                                                   ~~~~~~~~~        
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'errorMessage' does not exist on type 'MemoComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/finance/memo/memo.component.html:236:34:
+      236 │       <p class="error-message">{{ errorMessage }}</p>
+          ╵                                   ~~~~~~~~~~~~
+
+  Error occurs in the template of component MemoComponent.
+
+    src/app/vendor-portal/finance/memo/memo.component.ts:11:15:
+      11 │   templateUrl: './memo.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'paginatedGoods' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:29:49:
+      29 │ ...nt-card" *ngIf="!isLoading && paginatedGoods.length; else noData">
+         ╵                                  ~~~~~~~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'searchTerm' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:37:21:
+      37 │         [(ngModel)]="searchTerm"
+         ╵                      ~~~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'searchTerm' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:37:21:
+      37 │         [(ngModel)]="searchTerm"
+         ╵                      ~~~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'onSearchChange' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:38:17:
+      38 │         (input)="onSearchChange()"
+         ╵                  ~~~~~~~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:72:42:
+      72 │ ...      <th class="sortable" (click)="sortData('materialDocument')">
+         ╵                                        ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:78:42:
+      78 │             <th class="sortable" (click)="sortData('year')">        
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:84:42:
+      84 │             <th class="sortable" (click)="sortData('itemNumber')">  
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:90:42:
+      90 │             <th class="sortable" (click)="sortData('postingDate')"> 
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:96:42:
+      96 │             <th class="sortable" (click)="sortData('material')">    
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:102:42:
+      102 │             <th class="sortable" (click)="sortData('plant')">      
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:108:42:
+      108 │ ...      <th class="sortable" (click)="sortData('storageLocation')">
+          ╵                                        ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:114:42:
+      114 │             <th class="sortable" (click)="sortData('quantity')">   
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:120:42:
+      120 │             <th class="sortable" (click)="sortData('unit')">       
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:126:42:
+      126 │             <th class="sortable" (click)="sortData('amount')">     
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:132:42:
+      132 │             <th class="sortable" (click)="sortData('currency')">   
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:138:42:
+      138 │             <th class="sortable" (click)="sortData('vendorId')">   
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:144:42:
+      144 │ ...        <th class="sortable" (click)="sortData('purchaseOrder')">
+          ╵                                          ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:150:42:
+      150 │             <th class="sortable" (click)="sortData('poItem')">     
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:156:42:
+      156 │             <th class="sortable" (click)="sortData('description')">
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'paginatedGoods' does not exist on type 'GoodsComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:165:55:
+      165 │ ...ow-3d" *ngFor="let good of paginatedGoods; trackBy: trackByGood">
+          ╵                               ~~~~~~~~~~~~~~
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'trackByGood' does not exist on type 'GoodsComponent'. Did you mean 'trackByGoods'? [plugin angular-compiler]
+
+    src/app/vendor-portal/goods/goods.component.html:165:80:
+      165 │ ...ow-3d" *ngFor="let good of paginatedGoods; trackBy: trackByGood">
+          ╵                                                        ~~~~~~~~~~~ 
+
+  Error occurs in the template of component GoodsComponent.
+
+    src/app/vendor-portal/goods/goods.component.ts:28:15:
+      28 │   templateUrl: './goods.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'isLoading' does not exist on type 'PurchaseOrderComponent'. Did you mean 'loading'? [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:29:36:  
+      29 │ ...ass="content-card" *ngIf="!isLoading && paginatedPurchaseOrders...
+         ╵                               ~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'paginatedPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:29:49:  
+      29 │ ...*ngIf="!isLoading && paginatedPurchaseOrders.length; else noData">
+         ╵                         ~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. Did you mean 'filteredPurchase'? [plugin angular-compiler]  
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:62:36:  
+      62 │ ...span class="stat-value">{{ filteredPurchaseOrders.length }}</span>
+         ╵                               ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:71:42:  
+      71 │             <th class="sortable" (click)="sortData('poNumber')">    
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:77:42:  
+      77 │             <th class="sortable" (click)="sortData('vendorId')">    
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:83:42:  
+      83 │             <th class="sortable" (click)="sortData('documentDate')">
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:89:42:  
+      89 │             <th class="sortable" (click)="sortData('itemNumber')">  
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:95:42:  
+      95 │             <th class="sortable" (click)="sortData('material')">    
+         ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:101:42: 
+      101 │             <th class="sortable" (click)="sortData('unit')">       
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:107:42: 
+      107 │             <th class="sortable" (click)="sortData('description')">
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'sortData' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:113:42: 
+      113 │             <th class="sortable" (click)="sortData('deliveryDate')">
+          ╵                                           ~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'paginatedPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:122:53: 
+      122 │ ..." *ngFor="let po of paginatedPurchaseOrders; trackBy: trackByP...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'trackByPurchaseOrder' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:122:87: 
+      122 │ ...et po of paginatedPurchaseOrders; trackBy: trackByPurchaseOrder">
+          ╵                                               ~~~~~~~~~~~~~~~~~~~~ 
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. Did you mean 'filteredPurchase'? [plugin angular-compiler]  
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:143:47: 
+      143 │ ... }} of {{ Math.ceil(filteredPurchaseOrders.length / itemsPerPa...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. Did you mean 'filteredPurchase'? [plugin angular-compiler]  
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:144:20: 
+      144 │         - Total: {{ filteredPurchaseOrders.length }} items
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. Did you mean 'filteredPurchase'? [plugin angular-compiler]  
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:158:49: 
+      158 │ ...pages">{{ Math.ceil(filteredPurchaseOrders.length / itemsPerPa...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. Did you mean 'filteredPurchase'? [plugin angular-compiler]  
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:162:54: 
+      162 │ ...tPage === Math.ceil(filteredPurchaseOrders.length / itemsPerPa...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'filteredPurchaseOrders' does not exist on type 'PurchaseOrderComponent'. Did you mean 'filteredPurchase'? [plugin angular-compiler]  
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:163:48: 
+      163 │ ...tPage === Math.ceil(filteredPurchaseOrders.length / itemsPerPa...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'isLoading' does not exist on type 'PurchaseOrderComponent'. Did you mean 'loading'? [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:188:35: 
+      188 │   <div class="loading-card" *ngIf="isLoading">
+          ╵                                    ~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'errorMessage' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:196:33: 
+      196 │   <div class="error-card" *ngIf="errorMessage && !isLoading">      
+          ╵                                  ~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG1: Property 'isLoading' does not exist on type 'PurchaseOrderComponent'. Did you mean 'loading'? [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:196:50: 
+      196 │   <div class="error-card" *ngIf="errorMessage && !isLoading">      
+          ╵                                                   ~~~~~~~~~        
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG9: Property 'errorMessage' does not exist on type 'PurchaseOrderComponent'. [plugin angular-compiler]
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.html:200:34: 
+      200 │       <p class="error-message">{{ errorMessage }}</p>
+          ╵                                   ~~~~~~~~~~~~
+
+  Error occurs in the template of component PurchaseOrderComponent.
+
+    src/app/vendor-portal/purchase-order/purchase-order.component.ts:12:15:    
+      12 │   templateUrl: './purchase-order.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Watch mode enabled. Watching for file changes...
+
