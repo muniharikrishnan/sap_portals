@@ -8,7 +8,7 @@
         <i class="fas fa-chart-line"></i>
       </div>
       <div class="aging-header-text">
-        <h1 class="aging-gradient-title">Welcome to Aging Analysis!</h1>
+        <h1 class="aging-gradient-title">Welcome to Aging Analysis Management!</h1>
         <div class="welcome-id">
           <i class="fas fa-clock"></i>
           <span>Vendor ID: V001</span>
@@ -25,7 +25,7 @@
     </button>
   </div>
 
-  <!-- Main Content Card (Tab) -->
+  <!-- Main Content Card -->
   <div class="content-card" *ngIf="!isLoading && paginatedAging.length; else noData">
     <div class="po-search-row" style="gap: 18px; align-items: center;">
       <h3 class="table-title" style="margin-bottom: 0;">Aging Items</h3>
@@ -89,7 +89,7 @@
             </th>
             <th class="sortable" (click)="sortData('fiscalYear')">
               <div class="th-content">
-                <span>FISCAL YEAR</span>
+                <span>YEAR</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
@@ -101,7 +101,7 @@
             </th>
             <th class="sortable" (click)="sortData('postingKey')">
               <div class="th-content">
-                <span>POST KEY</span>
+                <span>POSTING KEY</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
@@ -157,8 +157,12 @@
             <td class="fiscal-year">{{ aging.fiscalYear }}</td>
             <td class="line-item">{{ aging.lineItem }}</td>
             <td class="posting-key">{{ aging.postingKey }}</td>
-            <td class="posting-date">{{ aging.postingDate | date:'yyyy-MM-dd' }}</td>
-            <td class="document-date">{{ aging.documentDate | date:'yyyy-MM-dd' }}</td>
+            <td class="posting-date">
+              <span class="date-badge">{{ aging.postingDate | date:'M/d/yyyy' }}</span>
+            </td>
+            <td class="document-date">
+              <span class="date-badge">{{ aging.documentDate | date:'M/d/yyyy' }}</span>
+            </td>
             <td class="amount">{{ aging.amount | currency:aging.currency:'symbol':'1.2-2' }}</td>
             <td class="currency">{{ aging.currency }}</td>
             <td class="reference">{{ aging.reference }}</td>
@@ -171,39 +175,34 @@
 
     <!-- Pagination Card -->
     <div class="pagination-card-3d">
-      <div class="pagination-text">
-        Page {{ currentPage }} of {{ Math.ceil(filteredAging.length / itemsPerPage) }}
-        - Total: {{ filteredAging.length }} items
+      <div class="pagination-info">
+        <span class="page-info">Page {{ currentPage }} of {{ Math.ceil(filteredAging.length / itemsPerPage) }} - Total: {{ filteredAging.length }} items</span>
       </div>
       <div class="pagination-controls">
-        <button
-          class="pagination-button"
-          [class.disabled]="currentPage === 1"
+        <button 
+          class="pagination-btn-3d"
           [disabled]="currentPage === 1"
           (click)="changePage(-1)">
-          <i class="fas fa-chevron-left pagination-icon"></i>
+          <i class="fas fa-chevron-left"></i>
           Previous
         </button>
-        <div class="page-indicator">
-          <span class="current-page">{{ currentPage }}</span>
-          <span class="page-separator">of</span>
-          <span class="total-pages">{{ Math.ceil(filteredAging.length / itemsPerPage) }}</span>
-        </div>
-        <button
-          class="pagination-button"
-          [class.disabled]="currentPage === Math.ceil(filteredAging.length / itemsPerPage)"
+        <span class="current-page-3d">{{ currentPage }}</span>
+        <span class="page-separator">of</span>
+        <span class="total-pages-3d">{{ Math.ceil(filteredAging.length / itemsPerPage) }}</span>
+        <button 
+          class="pagination-btn-3d"
           [disabled]="currentPage === Math.ceil(filteredAging.length / itemsPerPage)"
           (click)="changePage(1)">
           Next
-          <i class="fas fa-chevron-right pagination-icon"></i>
+          <i class="fas fa-chevron-right"></i>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- No Data Template -->
+  <!-- No Data State -->
   <ng-template #noData>
-    <div class="no-data-card">
+    <div class="no-data-card" *ngIf="!isLoading && !errorMessage">
       <div class="no-data-content">
         <i class="fas fa-box-open"></i>
         <h3 class="no-data-title">No Aging Data Found</h3>
