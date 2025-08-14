@@ -1,177 +1,177 @@
 <div class="rfq-container">
   <div class="rfq-content">
     <!-- Enhanced Header Card -->
-    <div class="rfq-header-card"></div>
-    <div class="header-background"></div>
-    <div class="rfq-header-content">
-      <div class="rfq-header-avatar">
-        <i class="fas fa-file-invoice"></i>
-      </div>
-      <div class="rfq-header-text">
-        <h1 class="rfq-gradient-title">Welcome to RFQ Management!</h1>
-        <div class="welcome-id">
-          <i class="fas fa-clipboard-list"></i>
-          <span>Vendor ID: V001</span>
+    <div class="rfq-header-card">
+      <div class="header-background"></div>
+      <div class="rfq-header-content">
+        <div class="rfq-header-avatar">
+          <i class="fas fa-file-invoice"></i>
         </div>
-        <div class="welcome-status">
-          <span class="status-indicator"></span>
-          Request for Quotation Portal
+        <div class="rfq-header-text">
+          <h1 class="rfq-gradient-title">Welcome to RFQ Management!</h1>
+          <div class="welcome-id">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Vendor ID: V001</span>
+          </div>
+          <div class="welcome-status">
+            <span class="status-indicator"></span>
+            Request for Quotation Portal
+          </div>
+        </div>
+      </div>
+      <button class="logout-button" (click)="goBack()">
+        <i class="fas fa-arrow-left logout-icon"></i>
+        <span class="logout-text">BACK</span>
+      </button>
+    </div>
+
+    <!-- Main Content Card (Tab) -->
+    <div class="content-card" *ngIf="!isLoading && paginatedRfqs.length; else noData">
+      <div class="po-search-row" style="gap: 18px; align-items: center;">
+        <h3 class="table-title" style="margin-bottom: 0;">RFQ Items</h3>
+        <i class="fas fa-search" style="font-size:1.2rem; margin-right: 8px;"></i>
+        <input
+          class="po-search-input"
+          type="text"
+          placeholder="Search PO Number..."
+          [(ngModel)]="poNumberSearch"
+          style="width: 140px; min-width: 140px; max-width: 140px;"
+        />
+
+        <!-- Action Buttons -->
+        <div class="table-actions-3d">
+          <button class="action-button-3d export-btn" (click)="exportData()" title="Export to CSV">
+            <i class="fas fa-download action-icon-3d"></i>
+            <span class="action-text-3d">Export</span>
+          </button>
+          <button class="action-button-3d refresh-btn" (click)="refreshData()" title="Refresh Data">
+            <i class="fas fa-sync-alt action-icon-3d" [class.spinning]="isLoading"></i>
+            <span class="action-text-3d">Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-header">
+        <div>
+          <p class="table-subtitle">Total RFQ items: {{ filteredRfqs.length }}</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="rfq-table">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="sortData('poNumber')">
+                <div class="th-content">
+                  PO NUMBER
+                  <i class="fas sort-icon" [ngClass]="sortField === 'poNumber' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </div>
+              </th>
+              <th class="sortable" (click)="sortData('vendorId')">
+                <div class="th-content">
+                  VENDOR ID
+                  <i class="fas sort-icon" [ngClass]="sortField === 'vendorId' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </div>
+              </th>
+              <th class="sortable" (click)="sortData('documentDate')">
+                <div class="th-content">
+                  DOCUMENT DATE
+                  <i class="fas sort-icon" [ngClass]="sortField === 'documentDate' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </div>
+              </th>
+              <th class="sortable" (click)="sortData('itemNumber')">
+                <div class="th-content">
+                  ITEM NUMBER
+                  <i class="fas sort-icon" [ngClass]="sortField === 'itemNumber' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </div>
+              </th>
+              <th class="sortable" (click)="sortData('material')">
+                <div class="th-content">
+                  MATERIAL
+                  <i class="fas sort-icon" [ngClass]="sortField === 'material' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </div>
+              </th>
+              <th>UNIT</th>
+              <th>DESCRIPTION</th>
+              <th class="sortable" (click)="sortData('deliveryDate')">
+                <div class="th-content">
+                  DELIVERY DATE
+                  <i class="fas sort-icon" [ngClass]="sortField === 'deliveryDate' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rfq of getDisplayedRfqs(); trackBy: trackByRfq" class="table-row">
+              <td class="po-number">{{ rfq.poNumber }}</td>
+              <td class="vendor-id">{{ rfq.vendorId }}</td>
+              <td class="doc-date">{{ rfq.docDate }}</td>
+              <td class="item-number">{{ rfq.itemNumber }}</td>
+              <td class="material">{{ rfq.material }}</td>
+              <td class="unit">{{ rfq.unit }}</td>
+              <td class="description">{{ rfq.description }}</td>
+              <td class="delivery-date">
+                <span class="date-badge" [class.no-date]="!rfq.deliveryDate">
+                  {{ rfq.deliveryDate || 'N/A' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination Card -->
+      <div class="pagination-card" *ngIf="filteredRfqs.length > 0">
+        <div class="pagination-info">
+          <span class="page-info">Page {{ currentPage }} of {{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
+          <span class="total-info">Total: {{ filteredRfqs.length }} items</span>
+        </div>
+        <div class="pagination-controls">
+          <button
+            class="pagination-button"
+            [class.disabled]="currentPage === 1"
+            [disabled]="currentPage === 1"
+            (click)="changePage(-1)">
+            <i class="fas fa-chevron-left pagination-icon"></i>
+            Previous
+          </button>
+          <div class="page-indicator">
+            <span class="current-page">{{ currentPage }}</span>
+            <span class="page-separator">of</span>
+            <span class="total-pages">{{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
+          </div>
+          <button
+            class="pagination-button"
+            [class.disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
+            [disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
+            (click)="changePage(1)">
+            Next
+            <i class="fas fa-chevron-right pagination-icon"></i>
+          </button>
         </div>
       </div>
     </div>
-    <button class="logout-button" (click)="goBack()">
-      <i class="fas fa-arrow-left logout-icon"></i>
-      <span class="logout-text">BACK</span>
-    </button>
-  </div>
 
-  <!-- Main Content Card (Tab) -->
-  <div class="content-card" *ngIf="!isLoading && paginatedRfqs.length; else noData">
-    <div class="po-search-row" style="gap: 18px; align-items: center;">
-      <h3 class="table-title" style="margin-bottom: 0;">RFQ Items</h3>
-      <i class="fas fa-search" style="font-size:1.2rem; margin-right: 8px;"></i>
-      <input
-        class="po-search-input"
-        type="text"
-        placeholder="Search PO Number..."
-        [(ngModel)]="poNumberSearch"
-        style="width: 140px; min-width: 140px; max-width: 140px;"
-      />
-
-      <!-- Action Buttons -->
-      <div class="table-actions-3d">
-        <button class="action-button-3d export-btn" (click)="exportData()" title="Export to CSV">
-          <i class="fas fa-download action-icon-3d"></i>
-          <span class="action-text-3d">Export</span>
-        </button>
-        <button class="action-button-3d refresh-btn" (click)="refreshData()" title="Refresh Data">
-          <i class="fas fa-sync-alt action-icon-3d" [class.spinning]="isLoading"></i>
-          <span class="action-text-3d">Refresh</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="table-header">
-      <div>
-        <p class="table-subtitle">Total RFQ items: {{ filteredRfqs.length }}</p>
-      </div>
-    </div>
-
-    <div class="table-container">
-      <table class="rfq-table">
-        <thead>
-          <tr>
-            <th class="sortable" (click)="sortData('poNumber')">
-              <div class="th-content">
-                PO NUMBER
-                <i class="fas sort-icon" [ngClass]="sortField === 'poNumber' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('vendorId')">
-              <div class="th-content">
-                VENDOR ID
-                <i class="fas sort-icon" [ngClass]="sortField === 'vendorId' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('documentDate')">
-              <div class="th-content">
-                DOCUMENT DATE
-                <i class="fas sort-icon" [ngClass]="sortField === 'documentDate' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('itemNumber')">
-              <div class="th-content">
-                ITEM NUMBER
-                <i class="fas sort-icon" [ngClass]="sortField === 'itemNumber' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('material')">
-              <div class="th-content">
-                MATERIAL
-                <i class="fas sort-icon" [ngClass]="sortField === 'material' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-              </div>
-            </th>
-            <th>UNIT</th>
-            <th>DESCRIPTION</th>
-            <th class="sortable" (click)="sortData('deliveryDate')">
-              <div class="th-content">
-                DELIVERY DATE
-                <i class="fas sort-icon" [ngClass]="sortField === 'deliveryDate' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let rfq of getDisplayedRfqs(); trackBy: trackByRfq" class="table-row">
-            <td class="po-number">{{ rfq.poNumber }}</td>
-            <td class="vendor-id">{{ rfq.vendorId }}</td>
-            <td class="doc-date">{{ rfq.docDate }}</td>
-            <td class="item-number">{{ rfq.itemNumber }}</td>
-            <td class="material">{{ rfq.material }}</td>
-            <td class="unit">{{ rfq.unit }}</td>
-            <td class="description">{{ rfq.description }}</td>
-            <td class="delivery-date">
-              <span class="date-badge" [class.no-date]="!rfq.deliveryDate">
-                {{ rfq.deliveryDate || 'N/A' }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- Pagination Card -->
-    <div class="pagination-card" *ngIf="filteredRfqs.length > 0">
-      <div class="pagination-info">
-        <span class="page-info">Page {{ currentPage }} of {{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
-        <span class="total-info">Total: {{ filteredRfqs.length }} items</span>
-      </div>
-      <div class="pagination-controls">
-        <button
-          class="pagination-button"
-          [class.disabled]="currentPage === 1"
-          [disabled]="currentPage === 1"
-          (click)="changePage(-1)">
-          <i class="fas fa-chevron-left pagination-icon"></i>
-          Previous
-        </button>
-        <div class="page-indicator">
-          <span class="current-page">{{ currentPage }}</span>
-          <span class="page-separator">of</span>
-          <span class="total-pages">{{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
+    <!-- No Data Template -->
+    <ng-template #noData>
+      <div class="no-data-card">
+        <div class="no-data-content">
+          <i class="fas fa-box-open"></i>
+          <h3 class="no-data-title">No RFQ Data Found</h3>
+          <p class="no-data-message">There are no Request for Quotation items available for this vendor at the moment.</p>
+          <button class="refresh-button" (click)="refreshData()">
+            <i class="fas fa-sync-alt"></i>
+            Refresh Data
+          </button>
         </div>
-        <button
-          class="pagination-button"
-          [class.disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
-          [disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
-          (click)="changePage(1)">
-          Next
-          <i class="fas fa-chevron-right pagination-icon"></i>
-        </button>
+      </div>
+    </ng-template>
+
+    <!-- Loading State -->
+    <div class="loading-card" *ngIf="isLoading">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading RFQ data...</p>
       </div>
     </div>
-  </div>
-
-  <!-- No Data Template -->
-  <ng-template #noData>
-    <div class="no-data-card">
-      <div class="no-data-content">
-        <i class="fas fa-box-open"></i>
-        <h3 class="no-data-title">No RFQ Data Found</h3>
-        <p class="no-data-message">There are no Request for Quotation items available for this vendor at the moment.</p>
-        <button class="refresh-button" (click)="refreshData()">
-          <i class="fas fa-sync-alt"></i>
-          Refresh Data
-        </button>
-      </div>
-    </div>
-  </ng-template>
-
-  <!-- Loading State -->
-  <div class="loading-card" *ngIf="isLoading">
-    <div class="loading-content">
-      <div class="loading-spinner"></div>
-      <p class="loading-text">Loading RFQ data...</p>
-    </div>
-  </div>
   </div>
 </div>
