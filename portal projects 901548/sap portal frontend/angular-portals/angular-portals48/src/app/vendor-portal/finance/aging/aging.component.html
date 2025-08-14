@@ -1,17 +1,17 @@
 
-<div class="aging-container">
+<div class="rfq-container">
   <!-- Enhanced Header Card -->
-  <div class="aging-header-card">
+  <div class="rfq-header-card">
     <div class="header-background"></div>
-    <div class="aging-header-content">
-      <div class="aging-header-avatar">
+    <div class="rfq-header-content">
+      <div class="rfq-header-avatar">
         <i class="fas fa-chart-line"></i>
       </div>
-      <div class="aging-header-text">
-        <h1 class="aging-gradient-title">Welcome to Aging Analysis Management!</h1>
+      <div class="rfq-header-text">
+        <h1 class="rfq-gradient-title">Welcome to Aging Analysis Management!</h1>
         <div class="welcome-id">
           <i class="fas fa-clock"></i>
-          <span>Vendor ID: V001</span>
+          <span>Vendor ID: {{ vendorId || 'V001' }}</span>
         </div>
         <div class="welcome-status">
           <span class="status-indicator"></span>
@@ -42,18 +42,18 @@
       <!-- Action Buttons -->
       <div class="table-actions-3d">
         <button 
-          class="action-button-3d action-button-export" 
+          class="action-button-3d export-btn" 
           (click)="exportData()" 
           title="Export Data">
           <i class="fas fa-download action-icon-3d"></i>
-          <span class="action-text-3d">EXPORT</span>
+          <span class="action-text-3d">Export</span>
         </button>
         <button 
-          class="action-button-3d action-button-refresh" 
+          class="action-button-3d refresh-btn" 
           (click)="refreshData()" 
           title="Refresh Data">
-          <i class="fas fa-sync-alt action-icon-3d"></i>
-          <span class="action-text-3d">REFRESH</span>
+          <i class="fas fa-sync-alt action-icon-3d" [class.spinning]="isLoading"></i>
+          <span class="action-text-3d">Refresh</span>
         </button>
       </div>
 
@@ -65,61 +65,43 @@
     </div>
 
     <!-- Table Container -->
-    <div class="table-container-3d">
-      <table class="aging-table-3d">
+    <div class="table-container">
+      <table class="rfq-table">
         <thead>
           <tr>
-            <th class="sortable" (click)="sortData('companyCode')">
+            <th class="sortable" (click)="sortData('paymentDoc')">
               <div class="th-content">
-                <span>COMPANY</span>
+                <span>PAYMENT DOC</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('accountNumber')">
-              <div class="th-content">
-                <span>ACCOUNT</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('documentNumber')">
-              <div class="th-content">
-                <span>DOCUMENT</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('fiscalYear')">
+            <th class="sortable" (click)="sortData('docYear')">
               <div class="th-content">
                 <span>YEAR</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('lineItem')">
+            <th class="sortable" (click)="sortData('paymentDate')">
               <div class="th-content">
-                <span>LINE ITEM</span>
+                <span>PAYMENT DATE</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('postingKey')">
+            <th class="sortable" (click)="sortData('enrtyDate')">
               <div class="th-content">
-                <span>POSTING KEY</span>
+                <span>ENTRY DATE</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('postingDate')">
+            <th class="sortable" (click)="sortData('vendorId')">
               <div class="th-content">
-                <span>POST DATE</span>
+                <span>VENDOR ID</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('documentDate')">
+            <th class="sortable" (click)="sortData('amountPaid')">
               <div class="th-content">
-                <span>DOC DATE</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('amount')">
-              <div class="th-content">
-                <span>AMOUNT</span>
+                <span>AMOUNT PAID</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
@@ -129,72 +111,87 @@
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('reference')">
+            <th class="sortable" (click)="sortData('clearingDoc')">
               <div class="th-content">
-                <span>REFERENCE</span>
+                <span>CLEARING DOC</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('documentType')">
+            <th class="sortable" (click)="sortData('refDocNo')">
               <div class="th-content">
-                <span>DOC TYPE</span>
+                <span>REF DOC NO</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('text')">
+            <th class="sortable" (click)="sortData('dueDate')">
               <div class="th-content">
-                <span>TEXT</span>
+                <span>DUE DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('aging')">
+              <div class="th-content">
+                <span>AGING STATUS</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr class="table-row-3d" *ngFor="let aging of paginatedAging; trackBy: trackByAging">
-            <td class="company-code">{{ aging.companyCode }}</td>
-            <td class="account-number">{{ aging.accountNumber }}</td>
-            <td class="document-number">{{ aging.documentNumber }}</td>
-            <td class="fiscal-year">{{ aging.fiscalYear }}</td>
-            <td class="line-item">{{ aging.lineItem }}</td>
-            <td class="posting-key">{{ aging.postingKey }}</td>
-            <td class="posting-date">
-              <span class="date-badge">{{ aging.postingDate | date:'M/d/yyyy' }}</span>
+          <tr class="table-row" *ngFor="let aging of paginatedAging; trackBy: trackByAging">
+            <td class="payment-doc">{{ aging.paymentDoc }}</td>
+            <td class="doc-year">{{ aging.docYear }}</td>
+            <td class="payment-date">
+              <span class="date-badge">{{ formatDate(aging.paymentDate) }}</span>
             </td>
-            <td class="document-date">
-              <span class="date-badge">{{ aging.documentDate | date:'M/d/yyyy' }}</span>
+            <td class="entry-date">
+              <span class="date-badge">{{ formatDate(aging.enrtyDate) }}</span>
             </td>
-            <td class="amount">{{ aging.amount | currency:aging.currency:'symbol':'1.2-2' }}</td>
+            <td class="vendor-id">{{ aging.vendorId }}</td>
+            <td class="amount-paid">{{ aging.amountPaid | currency:aging.currency:'symbol':'1.2-2' }}</td>
             <td class="currency">{{ aging.currency }}</td>
-            <td class="reference">{{ aging.reference }}</td>
-            <td class="document-type">{{ aging.documentType }}</td>
-            <td class="text" [title]="aging.text">{{ aging.text }}</td>
+            <td class="clearing-doc">{{ aging.clearingDoc || 'N/A' }}</td>
+            <td class="ref-doc-no">{{ aging.refDocNo || 'N/A' }}</td>
+            <td class="due-date">
+              <span class="date-badge">{{ formatDate(aging.dueDate) }}</span>
+            </td>
+            <td class="aging-status">
+              <span class="aging-badge" [ngClass]="getAgingClass(aging.aging)">
+                {{ getAgingText(aging.aging) }}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Pagination Card -->
-    <div class="pagination-card-3d">
+    <div class="pagination-card" *ngIf="filteredAging.length > 0">
       <div class="pagination-info">
-        <span class="page-info">Page {{ currentPage }} of {{ Math.ceil(filteredAging.length / itemsPerPage) }} - Total: {{ filteredAging.length }} items</span>
+        <span class="page-info">Page {{ currentPage }} of {{ Math.ceil(filteredAging.length / itemsPerPage) }}</span>
+        <span class="total-info">Total: {{ filteredAging.length }} items</span>
       </div>
       <div class="pagination-controls">
-        <button 
-          class="pagination-btn-3d"
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === 1"
           [disabled]="currentPage === 1"
           (click)="changePage(-1)">
-          <i class="fas fa-chevron-left"></i>
+          <i class="fas fa-chevron-left pagination-icon"></i>
           Previous
         </button>
-        <span class="current-page-3d">{{ currentPage }}</span>
-        <span class="page-separator">of</span>
-        <span class="total-pages-3d">{{ Math.ceil(filteredAging.length / itemsPerPage) }}</span>
-        <button 
-          class="pagination-btn-3d"
+        <div class="page-indicator">
+          <span class="current-page">{{ currentPage }}</span>
+          <span class="page-separator">of</span>
+          <span class="total-pages">{{ Math.ceil(filteredAging.length / itemsPerPage) }}</span>
+        </div>
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === Math.ceil(filteredAging.length / itemsPerPage)"
           [disabled]="currentPage === Math.ceil(filteredAging.length / itemsPerPage)"
           (click)="changePage(1)">
           Next
-          <i class="fas fa-chevron-right"></i>
+          <i class="fas fa-chevron-right pagination-icon"></i>
         </button>
       </div>
     </div>
