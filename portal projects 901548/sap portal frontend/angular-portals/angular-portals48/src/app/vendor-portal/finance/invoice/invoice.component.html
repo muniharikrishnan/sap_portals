@@ -1,102 +1,260 @@
+
 <div class="invoice-container">
-  <!-- Header Section -->
-  <div class="invoice-header">
-    <div class="header-content">
-      <div class="title-section">
-        <div class="header-icon">
-          <i class="fas fa-file-invoice-dollar"></i>
+  <!-- Enhanced Header Card -->
+  <div class="invoice-header-card">
+    <div class="header-background"></div>
+    <div class="invoice-header-content">
+      <div class="invoice-header-avatar">
+        <i class="fas fa-file-invoice-dollar"></i>
+      </div>
+      <div class="invoice-header-text">
+        <h1 class="invoice-gradient-title">Welcome to Invoice Management!</h1>
+        <div class="welcome-id">
+          <i class="fas fa-receipt"></i>
+          <span>Vendor ID: V001</span>
         </div>
-        <h1 class="invoice-title">Welcome to Invoice Management!</h1>
-        <p class="invoice-subtitle">Invoice Portal</p>
-      </div>
-      <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left back-icon"></i>
-        BACK
-      </button>
-    </div>
-  </div>
-
-  <!-- Controls -->
-  <div class="controls-card">
-    <div class="search-section">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Search Doc Number, PO Number..."
-          [(ngModel)]="searchTerm"
-        />
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">TOTAL ITEMS</div>
-        <div class="stat-value">{{ filteredInvoiceData.length }}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">PAGE</div>
-        <div class="stat-value">1 / 1</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="content-card" *ngIf="filteredInvoiceData.length > 0">
-    <div class="table-container">
-      <div class="table-header">
-        <h2 class="table-title">Invoice Items</h2>
-        <div class="table-actions">
-          <button class="action-button" (click)="exportData()">
-            <i class="fas fa-download"></i>
-            EXPORT
-          </button>
-          <button class="action-button" (click)="refreshData()">
-            <i class="fas fa-sync-alt"></i>
-            REFRESH
-          </button>
+        <div class="welcome-status">
+          <span class="status-indicator"></span>
+          Invoice Portal
         </div>
       </div>
-      <table class="invoice-table">
+    </div>
+    <button class="logout-button" (click)="goBack()">
+      <i class="fas fa-arrow-left logout-icon"></i>
+      <span class="logout-text">BACK</span>
+    </button>
+  </div>
+
+  <!-- Main Content Card (Tab) -->
+  <div class="content-card" *ngIf="!isLoading && paginatedInvoices.length; else noData">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0;">Invoice Items</h3>
+      <i class="fas fa-search" style="font-size:1.2rem; margin-right: 8px;"></i>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search Invoice..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+
+      <!-- Action Buttons -->
+      <div class="table-actions-3d">
+        <button 
+          class="action-button-3d action-button-export" 
+          (click)="exportData()" 
+          title="Export Data">
+          <i class="fas fa-download action-icon-3d"></i>
+          <span class="action-text-3d">EXPORT</span>
+        </button>
+        <button 
+          class="action-button-3d action-button-refresh" 
+          (click)="refreshData()" 
+          title="Refresh Data">
+          <i class="fas fa-sync-alt action-icon-3d"></i>
+          <span class="action-text-3d">REFRESH</span>
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="po-search-stats">
+        <span class="stat-label">Total Invoice items:</span>
+        <span class="stat-value">{{ filteredInvoices.length }}</span>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container-3d">
+      <table class="invoice-table-3d">
         <thead>
           <tr>
-            <th>Invoice No</th>
-            <th>Invoice Date</th>
-            <th>PO No</th>
-            <th>PO Item</th>
-            <th>Material No</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Unit Price</th>
-            <th>Total Amount</th>
-            <th>Currency</th>
-            <th>PDF</th>
+            <th class="sortable" (click)="sortData('companyCode')">
+              <div class="th-content">
+                <span>COMPANY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('vendorId')">
+              <div class="th-content">
+                <span>VENDOR ID</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentNumber')">
+              <div class="th-content">
+                <span>DOCUMENT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('fiscalYear')">
+              <div class="th-content">
+                <span>FISCAL YEAR</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('lineItem')">
+              <div class="th-content">
+                <span>LINE ITEM</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('postingKey')">
+              <div class="th-content">
+                <span>POST KEY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('postingDate')">
+              <div class="th-content">
+                <span>POST DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentDate')">
+              <div class="th-content">
+                <span>DOC DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('dueDate')">
+              <div class="th-content">
+                <span>DUE DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('amount')">
+              <div class="th-content">
+                <span>AMOUNT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('localCurrency')">
+              <div class="th-content">
+                <span>CURRENCY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('reference')">
+              <div class="th-content">
+                <span>REFERENCE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentType')">
+              <div class="th-content">
+                <span>DOC TYPE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('text')">
+              <div class="th-content">
+                <span>TEXT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>ACTIONS</span>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let invoice of filteredInvoiceData">
-            <td>{{ invoice.invoiceNo }}</td>
-            <td>{{ formatDate(invoice.invoiceDate) }}</td>
-            <td>{{ invoice.poNo }}</td>
-            <td>{{ invoice.poItem }}</td>
-            <td>{{ invoice.materialNo }}</td>
-            <td>{{ invoice.description }}</td>
-            <td>{{ invoice.quantity }}</td>
-            <td>{{ invoice.unit }}</td>
-            <td>{{ invoice.unitPrice }}</td>
-            <td>{{ invoice.totalAmount }}</td>
-            <td>{{ invoice.currency }}</td>
-            <td>
-              <button class="pdf-button" (click)="downloadPdf(invoice.invoiceNo)">Download PDF</button>
+          <tr class="table-row-3d" *ngFor="let invoice of paginatedInvoices; trackBy: trackByInvoice">
+            <td class="company-code">{{ invoice.companyCode }}</td>
+            <td class="vendor-id">{{ invoice.vendorId }}</td>
+            <td class="document-number">{{ invoice.documentNumber }}</td>
+            <td class="fiscal-year">{{ invoice.fiscalYear }}</td>
+            <td class="line-item">{{ invoice.lineItem }}</td>
+            <td class="posting-key">{{ invoice.postingKey }}</td>
+            <td class="posting-date">{{ invoice.postingDate | date:'yyyy-MM-dd' }}</td>
+            <td class="document-date">{{ invoice.documentDate | date:'yyyy-MM-dd' }}</td>
+            <td class="due-date">
+              <span class="date-badge" [class.overdue]="isOverdue(invoice.dueDate)">
+                {{ invoice.dueDate | date:'MMM d, y' }}
+              </span>
+            </td>
+            <td class="amount">{{ invoice.amount | currency:invoice.localCurrency:'symbol':'1.2-2' }}</td>
+            <td class="currency">{{ invoice.localCurrency }}</td>
+            <td class="reference">{{ invoice.reference }}</td>
+            <td class="document-type">{{ invoice.documentType }}</td>
+            <td class="text" [title]="invoice.text">{{ invoice.text }}</td>
+            <td class="actions">
+              <button class="pdf-button" (click)="downloadPDF(invoice)" title="Download PDF">
+                <i class="fas fa-file-pdf"></i>
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Pagination Card -->
+    <div class="pagination-card-3d">
+      <div class="pagination-text">
+        Page {{ currentPage }} of {{ Math.ceil(filteredInvoices.length / itemsPerPage) }}
+        - Total: {{ filteredInvoices.length }} items
+      </div>
+      <div class="pagination-controls">
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === 1"
+          [disabled]="currentPage === 1"
+          (click)="changePage(-1)">
+          <i class="fas fa-chevron-left pagination-icon"></i>
+          Previous
+        </button>
+        <div class="page-indicator">
+          <span class="current-page">{{ currentPage }}</span>
+          <span class="page-separator">of</span>
+          <span class="total-pages">{{ Math.ceil(filteredInvoices.length / itemsPerPage) }}</span>
+        </div>
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === Math.ceil(filteredInvoices.length / itemsPerPage)"
+          [disabled]="currentPage === Math.ceil(filteredInvoices.length / itemsPerPage)"
+          (click)="changePage(1)">
+          Next
+          <i class="fas fa-chevron-right pagination-icon"></i>
+        </button>
+      </div>
+    </div>
   </div>
-  <div *ngIf="loading" class="loading-text">Loading invoice data...</div>
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  <div class="table-wrapper">
-    <p *ngIf="filteredInvoiceData.length === 0 && !loading && !errorMessage" class="no-data-message">
-      No invoice data found for this vendor.
-    </p>
+
+  <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="no-data-card">
+      <div class="no-data-content">
+        <i class="fas fa-box-open"></i>
+        <h3 class="no-data-title">No Invoice Data Found</h3>
+        <p class="no-data-message">There are no invoice items available for this vendor at the moment.</p>
+        <button class="refresh-button" (click)="refreshData()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading invoice data...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-card" *ngIf="errorMessage && !isLoading">
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle error-icon"></i>
+      <h3 class="error-title">Error Loading Data</h3>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="fas fa-sync-alt refresh-icon"></i>
+        Retry
+      </button>
+    </div>
   </div>
 </div>

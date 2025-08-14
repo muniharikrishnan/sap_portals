@@ -1,100 +1,239 @@
+
 <div class="aging-container">
-  <!-- Header Section -->
-  <div class="aging-header">
-    <div class="header-content">
-      <div class="title-section">
-        <div class="header-icon">
-          <i class="fas fa-calendar-alt"></i>
-        </div>
-        <h1 class="aging-title">Welcome to Aging Management!</h1>
-        <p class="aging-subtitle">Aging Report Portal</p>
+  <!-- Enhanced Header Card -->
+  <div class="aging-header-card">
+    <div class="header-background"></div>
+    <div class="aging-header-content">
+      <div class="aging-header-avatar">
+        <i class="fas fa-chart-line"></i>
       </div>
-      <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left back-icon"></i>
-        BACK
-      </button>
+      <div class="aging-header-text">
+        <h1 class="aging-gradient-title">Welcome to Aging Analysis!</h1>
+        <div class="welcome-id">
+          <i class="fas fa-clock"></i>
+          <span>Vendor ID: V001</span>
+        </div>
+        <div class="welcome-status">
+          <span class="status-indicator"></span>
+          Aging Report Portal
+        </div>
+      </div>
+    </div>
+    <button class="logout-button" (click)="goBack()">
+      <i class="fas fa-arrow-left logout-icon"></i>
+      <span class="logout-text">BACK</span>
+    </button>
+  </div>
+
+  <!-- Main Content Card (Tab) -->
+  <div class="content-card" *ngIf="!isLoading && paginatedAging.length; else noData">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0;">Aging Items</h3>
+      <i class="fas fa-search" style="font-size:1.2rem; margin-right: 8px;"></i>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search Document..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+
+      <!-- Action Buttons -->
+      <div class="table-actions-3d">
+        <button 
+          class="action-button-3d action-button-export" 
+          (click)="exportData()" 
+          title="Export Data">
+          <i class="fas fa-download action-icon-3d"></i>
+          <span class="action-text-3d">EXPORT</span>
+        </button>
+        <button 
+          class="action-button-3d action-button-refresh" 
+          (click)="refreshData()" 
+          title="Refresh Data">
+          <i class="fas fa-sync-alt action-icon-3d"></i>
+          <span class="action-text-3d">REFRESH</span>
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="po-search-stats">
+        <span class="stat-label">Total Aging items:</span>
+        <span class="stat-value">{{ filteredAging.length }}</span>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container-3d">
+      <table class="aging-table-3d">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sortData('companyCode')">
+              <div class="th-content">
+                <span>COMPANY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('accountNumber')">
+              <div class="th-content">
+                <span>ACCOUNT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentNumber')">
+              <div class="th-content">
+                <span>DOCUMENT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('fiscalYear')">
+              <div class="th-content">
+                <span>FISCAL YEAR</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('lineItem')">
+              <div class="th-content">
+                <span>LINE ITEM</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('postingKey')">
+              <div class="th-content">
+                <span>POST KEY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('postingDate')">
+              <div class="th-content">
+                <span>POST DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentDate')">
+              <div class="th-content">
+                <span>DOC DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('amount')">
+              <div class="th-content">
+                <span>AMOUNT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('currency')">
+              <div class="th-content">
+                <span>CURRENCY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('reference')">
+              <div class="th-content">
+                <span>REFERENCE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentType')">
+              <div class="th-content">
+                <span>DOC TYPE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('text')">
+              <div class="th-content">
+                <span>TEXT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-row-3d" *ngFor="let aging of paginatedAging; trackBy: trackByAging">
+            <td class="company-code">{{ aging.companyCode }}</td>
+            <td class="account-number">{{ aging.accountNumber }}</td>
+            <td class="document-number">{{ aging.documentNumber }}</td>
+            <td class="fiscal-year">{{ aging.fiscalYear }}</td>
+            <td class="line-item">{{ aging.lineItem }}</td>
+            <td class="posting-key">{{ aging.postingKey }}</td>
+            <td class="posting-date">{{ aging.postingDate | date:'yyyy-MM-dd' }}</td>
+            <td class="document-date">{{ aging.documentDate | date:'yyyy-MM-dd' }}</td>
+            <td class="amount">{{ aging.amount | currency:aging.currency:'symbol':'1.2-2' }}</td>
+            <td class="currency">{{ aging.currency }}</td>
+            <td class="reference">{{ aging.reference }}</td>
+            <td class="document-type">{{ aging.documentType }}</td>
+            <td class="text" [title]="aging.text">{{ aging.text }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Card -->
+    <div class="pagination-card-3d">
+      <div class="pagination-text">
+        Page {{ currentPage }} of {{ Math.ceil(filteredAging.length / itemsPerPage) }}
+        - Total: {{ filteredAging.length }} items
+      </div>
+      <div class="pagination-controls">
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === 1"
+          [disabled]="currentPage === 1"
+          (click)="changePage(-1)">
+          <i class="fas fa-chevron-left pagination-icon"></i>
+          Previous
+        </button>
+        <div class="page-indicator">
+          <span class="current-page">{{ currentPage }}</span>
+          <span class="page-separator">of</span>
+          <span class="total-pages">{{ Math.ceil(filteredAging.length / itemsPerPage) }}</span>
+        </div>
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === Math.ceil(filteredAging.length / itemsPerPage)"
+          [disabled]="currentPage === Math.ceil(filteredAging.length / itemsPerPage)"
+          (click)="changePage(1)">
+          Next
+          <i class="fas fa-chevron-right pagination-icon"></i>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Controls -->
-  <div class="controls-card">
-    <div class="search-section">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Search Payment Doc, Vendor ID, Amount..."
-          [(ngModel)]="searchTerm"
-        />
+  <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="no-data-card">
+      <div class="no-data-content">
+        <i class="fas fa-box-open"></i>
+        <h3 class="no-data-title">No Aging Data Found</h3>
+        <p class="no-data-message">There are no aging analysis items available for this vendor at the moment.</p>
+        <button class="refresh-button" (click)="refreshData()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh Data
+        </button>
       </div>
-      <div class="stat-item">
-        <div class="stat-label">TOTAL ITEMS</div>
-        <div class="stat-value">{{ filteredAndSortedData.length }}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">PAGE</div>
-        <div class="stat-value">1 / 1</div>
-      </div>
+    </div>
+  </ng-template>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading aging data...</p>
     </div>
   </div>
 
-  <div class="content-card" *ngIf="filteredAndSortedData.length > 0">
-    <div class="table-container">
-      <div class="table-header">
-        <h2 class="table-title">Aging Items</h2>
-        <div class="table-actions">
-          <button class="action-button" (click)="exportData()">
-            <i class="fas fa-download"></i>
-            EXPORT
-          </button>
-          <button class="action-button" (click)="refreshData()">
-            <i class="fas fa-sync-alt"></i>
-            REFRESH
-          </button>
-        </div>
-      </div>/div>
-    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
-      <button class="action-button" (click)="exportData()">
-        <i class="action-icon">📊</i>
-        Export
-      </button>
-      <button class="action-button" (click)="refreshData()">
-        <i class="action-icon">🔄</i>
-        Refresh
+  <!-- Error State -->
+  <div class="error-card" *ngIf="errorMessage && !isLoading">
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle error-icon"></i>
+      <h3 class="error-title">Error Loading Data</h3>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="fas fa-sync-alt refresh-icon"></i>
+        Retry
       </button>
     </div>
-    <div class="table-wrapper">
-    <table *ngIf="filteredAndSortedData.length > 0; else noData" class="aging-table">
-      <thead>
-        <tr>
-          <th (click)="onSort('paymentDoc')">Payment Doc</th>
-          <th (click)="onSort('docYear')">Doc Year</th>
-          <th (click)="onSort('paymentDate')">Payment Date</th>
-          <th (click)="onSort('enrtyDate')">Entry Date</th>
-          <th (click)="onSort('vendorId')">Vendor ID</th>
-          <th (click)="onSort('amountPaid')">Amount Paid</th>
-          <th (click)="onSort('currency')">Currency</th>
-          <th (click)="onSort('dueDate')">Due Date</th>
-          <th (click)="onSort('aging')">Aging</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of filteredAndSortedData">
-          <td>{{ item.paymentDoc }}</td>
-          <td>{{ item.docYear }}</td>
-          <td>{{ formatDate(item.paymentDate) }}</td>
-          <td>{{ formatDate(item.enrtyDate) }}</td>
-          <td>{{ item.vendorId }}</td>
-          <td>{{ item.amountPaid }}</td>
-          <td>{{ item.currency }}</td>
-          <td>{{ formatDate(item.dueDate) }}</td>
-          <td>{{ item.aging }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <ng-template #noData>
-      <p class="no-data-message">No aging data found for this vendor.</p>
-    </ng-template>
   </div>
 </div>

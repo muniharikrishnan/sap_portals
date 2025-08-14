@@ -1,92 +1,243 @@
+
 <div class="memo-container">
-  <!-- Header Section -->
-  <div class="memo-header">
-    <div class="header-content">
-      <div class="title-section">
-        <div class="header-icon">
-          <i class="fas fa-file-invoice"></i>
+  <!-- Enhanced Header Card -->
+  <div class="memo-header-card">
+    <div class="header-background"></div>
+    <div class="memo-header-content">
+      <div class="memo-header-avatar">
+        <i class="fas fa-sticky-note"></i>
+      </div>
+      <div class="memo-header-text">
+        <h1 class="memo-gradient-title">Welcome to Memo Management!</h1>
+        <div class="welcome-id">
+          <i class="fas fa-file-text"></i>
+          <span>Vendor ID: V001</span>
         </div>
-        <h1 class="memo-title">Welcome to Memo Management!</h1>
-        <p class="memo-subtitle">Credit/Debit Memo Portal</p>
-      </div>
-      <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left back-icon"></i>
-        BACK
-      </button>
-    </div>
-  </div>
-
-  <!-- Controls -->
-  <div class="controls-card">
-    <div class="search-section">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Search Document Number, Amount..."
-          [(ngModel)]="searchTerm"
-        />
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">TOTAL ITEMS</div>
-        <div class="stat-value">{{ filteredMemoData.length }}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">PAGE</div>
-        <div class="stat-value">1 / 1</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="content-card" *ngIf="filteredMemoData.length > 0">
-    <div class="table-container">
-      <div class="table-header">
-        <h2 class="table-title">Memo Items</h2>
-        <div class="table-actions">
-          <button class="action-button" (click)="exportData()">
-            <i class="fas fa-download"></i>
-            EXPORT
-          </button>
-          <button class="action-button" (click)="refreshData()">
-            <i class="fas fa-sync-alt"></i>
-            REFRESH
-          </button>
+        <div class="welcome-status">
+          <span class="status-indicator"></span>
+          Credit/Debit Memo Portal
         </div>
       </div>
-      <table class="memo-table">
+    </div>
+    <button class="logout-button" (click)="goBack()">
+      <i class="fas fa-arrow-left logout-icon"></i>
+      <span class="logout-text">BACK</span>
+    </button>
+  </div>
+
+  <!-- Main Content Card (Tab) -->
+  <div class="content-card" *ngIf="!isLoading && paginatedMemos.length; else noData">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0;">Memo Items</h3>
+      <i class="fas fa-search" style="font-size:1.2rem; margin-right: 8px;"></i>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search Document..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+
+      <!-- Action Buttons -->
+      <div class="table-actions-3d">
+        <button 
+          class="action-button-3d action-button-export" 
+          (click)="exportData()" 
+          title="Export Data">
+          <i class="fas fa-download action-icon-3d"></i>
+          <span class="action-text-3d">EXPORT</span>
+        </button>
+        <button 
+          class="action-button-3d action-button-refresh" 
+          (click)="refreshData()" 
+          title="Refresh Data">
+          <i class="fas fa-sync-alt action-icon-3d"></i>
+          <span class="action-text-3d">REFRESH</span>
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="po-search-stats">
+        <span class="stat-label">Total Memo items:</span>
+        <span class="stat-value">{{ filteredMemos.length }}</span>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container-3d">
+      <table class="memo-table-3d">
         <thead>
           <tr>
-            <th>Memo Doc</th>
-            <th>Doc Year</th>
-            <th>Posting Date</th>
-            <th>Entry Date</th>
-            <th>Vendor ID</th>
-            <th>Memo Type</th>
-            <th>Amount</th>
-            <th>Currency</th>
-            <th>Doc Type</th>
-            <th>Company Code</th>
+            <th class="sortable" (click)="sortData('companyCode')">
+              <div class="th-content">
+                <span>COMPANY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('vendorId')">
+              <div class="th-content">
+                <span>VENDOR ID</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentNumber')">
+              <div class="th-content">
+                <span>DOCUMENT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('fiscalYear')">
+              <div class="th-content">
+                <span>FISCAL YEAR</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('lineItem')">
+              <div class="th-content">
+                <span>LINE ITEM</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('postingKey')">
+              <div class="th-content">
+                <span>POST KEY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('postingDate')">
+              <div class="th-content">
+                <span>POST DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentDate')">
+              <div class="th-content">
+                <span>DOC DATE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('amount')">
+              <div class="th-content">
+                <span>AMOUNT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('localCurrency')">
+              <div class="th-content">
+                <span>CURRENCY</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('reference')">
+              <div class="th-content">
+                <span>REFERENCE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('documentType')">
+              <div class="th-content">
+                <span>DOC TYPE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('text')">
+              <div class="th-content">
+                <span>TEXT</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let memo of filteredMemoData">
-            <td>{{ memo.memoDoc }}</td>
-            <td>{{ memo.docYear }}</td>
-            <td>{{ formatSAPDate(memo.postingDate) }}</td>
-            <td>{{ formatSAPDate(memo.entryDate) }}</td>
-            <td>{{ memo.vendorId }}</td>
-            <td>{{ memo.memoType }}</td>
-            <td>{{ memo.amount }}</td>
-            <td>{{ memo.currency }}</td>
-            <td>{{ memo.docType }}</td>
-            <td>{{ memo.companyCode }}</td>
+          <tr class="table-row-3d" *ngFor="let memo of paginatedMemos; trackBy: trackByMemo">
+            <td class="company-code">{{ memo.companyCode }}</td>
+            <td class="vendor-id">{{ memo.vendorId }}</td>
+            <td class="document-number">{{ memo.documentNumber }}</td>
+            <td class="fiscal-year">{{ memo.fiscalYear }}</td>
+            <td class="line-item">{{ memo.lineItem }}</td>
+            <td class="posting-key">{{ memo.postingKey }}</td>
+            <td class="posting-date">{{ memo.postingDate | date:'yyyy-MM-dd' }}</td>
+            <td class="document-date">{{ memo.documentDate | date:'yyyy-MM-dd' }}</td>
+            <td class="amount">{{ memo.amount | currency:memo.localCurrency:'symbol':'1.2-2' }}</td>
+            <td class="currency">{{ memo.localCurrency }}</td>
+            <td class="reference">{{ memo.reference }}</td>
+            <td class="document-type">
+              <span class="type-badge" [class.credit]="memo.documentType === 'Credit'" [class.debit]="memo.documentType === 'Debit'">
+                {{ memo.documentType }}
+              </span>
+            </td>
+            <td class="text" [title]="memo.text">{{ memo.text }}</td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Pagination Card -->
+    <div class="pagination-card-3d">
+      <div class="pagination-text">
+        Page {{ currentPage }} of {{ Math.ceil(filteredMemos.length / itemsPerPage) }}
+        - Total: {{ filteredMemos.length }} items
+      </div>
+      <div class="pagination-controls">
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === 1"
+          [disabled]="currentPage === 1"
+          (click)="changePage(-1)">
+          <i class="fas fa-chevron-left pagination-icon"></i>
+          Previous
+        </button>
+        <div class="page-indicator">
+          <span class="current-page">{{ currentPage }}</span>
+          <span class="page-separator">of</span>
+          <span class="total-pages">{{ Math.ceil(filteredMemos.length / itemsPerPage) }}</span>
+        </div>
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === Math.ceil(filteredMemos.length / itemsPerPage)"
+          [disabled]="currentPage === Math.ceil(filteredMemos.length / itemsPerPage)"
+          (click)="changePage(1)">
+          Next
+          <i class="fas fa-chevron-right pagination-icon"></i>
+        </button>
+      </div>
+    </div>
   </div>
-  <p *ngIf="filteredMemoData.length === 0" class="no-data-message">
-    No memo data available.
-  </p>
+
+  <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="no-data-card">
+      <div class="no-data-content">
+        <i class="fas fa-box-open"></i>
+        <h3 class="no-data-title">No Memo Data Found</h3>
+        <p class="no-data-message">There are no credit/debit memo items available for this vendor at the moment.</p>
+        <button class="refresh-button" (click)="refreshData()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading memo data...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-card" *ngIf="errorMessage && !isLoading">
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle error-icon"></i>
+      <h3 class="error-title">Error Loading Data</h3>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="fas fa-sync-alt refresh-icon"></i>
+        Retry
+      </button>
+    </div>
+  </div>
 </div>
