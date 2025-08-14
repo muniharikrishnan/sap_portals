@@ -1,37 +1,59 @@
-<div class="memo-page">
-  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">← Back</button>
-  <div class="memo-header-top-right">
-    <h2 class="header-title memo-gradient-title">Credit/Debit Memo</h2>
+<div class="memo-container">
+  <!-- Header Section -->
+  <div class="memo-header">
+    <div class="header-content">
+      <div class="title-section">
+        <div class="header-icon">
+          <i class="fas fa-file-invoice"></i>
+        </div>
+        <h1 class="memo-title">Welcome to Memo Management!</h1>
+        <p class="memo-subtitle">Credit/Debit Memo Portal</p>
+      </div>
+      <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left back-icon"></i>
+        BACK
+      </button>
+    </div>
   </div>
-  <div class="content-card" *ngIf="filteredMemoData.length > 0">
-    <div class="po-search-row" style="gap: 18px; align-items: center;">
-      <h3 class="table-title" style="margin-bottom: 0; background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent;">Memo Items</h3>
-      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
-      <input
-        class="po-search-input"
-        type="text"
-        placeholder="Search memo data..."
-        [(ngModel)]="searchTerm"
-        style="width: 140px; min-width: 140px; max-width: 140px;"
-      />
-      <div class="po-search-stats">
-        <span class="stat-label">Total Items</span>
-        <span class="stat-value">{{ filteredMemoData.length }}</span>
-        <span class="stat-label" style="margin-left: 24px;">Page</span>
-        <span class="stat-value">1 / 1</span>
+
+  <!-- Controls -->
+  <div class="controls-card">
+    <div class="search-section">
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search Document Number, Amount..."
+          [(ngModel)]="searchTerm"
+        />
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">TOTAL ITEMS</div>
+        <div class="stat-value">{{ filteredMemoData.length }}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">PAGE</div>
+        <div class="stat-value">1 / 1</div>
       </div>
     </div>
-    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
-      <button class="action-button" (click)="exportData()">
-        <i class="action-icon">📊</i>
-        Export
-      </button>
-      <button class="action-button" (click)="refreshData()">
-        <i class="action-icon">🔄</i>
-        Refresh
-      </button>
-    </div>
+  </div>
+
+  <div class="content-card" *ngIf="filteredMemoData.length > 0">
     <div class="table-container">
+      <div class="table-header">
+        <h2 class="table-title">Memo Items</h2>
+        <div class="table-actions">
+          <button class="action-button" (click)="exportData()">
+            <i class="fas fa-download"></i>
+            EXPORT
+          </button>
+          <button class="action-button" (click)="refreshData()">
+            <i class="fas fa-sync-alt"></i>
+            REFRESH
+          </button>
+        </div>
+      </div>
       <table class="memo-table">
         <thead>
           <tr>
