@@ -36,11 +36,23 @@
         [(ngModel)]="poNumberSearch"
         style="width: 140px; min-width: 140px; max-width: 140px;"
       />
-      <div class="po-search-stats">
-        <span class="stat-label">Total Items</span>
-        <span class="stat-value">{{ filteredRfqs.length }}</span>
-        <span class="stat-label" style="margin-left: 24px;">Page</span>
-        <span class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
+
+      <!-- Action Buttons -->
+      <div class="table-actions-3d">
+        <button class="action-button-3d export-btn" (click)="exportData()" title="Export to CSV">
+          <i class="fas fa-download action-icon-3d"></i>
+          <span class="action-text-3d">Export</span>
+        </button>
+        <button class="action-button-3d refresh-btn" (click)="refreshData()" title="Refresh Data">
+          <i class="fas fa-sync-alt action-icon-3d" [class.spinning]="isLoading"></i>
+          <span class="action-text-3d">Refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="table-header">
+      <div>
+        <p class="table-subtitle">Total RFQ items: {{ filteredRfqs.length }}</p>
       </div>
     </div>
 
@@ -48,47 +60,42 @@
       <table class="rfq-table">
         <thead>
           <tr>
-            <th class="sortable" (click)="toggleSort('poNumber')">
+            <th class="sortable" (click)="sortData('poNumber')">
               <div class="th-content">
-                <span>PO Number</span>
-                <i class="fas fa-sort"></i>
+                PO NUMBER
+                <i class="fas sort-icon" [ngClass]="sortField === 'poNumber' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
               </div>
             </th>
-            <th class="sortable" (click)="toggleSort('vendorId')">
+            <th class="sortable" (click)="sortData('vendorId')">
               <div class="th-content">
-                <span>Vendor ID</span>
-                <i class="fas fa-sort"></i>
+                VENDOR ID
+                <i class="fas sort-icon" [ngClass]="sortField === 'vendorId' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
               </div>
             </th>
-            <th class="sortable" (click)="toggleSort('docDate')">
+            <th class="sortable" (click)="sortData('documentDate')">
               <div class="th-content">
-                <span>Document Date</span>
-                <i class="fas fa-sort"></i>
+                DOCUMENT DATE
+                <i class="fas sort-icon" [ngClass]="sortField === 'documentDate' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
               </div>
             </th>
-            <th>
+            <th class="sortable" (click)="sortData('itemNumber')">
               <div class="th-content">
-                <span>Item Number</span>
+                ITEM NUMBER
+                <i class="fas sort-icon" [ngClass]="sortField === 'itemNumber' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
               </div>
             </th>
-            <th>
+            <th class="sortable" (click)="sortData('material')">
               <div class="th-content">
-                <span>Material</span>
+                MATERIAL
+                <i class="fas sort-icon" [ngClass]="sortField === 'material' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
               </div>
             </th>
-            <th>
+            <th>UNIT</th>
+            <th>DESCRIPTION</th>
+            <th class="sortable" (click)="sortData('deliveryDate')">
               <div class="th-content">
-                <span>Unit</span>
-              </div>
-            </th>
-            <th>
-              <div class="th-content">
-                <span>Description</span>
-              </div>
-            </th>
-            <th>
-              <div class="th-content">
-                <span>Delivery Date</span>
+                DELIVERY DATE
+                <i class="fas sort-icon" [ngClass]="sortField === 'deliveryDate' ? (sortAscending ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
               </div>
             </th>
           </tr>
