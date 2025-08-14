@@ -80,7 +80,19 @@ export class MemoComponent implements OnInit {
     }
   }
 
-  // Template compatibility properties that map to existing data
+  // Add this getter to the class
+  get displayedMemoData() {
+    let data = this.filteredMemoData;
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      data = data.filter(memo =>
+        memo.docNumber && memo.docNumber.toString().includes(this.searchTerm.trim())
+      );
+    }
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return data.slice(start, start + this.itemsPerPage);
+  }
+
+  // Template compatibility properties
   get filteredMemos(): any[] {
     return this.filteredMemoData || [];
   }
@@ -104,7 +116,7 @@ export class MemoComponent implements OnInit {
   }
 
   trackByMemo(index: number, memo: any): any {
-    return memo.id || index;
+    return memo.docNumber || index;
   }
 
   exportData(): void {

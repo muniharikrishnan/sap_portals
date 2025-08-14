@@ -1,4 +1,3 @@
-
 <div class="goods-container">
   <!-- Enhanced Header Card -->
   <div class="goods-header-card">
@@ -8,7 +7,7 @@
         <i class="fas fa-boxes"></i>
       </div>
       <div class="goods-header-text">
-        <h1 class="goods-gradient-title">Welcome to Goods Management!</h1>
+        <h1 class="goods-gradient-title">Welcome to Goods Receipt Management!</h1>
         <div class="welcome-id">
           <i class="fas fa-warehouse"></i>
           <span>Vendor ID: V001</span>
@@ -27,167 +26,98 @@
 
   <!-- Main Content Card (Tab) -->
   <div class="content-card" *ngIf="!isLoading && paginatedGoods.length; else noData">
-    <div class="po-search-row" style="gap: 18px; align-items: center;">
-      <h3 class="table-title" style="margin-bottom: 0;">Goods Items</h3>
-      <i class="fas fa-search" style="font-size:1.2rem; margin-right: 8px;"></i>
+    <div class="po-search-row">
+      <h3 class="table-title">Goods Receipt Items</h3>
+      <i class="fas fa-search search-icon"></i>
       <input
         class="po-search-input"
         type="text"
-        placeholder="Search Material..."
+        placeholder="Search Material Doc..."
         [(ngModel)]="searchTerm"
         (input)="onSearchChange()"
-        style="width: 140px; min-width: 140px; max-width: 140px;"
       />
 
       <!-- Action Buttons -->
       <div class="table-actions-3d">
-        <button 
-          class="action-button-3d action-button-export" 
-          (click)="exportData()" 
-          title="Export Data">
+        <button class="action-button-3d export-button" (click)="exportData()">
           <i class="fas fa-download action-icon-3d"></i>
           <span class="action-text-3d">EXPORT</span>
         </button>
-        <button 
-          class="action-button-3d action-button-refresh" 
-          (click)="refreshData()" 
-          title="Refresh Data">
+        <button class="action-button-3d refresh-button" (click)="refreshData()">
           <i class="fas fa-sync-alt action-icon-3d"></i>
           <span class="action-text-3d">REFRESH</span>
         </button>
       </div>
-
-      <!-- Stats -->
-      <div class="po-search-stats">
-        <span class="stat-label">Total Goods items:</span>
-        <span class="stat-value">{{ filteredGoods.length }}</span>
-      </div>
+      <span class="total-items">Total Goods Items: {{ filteredGoods.length }}</span>
     </div>
 
-    <!-- Table Container -->
+    <!-- Enhanced Table Container -->
     <div class="table-container-3d">
       <table class="goods-table-3d">
         <thead>
-          <tr>
-            <th class="sortable" (click)="sortData('materialDocument')">
-              <div class="th-content">
-                <span>MATERIAL DOC</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+          <tr class="table-header-3d">
+            <th class="sortable" (click)="sortData('materialDoc')">
+              MATERIAL DOC
+              <i class="fas fa-sort sort-icon"></i>
             </th>
-            <th class="sortable" (click)="sortData('year')">
-              <div class="th-content">
-                <span>YEAR</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+            <th class="sortable" (click)="sortData('docYear')">
+              YEAR
+              <i class="fas fa-sort sort-icon"></i>
             </th>
-            <th class="sortable" (click)="sortData('itemNumber')">
-              <div class="th-content">
-                <span>ITEM NUMBER</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+            <th class="sortable" (click)="sortData('postDate')">
+              POST DATE
+              <i class="fas fa-sort sort-icon"></i>
             </th>
-            <th class="sortable" (click)="sortData('postingDate')">
-              <div class="th-content">
-                <span>POSTING DATE</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+            <th class="sortable" (click)="sortData('entryDate')">
+              ENTRY DATE
+              <i class="fas fa-sort sort-icon"></i>
             </th>
-            <th class="sortable" (click)="sortData('material')">
-              <div class="th-content">
-                <span>MATERIAL</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('plant')">
-              <div class="th-content">
-                <span>PLANT</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('storageLocation')">
-              <div class="th-content">
-                <span>STORAGE LOC</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('quantity')">
-              <div class="th-content">
-                <span>QUANTITY</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('unit')">
-              <div class="th-content">
-                <span>UNIT</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('amount')">
-              <div class="th-content">
-                <span>AMOUNT</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('currency')">
-              <div class="th-content">
-                <span>CURRENCY</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('vendorId')">
-              <div class="th-content">
-                <span>VENDOR ID</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('purchaseOrder')">
-              <div class="th-content">
-                <span>PURCHASE ORDER</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+            <th class="sortable" (click)="sortData('poNumber')">
+              PO NUMBER
+              <i class="fas fa-sort sort-icon"></i>
             </th>
             <th class="sortable" (click)="sortData('poItem')">
-              <div class="th-content">
-                <span>PO ITEM</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+              PO ITEM
+              <i class="fas fa-sort sort-icon"></i>
             </th>
-            <th class="sortable" (click)="sortData('description')">
-              <div class="th-content">
-                <span>DESCRIPTION</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
+            <th class="sortable" (click)="sortData('material')">
+              MATERIAL
+              <i class="fas fa-sort sort-icon"></i>
+            </th>
+            <th class="sortable" (click)="sortData('quantity')">
+              QUANTITY
+              <i class="fas fa-sort sort-icon"></i>
+            </th>
+            <th class="sortable" (click)="sortData('unit')">
+              UNIT
+              <i class="fas fa-sort sort-icon"></i>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr class="table-row-3d" *ngFor="let good of paginatedGoods; trackBy: trackByGood">
-            <td class="material-doc">{{ good.materialDocument }}</td>
-            <td class="year">{{ good.year }}</td>
-            <td class="item-number">{{ good.itemNumber }}</td>
-            <td class="posting-date">{{ good.postingDate | date:'yyyy-MM-dd' }}</td>
+            <td class="material-doc">{{ good.materialDoc }}</td>
+            <td class="doc-year">{{ good.docYear }}</td>
+            <td class="post-date">
+              <span class="date-badge">{{ good.postDate }}</span>
+            </td>
+            <td class="entry-date">
+              <span class="date-badge">{{ good.entryDate }}</span>
+            </td>
+            <td class="po-number">{{ good.poNumber }}</td>
+            <td class="po-item">{{ good.poItem }}</td>
             <td class="material">{{ good.material }}</td>
-            <td class="plant">{{ good.plant }}</td>
-            <td class="storage-location">{{ good.storageLocation }}</td>
             <td class="quantity">{{ good.quantity }}</td>
             <td class="unit">{{ good.unit }}</td>
-            <td class="amount">{{ good.amount | currency:good.currency:'symbol':'1.2-2' }}</td>
-            <td class="currency">{{ good.currency }}</td>
-            <td class="vendor-id">{{ good.vendorId }}</td>
-            <td class="purchase-order">{{ good.purchaseOrder }}</td>
-            <td class="po-item">{{ good.poItem }}</td>
-            <td class="description" [title]="good.description">{{ good.description }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Pagination Card -->
+    <!-- Enhanced Pagination Card -->
     <div class="pagination-card-3d">
-      <div class="pagination-text">
-        Page {{ currentPage }} of {{ Math.ceil(filteredGoods.length / itemsPerPage) }}
-        - Total: {{ filteredGoods.length }} items
+      <div class="pagination-info">
+        <span class="pagination-text">Page {{ currentPage }} of {{ Math.ceil(filteredGoods.length / itemsPerPage) }} - Total: {{ filteredGoods.length }} Items</span>
       </div>
       <div class="pagination-controls">
         <button
@@ -219,11 +149,11 @@
   <ng-template #noData>
     <div class="no-data-card">
       <div class="no-data-content">
-        <i class="fas fa-box-open"></i>
-        <h3 class="no-data-title">No Goods Data Found</h3>
+        <i class="fas fa-box-open no-data-icon"></i>
+        <h3 class="no-data-title">No Goods Receipt Data Found</h3>
         <p class="no-data-message">There are no goods receipt items available for this vendor at the moment.</p>
         <button class="refresh-button" (click)="refreshData()">
-          <i class="fas fa-sync-alt"></i>
+          <i class="fas fa-sync-alt refresh-icon"></i>
           Refresh Data
         </button>
       </div>
@@ -234,7 +164,7 @@
   <div class="loading-card" *ngIf="isLoading">
     <div class="loading-content">
       <div class="loading-spinner"></div>
-      <p class="loading-text">Loading goods data...</p>
+      <p class="loading-text">Loading goods receipt data...</p>
     </div>
   </div>
 
