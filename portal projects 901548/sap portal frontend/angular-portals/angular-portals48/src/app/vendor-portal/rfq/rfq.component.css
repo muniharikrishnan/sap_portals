@@ -458,7 +458,7 @@ body, .rfq-container {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: rgba(30, 32, 40, 0.92); /* soft dark background */
+  background: rgba(30, 30, 40, 0.92); /* soft dark background */
   color: #fff; /* white text for headers */
   font-weight: 700;
   font-size: 1.08rem;
@@ -913,7 +913,7 @@ body, .rfq-container {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
   perspective: 1000px;
-  
+
   /* 3D Shadow Effect */
   box-shadow: 
     0 8px 16px rgba(0, 0, 0, 0.3),
@@ -1036,16 +1036,16 @@ body, .rfq-container {
   .table-actions-3d {
     gap: 12px;
   }
-  
+
   .action-button-3d {
     padding: 12px 16px;
     font-size: 12px;
   }
-  
+
   .action-text-3d {
     display: none;
   }
-  
+
   .action-icon-3d {
     font-size: 18px;
   }
