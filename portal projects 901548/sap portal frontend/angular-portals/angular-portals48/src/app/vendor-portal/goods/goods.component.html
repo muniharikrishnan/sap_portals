@@ -1,134 +1,133 @@
-<!-- Goods Receipt Management Page -->
+<ng-template #loading>
+  <div class="loading-container">
+    <p>Loading goods data…</p>
+  </div>
+</ng-template>
+
 <div class="goods-container">
-  <!-- Header Section -->
-  <div class="goods-header">
-    <div class="header-content">
-      <div class="title-section">
-        <div class="header-icon">
-          <i class="fas fa-box"></i>
-        </div>
-        <h1 class="goods-title">Welcome to Goods Receipt Management!</h1>
-        <p class="goods-subtitle">📊 Vendor ID: V001<br>Goods Receipt Portal</p>
+  <!-- Back Button Top Left -->
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">
+    <i class="back-icon">←</i>
+    Back
+  </button>
+
+  <!-- Title and Subtitle Top Right -->
+  <div class="goods-top-right">
+    <div class="goods-top-section">
+      <h1 class="goods-title"><span style="font-size:2.2rem; margin-right: 0.5rem;">📥</span>Goods Receipts</h1>
+      <p class="goods-subtitle">Manage and track your goods receipt items</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card (Tab) -->
+  <div class="content-card" *ngIf="!errorMessage && filteredGoods.length > 0">
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0;">Goods Receipt Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search Material Doc, PO Number, Material..."
+        [(ngModel)]="searchKey"
+        (input)="applyFilter()"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredGoods.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredGoods.length / itemsPerPage) }}</span>
       </div>
-      <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left back-icon"></i>
-        BACK
+    </div>
+    <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
+      <button class="action-button" (click)="exportData()">
+        <i class="action-icon">📊</i>
+        Export
+      </button>
+      <button class="action-button" (click)="refreshData()">
+        <i class="action-icon">🔄</i>
+        Refresh
       </button>
     </div>
-  </div>
-
-  <!-- Controls -->
-  <div class="controls-card">
-    <div class="search-section">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Search Material Doc, PO Number..."
-          [(ngModel)]="searchKey"
-          (input)="applyFilter()"
-        />
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">TOTAL ITEMS</div>
-        <div class="stat-value">{{ filteredGoods.length }}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">PAGE</div>
-        <div class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredGoods.length / itemsPerPage) }}</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Loading Template -->
-  <div class="loading-card" *ngIf="isLoading">
-    <div class="loading-content">
-      <div class="loading-spinner"></div>
-      <p class="loading-text">Loading goods receipt data...</p>
-    </div>
-  </div>
-
-  <!-- Error Template -->
-  <div class="error-card" *ngIf="errorMessage">
-    <div class="error-content">
-      <i class="fas fa-exclamation-triangle error-icon"></i>
-      <h3 class="error-title">Error Loading Data</h3>
-      <p class="error-message">{{ errorMessage }}</p>
-      <button class="refresh-button" (click)="refreshData()">
-        <i class="fas fa-redo refresh-icon"></i>
-        Try Again
-      </button>
-    </div>
-  </div>
-
-  <!-- Content Card with Table -->
-  <div class="content-card" *ngIf="!isLoading && !errorMessage && filteredGoods.length > 0">
     <div class="table-container">
-      <div class="table-header">
-        <h2 class="table-title">Goods Receipt Items</h2>
-        <div class="table-actions">
-          <button class="action-button" (click)="exportData()">
-            <i class="fas fa-download"></i>
-            EXPORT
-          </button>
-          <button class="action-button" (click)="refreshData()">
-            <i class="fas fa-sync-alt"></i>
-            REFRESH
-          </button>
-        </div>
-      </div>
-
       <table class="goods-table">
         <thead>
           <tr>
             <th class="sortable" (click)="toggleSort('materialDoc')">
               <div class="th-content">
-                MATERIAL DOC
-                <i class="fas fa-sort sort-icon"></i>
+                <span>Material Doc</span>
+                <i class="sort-icon">{{ sortField === 'materialDoc' ? (sortAscending ? '↑' : '↓') : '' }}</i>
               </div>
             </th>
             <th class="sortable" (click)="toggleSort('docYear')">
               <div class="th-content">
-                YEAR
-                <i class="fas fa-sort sort-icon"></i>
+                <span>Year</span>
+                <i class="sort-icon">{{ sortField === 'docYear' ? (sortAscending ? '↑' : '↓') : '' }}</i>
               </div>
             </th>
-            <th>POST DATE</th>
-            <th>ENTRY DATE</th>
+            <th class="sortable" (click)="toggleSort('postDate')">
+              <div class="th-content">
+                <span>Post Date</span>
+                <i class="sort-icon">{{ sortField === 'postDate' ? (sortAscending ? '↑' : '↓') : '' }}</i>
+              </div>
+            </th>
+            <th class="sortable" (click)="toggleSort('entryDate')">
+              <div class="th-content">
+                <span>Entry Date</span>
+                <i class="sort-icon">{{ sortField === 'entryDate' ? (sortAscending ? '↑' : '↓') : '' }}</i>
+              </div>
+            </th>
             <th class="sortable" (click)="toggleSort('poNumber')">
               <div class="th-content">
-                PO NUMBER
-                <i class="fas fa-sort sort-icon"></i>
+                <span>PO Number</span>
+                <i class="sort-icon">{{ sortField === 'poNumber' ? (sortAscending ? '↑' : '↓') : '' }}</i>
               </div>
             </th>
-            <th>PO ITEM</th>
-            <th>MATERIAL</th>
-            <th>QUANTITY</th>
-            <th>UNIT</th>
+            <th>
+              <div class="th-content">
+                <span>PO Item</span>
+              </div>
+            </th>
+            <th class="sortable" (click)="toggleSort('material')">
+              <div class="th-content">
+                <span>Material</span>
+                <i class="sort-icon">{{ sortField === 'material' ? (sortAscending ? '↑' : '↓') : '' }}</i>
+              </div>
+            </th>
+            <th class="sortable" (click)="toggleSort('quantity')">
+              <div class="th-content">
+                <span>Quantity</span>
+                <i class="sort-icon">{{ sortField === 'quantity' ? (sortAscending ? '↑' : '↓') : '' }}</i>
+              </div>
+            </th>
+            <th>
+              <div class="th-content">
+                <span>⚖️ Unit</span>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr class="table-row" *ngFor="let item of paginatedData; trackBy: trackByGoods">
-            <td class="po-number">{{ item.materialDoc }}</td>
-            <td class="vendor-id">{{ item.docYear }}</td>
-            <td class="doc-date">{{ item.postDate }}</td>
-            <td class="doc-date">{{ item.entryDate }}</td>
+          <tr *ngFor="let item of paginatedData; trackBy: trackByGoods" class="table-row">
+            <td class="material-doc">{{ item.materialDoc }}</td>
+            <td class="doc-year">{{ item.docYear }}</td>
+            <td class="post-date">{{ item.postDate }}</td>
+            <td class="entry-date">{{ item.entryDate }}</td>
             <td class="po-number">{{ item.poNumber }}</td>
-            <td>{{ item.poItem }}</td>
+            <td class="po-item">{{ item.poItem }}</td>
             <td class="material">{{ item.material }}</td>
-            <td>{{ item.quantity }}</td>
+            <td class="quantity">{{ item.quantity }}</td>
             <td class="unit">{{ item.unit }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <!-- Pagination -->
-    <div class="pagination-card">
-      <div class="pagination-text">
-        Page {{ currentPage }} of {{ Math.ceil(filteredGoods.length / itemsPerPage) }} - 
-        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, filteredGoods.length) }} of {{ filteredGoods.length }} items
+    <!-- Pagination Card -->
+    <div class="pagination-card" *ngIf="filteredGoods.length > itemsPerPage">
+      <div class="pagination-info">
+        <span class="pagination-text">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, filteredGoods.length) }} of {{ filteredGoods.length }} items
+        </span>
       </div>
       <div class="pagination-controls">
         <button 
@@ -137,7 +136,7 @@
           [disabled]="currentPage === 1"
           [class.disabled]="currentPage === 1"
         >
-          <i class="fas fa-chevron-left pagination-icon"></i>
+          <i class="pagination-icon">←</i>
           Previous
         </button>
         <div class="page-indicator">
@@ -152,7 +151,7 @@
           [class.disabled]="currentPage === Math.ceil(filteredGoods.length / itemsPerPage)"
         >
           Next
-          <i class="fas fa-chevron-right pagination-icon"></i>
+          <i class="pagination-icon">→</i>
         </button>
       </div>
     </div>
@@ -161,12 +160,33 @@
   <!-- No Data Template -->
   <div class="no-data-card" *ngIf="!errorMessage && filteredGoods.length === 0">
     <div class="no-data-content">
-      <i class="fas fa-box no-data-icon"></i>
+      <i class="no-data-icon">📦</i>
       <h3 class="no-data-title">No Goods Receipts Found</h3>
       <p class="no-data-message">There are no goods receipt items available for this vendor at the moment.</p>
       <button class="refresh-button" (click)="refreshData()">
-        <i class="fas fa-sync-alt refresh-icon"></i>
+        <i class="refresh-icon">🔄</i>
         Refresh Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-card" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading goods receipt data...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-card" *ngIf="errorMessage">
+    <div class="error-content">
+      <i class="error-icon">⚠️</i>
+      <h3 class="error-title">Error Loading Data</h3>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="refresh-button" (click)="refreshData()">
+        <i class="refresh-icon">🔄</i>
+        Try Again
       </button>
     </div>
   </div>

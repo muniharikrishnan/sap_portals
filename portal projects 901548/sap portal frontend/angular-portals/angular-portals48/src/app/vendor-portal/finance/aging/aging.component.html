@@ -1,59 +1,26 @@
 <div class="aging-container">
-  <!-- Header Section -->
-  <div class="aging-header">
-    <div class="header-content">
-      <div class="title-section">
-        <div class="header-icon">
-          <i class="fas fa-calendar-alt"></i>
-        </div>
-        <h1 class="aging-title">Welcome to Aging Management!</h1>
-        <p class="aging-subtitle">Aging Report Portal</p>
-      </div>
-      <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left back-icon"></i>
-        BACK
-      </button>
-    </div>
+  <button class="back-button" style="align-self: flex-start; margin-bottom: 12px;" (click)="goBack()">← Back</button>
+  <div class="aging-header-top-right">
+    <h2 class="header-title aging-gradient-title">Aging Report</h2>
   </div>
-
-  <!-- Controls -->
-  <div class="controls-card">
-    <div class="search-section">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Search Payment Doc, Vendor ID, Amount..."
-          [(ngModel)]="searchTerm"
-        />
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">TOTAL ITEMS</div>
-        <div class="stat-value">{{ filteredAndSortedData.length }}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">PAGE</div>
-        <div class="stat-value">1 / 1</div>
-      </div>
-    </div>
-  </div>
-
   <div class="content-card" *ngIf="filteredAndSortedData.length > 0">
-    <div class="table-container">
-      <div class="table-header">
-        <h2 class="table-title">Aging Items</h2>
-        <div class="table-actions">
-          <button class="action-button" (click)="exportData()">
-            <i class="fas fa-download"></i>
-            EXPORT
-          </button>
-          <button class="action-button" (click)="refreshData()">
-            <i class="fas fa-sync-alt"></i>
-            REFRESH
-          </button>
-        </div>
-      </div>/div>
+    <div class="po-search-row" style="gap: 18px; align-items: center;">
+      <h3 class="table-title" style="margin-bottom: 0; background: linear-gradient(90deg, #7c2ae8 0%, #ff4e50 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent;">Aging Items</h3>
+      <span style="font-size:1.2rem; margin-right: 8px;">🔍</span>
+      <input
+        class="po-search-input"
+        type="text"
+        placeholder="Search Payment Doc, Vendor ID, Amount..."
+        [(ngModel)]="searchTerm"
+        style="width: 140px; min-width: 140px; max-width: 140px;"
+      />
+      <div class="po-search-stats">
+        <span class="stat-label">Total Items</span>
+        <span class="stat-value">{{ filteredAndSortedData.length }}</span>
+        <span class="stat-label" style="margin-left: 24px;">Page</span>
+        <span class="stat-value">1 / 1</span>
+      </div>
+    </div>
     <div class="table-actions" style="justify-content: flex-end; margin-bottom: 8px;">
       <button class="action-button" (click)="exportData()">
         <i class="action-icon">📊</i>
