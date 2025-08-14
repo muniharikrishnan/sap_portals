@@ -238,27 +238,25 @@ body, .rfq-container {
   box-sizing: border-box;
 }
 
+/* Pagination Card */
 .pagination-card {
-  width: 100%;
-  max-width: 1200px;
-  background: rgba(15, 15, 35, 0.95);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 2rem;
+  position: relative;
+  z-index: 2;
+  background: rgba(15, 15, 35, 0.9);
+  border-radius: 20px;
   padding: 1.2rem 2rem;
+  border: 1px solid rgba(124, 58, 237, 0.2);
   box-shadow: 
-    0 0 0 1px rgba(124, 58, 237, 0.2),
-    0 20px 60px -12px rgba(0, 0, 0, 0.4),
-    0 0 80px rgba(124, 58, 237, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(124, 58, 237, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(124, 58, 237, 0.3);
+  backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 24px;
-  position: relative;
-  z-index: 10;
+  transition: all 0.3s ease;
 }
 
 .table-header {
@@ -421,8 +419,23 @@ body, .rfq-container {
 
 /* Pagination Card */
 .pagination-card {
-  padding-top: 0.2rem;
-  margin-top: 0;
+  position: relative;
+  z-index: 2;
+  background: rgba(15, 15, 35, 0.9);
+  border-radius: 20px;
+  padding: 1.2rem 2rem;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(124, 58, 237, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  transition: all 0.3s ease;
 }
 
 /* Pagination Card */
