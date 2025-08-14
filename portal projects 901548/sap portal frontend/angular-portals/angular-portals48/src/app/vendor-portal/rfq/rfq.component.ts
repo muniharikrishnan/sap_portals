@@ -176,4 +176,8 @@ export class RfqComponent implements OnInit {
   trackByRfq(index: number, rfq: any): any {
     return rfq.id || index;
   }
+
+  goBack(): void {
+    window.history.back();
+  }
 }

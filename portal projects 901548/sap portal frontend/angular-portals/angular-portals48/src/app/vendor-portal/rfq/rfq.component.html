@@ -1,23 +1,27 @@
 <div class="rfq-container">
-  <!-- Header Card -->
+  <!-- Enhanced Header Card -->
   <div class="rfq-header-card">
-    <div class="rfq-avatar">
-      <i class="fas fa-book-open"></i>
+    <div class="header-background"></div>
+    <div class="rfq-header-content">
+      <div class="rfq-header-avatar">
+        <i class="fas fa-file-invoice"></i>
+      </div>
+      <div class="rfq-header-text">
+        <h1 class="rfq-gradient-title">Welcome to RFQ Management!</h1>
+        <div class="welcome-id">
+          <i class="fas fa-clipboard-list"></i>
+          <span>Vendor ID: V001</span>
+        </div>
+        <div class="welcome-status">
+          <span class="status-indicator"></span>
+          Request for Quotation Portal
+        </div>
+      </div>
     </div>
-    <div class="rfq-header-info">
-      <h1 class="rfq-title">Vendor RFQ List</h1>
-      <p class="rfq-subtitle">Manage and track your Request for Quotation items</p>
-    </div>
-    <div class="rfq-actions">
-      <button class="btn-primary" (click)="exportData()">
-        <i class="fas fa-download"></i>
-        Export
-      </button>
-      <button class="btn-primary" (click)="refreshData()">
-        <i class="fas fa-sync-alt"></i>
-        Refresh
-      </button>
-    </div>
+    <button class="logout-button" (click)="goBack()">
+      <i class="fas fa-arrow-left logout-icon"></i>
+      <span class="logout-text">BACK</span>
+    </button>
   </div>
 
   <!-- Main Content Card (Tab) -->
@@ -39,7 +43,7 @@
         <span class="stat-value">{{ currentPage }} / {{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
       </div>
     </div>
-    
+
     <div class="table-container">
       <table class="rfq-table">
         <thead>
@@ -114,9 +118,9 @@
         <span class="total-info">Total: {{ filteredRfqs.length }} items</span>
       </div>
       <div class="pagination-controls">
-        <button 
-          class="pagination-button" 
-          [class.disabled]="currentPage === 1" 
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === 1"
           [disabled]="currentPage === 1"
           (click)="changePage(-1)">
           <i class="fas fa-chevron-left pagination-icon"></i>
@@ -127,9 +131,9 @@
           <span class="page-separator">of</span>
           <span class="total-pages">{{ Math.ceil(filteredRfqs.length / itemsPerPage) }}</span>
         </div>
-        <button 
-          class="pagination-button" 
-          [class.disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)" 
+        <button
+          class="pagination-button"
+          [class.disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
           [disabled]="currentPage === Math.ceil(filteredRfqs.length / itemsPerPage)"
           (click)="changePage(1)">
           Next
