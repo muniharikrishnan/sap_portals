@@ -1,17 +1,18 @@
 
-<div class="memo-container">
+<div class="rfq-container">
+  <div class="memo-content">
   <!-- Enhanced Header Card -->
-  <div class="memo-header-card">
+  <div class="rfq-header-card">
     <div class="header-background"></div>
-    <div class="memo-header-content">
-      <div class="memo-header-avatar">
+    <div class="rfq-header-content">
+      <div class="rfq-header-avatar">
         <i class="fas fa-sticky-note"></i>
       </div>
-      <div class="memo-header-text">
-        <h1 class="memo-gradient-title">Welcome to Memo Management!</h1>
+      <div class="rfq-header-text">
+        <h1 class="rfq-gradient-title">Welcome to Memo Management!</h1>
         <div class="welcome-id">
           <i class="fas fa-file-text"></i>
-          <span>Vendor ID: V001</span>
+          <span>Vendor ID: {{ vendorId || 'V001' }}</span>
         </div>
         <div class="welcome-status">
           <span class="status-indicator"></span>
@@ -42,18 +43,18 @@
       <!-- Action Buttons -->
       <div class="table-actions-3d">
         <button 
-          class="action-button-3d action-button-export" 
+          class="action-button-3d export-btn" 
           (click)="exportData()" 
           title="Export Data">
           <i class="fas fa-download action-icon-3d"></i>
-          <span class="action-text-3d">EXPORT</span>
+          <span class="action-text-3d">Export</span>
         </button>
         <button 
-          class="action-button-3d action-button-refresh" 
+          class="action-button-3d refresh-btn" 
           (click)="refreshData()" 
           title="Refresh Data">
-          <i class="fas fa-sync-alt action-icon-3d"></i>
-          <span class="action-text-3d">REFRESH</span>
+          <i class="fas fa-sync-alt action-icon-3d" [class.spinning]="isLoading"></i>
+          <span class="action-text-3d">Refresh</span>
         </button>
       </div>
 
@@ -65,55 +66,37 @@
     </div>
 
     <!-- Table Container -->
-    <div class="table-container-3d">
-      <table class="memo-table-3d">
+    <div class="table-container">
+      <table class="rfq-table">
         <thead>
           <tr>
-            <th class="sortable" (click)="sortData('companyCode')">
+            <th class="sortable" (click)="sortData('memoDoc')">
               <div class="th-content">
-                <span>COMPANY</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('vendorId')">
-              <div class="th-content">
-                <span>VENDOR ID</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('documentNumber')">
-              <div class="th-content">
-                <span>DOCUMENT</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('fiscalYear')">
-              <div class="th-content">
-                <span>FISCAL YEAR</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('lineItem')">
-              <div class="th-content">
-                <span>LINE ITEM</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('postingKey')">
-              <div class="th-content">
-                <span>POST KEY</span>
+                <span>MEMO DOC</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
             <th class="sortable" (click)="sortData('postingDate')">
               <div class="th-content">
-                <span>POST DATE</span>
+                <span>POSTING DATE</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('documentDate')">
+            <th class="sortable" (click)="sortData('memoType')">
               <div class="th-content">
-                <span>DOC DATE</span>
+                <span>MEMO TYPE</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('referenceDocNo')">
+              <div class="th-content">
+                <span>REFERENCE DOC</span>
+                <i class="fas fa-sort sort-icon"></i>
+              </div>
+            </th>
+            <th class="sortable" (click)="sortData('entryDate')">
+              <div class="th-content">
+                <span>ENTRY DATE</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
@@ -123,61 +106,59 @@
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('localCurrency')">
+            <th class="sortable" (click)="sortData('currency')">
               <div class="th-content">
                 <span>CURRENCY</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('reference')">
-              <div class="th-content">
-                <span>REFERENCE</span>
-                <i class="fas fa-sort sort-icon"></i>
-              </div>
-            </th>
-            <th class="sortable" (click)="sortData('documentType')">
+            <th class="sortable" (click)="sortData('docType')">
               <div class="th-content">
                 <span>DOC TYPE</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
-            <th class="sortable" (click)="sortData('text')">
+            <th class="sortable" (click)="sortData('companyCode')">
               <div class="th-content">
-                <span>TEXT</span>
+                <span>COMPANY CODE</span>
                 <i class="fas fa-sort sort-icon"></i>
               </div>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr class="table-row-3d" *ngFor="let memo of paginatedMemos; trackBy: trackByMemo">
-            <td class="company-code">{{ memo.companyCode }}</td>
-            <td class="vendor-id">{{ memo.vendorId }}</td>
-            <td class="document-number">{{ memo.documentNumber }}</td>
-            <td class="fiscal-year">{{ memo.fiscalYear }}</td>
-            <td class="line-item">{{ memo.lineItem }}</td>
-            <td class="posting-key">{{ memo.postingKey }}</td>
-            <td class="posting-date">{{ memo.postingDate | date:'yyyy-MM-dd' }}</td>
-            <td class="document-date">{{ memo.documentDate | date:'yyyy-MM-dd' }}</td>
-            <td class="amount">{{ memo.amount | currency:memo.localCurrency:'symbol':'1.2-2' }}</td>
-            <td class="currency">{{ memo.localCurrency }}</td>
-            <td class="reference">{{ memo.reference }}</td>
-            <td class="document-type">
-              <span class="type-badge" [class.credit]="memo.documentType === 'Credit'" [class.debit]="memo.documentType === 'Debit'">
-                {{ memo.documentType }}
+          <tr class="table-row" *ngFor="let memo of paginatedMemos; trackBy: trackByMemo">
+            <td class="memo-doc">{{ memo.memoDoc || 'N/A' }}</td>
+            <td class="posting-date">
+              <span class="date-badge">{{ formatDate(memo.postingDate) }}</span>
+            </td>
+            <td class="memo-type">
+              <span class="type-badge" [ngClass]="getMemoTypeClass(memo.memoType)">
+                {{ memo.memoType || 'N/A' }}
               </span>
             </td>
-            <td class="text" [title]="memo.text">{{ memo.text }}</td>
+            <td class="reference-doc">{{ memo.referenceDocNo || 'N/A' }}</td>
+            <td class="entry-date">
+              <span class="date-badge">{{ formatDate(memo.entryDate) }}</span>
+            </td>
+            <td class="amount">
+              <span class="amount-badge" [ngClass]="getAmountClass(memo.amount)">
+                {{ memo.amount | currency:memo.currency:'symbol':'1.2-2' }}
+              </span>
+            </td>
+            <td class="currency">{{ memo.currency || 'INR' }}</td>
+            <td class="doc-type">{{ memo.docType || 'N/A' }}</td>
+            <td class="company-code">{{ memo.companyCode || 'N/A' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Pagination Card -->
-    <div class="pagination-card-3d">
-      <div class="pagination-text">
-        Page {{ currentPage }} of {{ Math.ceil(filteredMemos.length / itemsPerPage) }}
-        - Total: {{ filteredMemos.length }} items
+    <div class="pagination-card" *ngIf="filteredMemos.length > 0">
+      <div class="pagination-info">
+        <span class="page-info">Page {{ currentPage }} of {{ Math.ceil(filteredMemos.length / itemsPerPage) }}</span>
+        <span class="total-info">Total: {{ filteredMemos.length }} items</span>
       </div>
       <div class="pagination-controls">
         <button
@@ -239,5 +220,6 @@
         Retry
       </button>
     </div>
+  </div>
   </div>
 </div>

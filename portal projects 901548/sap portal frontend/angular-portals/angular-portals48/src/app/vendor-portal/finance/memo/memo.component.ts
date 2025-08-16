@@ -12,25 +12,48 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./memo.component.css']
 })
 export class MemoComponent implements OnInit {
-  onSearchChange(): void {
-    this.currentPage = 1;
-    // Optionally, you can trigger any additional logic here if needed
-  }
+  // Properties
   sortField: string = '';
   sortAscending: boolean = true;
   memoData: any[] = [];
   searchTerm: string = '';
+  vendorId: string | null = null;
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  Math = Math;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    const lifnr = localStorage.getItem('VendorId');
-    this.http.get<any>(`http://localhost:3000/api/memo/${lifnr}`).subscribe({
+    this.vendorId = localStorage.getItem('VendorId');
+    if (!this.vendorId) {
+      this.errorMessage = 'Vendor ID not found. Please login again.';
+      return;
+    }
+    this.fetchMemos(this.vendorId);
+  }
+
+  fetchMemos(vendorId: string) {
+    this.isLoading = true;
+    this.errorMessage = null;
+    
+    this.http.get<any>(`http://localhost:3000/api/memo/${vendorId}`).subscribe({
       next: (res) => {
-        this.memoData = res.memo || [];
+        this.isLoading = false;
+        if (res.memo && Array.isArray(res.memo)) {
+          this.memoData = res.memo;
+        } else {
+          this.memoData = [];
+          this.errorMessage = 'No memo data available.';
+        }
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error fetching memo data:', err);
+        this.errorMessage = 'Failed to load memo data.';
+        this.memoData = [];
       }
     });
   }
@@ -48,6 +71,70 @@ export class MemoComponent implements OnInit {
     this.router.navigate(['/vendor/finance']);
   }
 
+  // Helper methods for memo styling
+  formatDate(date: any): string {
+    if (!date) return 'N/A';
+    if (typeof date === 'string' && date.includes('/Date(')) {
+      return this.formatSAPDate(date);
+    }
+    try {
+      return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch {
+      return 'N/A';
+    }
+  }
+
+  getMemoTypeClass(memoType: string): string {
+    if (!memoType) return 'memo-type-unknown';
+    const type = memoType.toUpperCase();
+    if (type === 'RE') return 'memo-type-credit';  // RE means Credit Memo
+    return 'memo-type-debit';  // Anything else is Debit Memo
+  }
+
+  getAmountClass(amount: number): string {
+    if (!amount) return 'amount-normal';
+    if (amount > 10000) return 'amount-high';
+    if (amount > 5000) return 'amount-medium';
+    return 'amount-normal';
+  }
+
+  getStatusClass(status: string): string {
+    if (!status) return 'status-pending';
+    const statusLower = status.toLowerCase();
+    if (statusLower.includes('approved')) return 'status-approved';
+    if (statusLower.includes('rejected')) return 'status-rejected';
+    if (statusLower.includes('pending')) return 'status-pending';
+    if (statusLower.includes('completed')) return 'status-completed';
+    return 'status-pending';
+  }
+
+  onSearchChange(): void {
+    this.currentPage = 1;
+  }
+
+  sortData(field: string): void {
+    if (this.sortField === field) {
+      this.sortAscending = !this.sortAscending;
+    } else {
+      this.sortField = field;
+      this.sortAscending = true;
+    }
+  }
+
+  changePage(direction: number) {
+    const totalPages = Math.ceil(this.filteredMemos.length / this.itemsPerPage);
+    this.currentPage = Math.max(1, Math.min(this.currentPage + direction, totalPages));
+  }
+
+  trackByMemo(index: number, memo: any): any {
+    return memo.memoDoc || index;
+  }
+
+  // Getters
   get filteredMemoData(): any[] {
     let data = this.memoData.filter(item =>
       Object.values(item).some(val =>
@@ -71,28 +158,7 @@ export class MemoComponent implements OnInit {
     }
     return data;
   }
-  sortData(field: string): void {
-    if (this.sortField === field) {
-      this.sortAscending = !this.sortAscending;
-    } else {
-      this.sortField = field;
-      this.sortAscending = true;
-    }
-  }
 
-  // Add this getter to the class
-  get displayedMemoData() {
-    let data = this.filteredMemoData;
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      data = data.filter(memo =>
-        memo.docNumber && memo.docNumber.toString().includes(this.searchTerm.trim())
-      );
-    }
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return data.slice(start, start + this.itemsPerPage);
-  }
-
-  // Template compatibility properties
   get filteredMemos(): any[] {
     return this.filteredMemoData || [];
   }
@@ -103,20 +169,13 @@ export class MemoComponent implements OnInit {
     return this.filteredMemos.slice(startIndex, endIndex);
   }
 
-  currentPage = 1;
-  itemsPerPage = 10;
-  isLoading = false;
-  errorMessage = '';
-  Math = Math;
-
-  // Template compatibility methods
-  changePage(direction: number) {
-    const totalPages = Math.ceil(this.filteredMemos.length / this.itemsPerPage);
-    this.currentPage = Math.max(1, Math.min(this.currentPage + direction, totalPages));
-  }
-
-  trackByMemo(index: number, memo: any): any {
-    return memo.docNumber || index;
+  // Methods
+  refreshData(): void {
+    if (!this.vendorId) {
+      this.errorMessage = 'Vendor ID not found. Please login again.';
+      return;
+    }
+    this.fetchMemos(this.vendorId);
   }
 
   exportData(): void {
@@ -136,18 +195,5 @@ export class MemoComponent implements OnInit {
     a.download = 'memo-data.csv';
     a.click();
     window.URL.revokeObjectURL(url);
-  }
-
-  refreshData(): void {
-    // Re-fetch memo data from backend
-    const lifnr = localStorage.getItem('VendorId');
-    this.http.get<any>(`http://localhost:3000/api/memo/${lifnr}`).subscribe({
-      next: (res) => {
-        this.memoData = res.memo || [];
-      },
-      error: (err) => {
-        console.error('Error fetching memo data:', err);
-      }
-    });
   }
 }
