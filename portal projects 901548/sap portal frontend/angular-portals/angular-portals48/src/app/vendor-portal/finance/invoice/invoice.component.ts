@@ -16,6 +16,7 @@ export class InvoiceComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
   Math = Math;
+  vendorId: string | null = null;
 
   get filteredInvoices(): any[] {
     return this.filteredInvoiceData;
@@ -102,12 +103,12 @@ export class InvoiceComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    const vendorId = localStorage.getItem('VendorId');
-    if (!vendorId) {
+    this.vendorId = localStorage.getItem('VendorId');
+    if (!this.vendorId) {
       this.errorMessage = 'Vendor ID not found. Please login again.';
       return;
     }
-    this.fetchInvoices(vendorId);
+    this.fetchInvoices(this.vendorId);
   }
 
   fetchInvoices(vendorId: string) {
@@ -187,12 +188,19 @@ export class InvoiceComponent implements OnInit {
 
   refreshData(): void {
     // Re-fetch invoice data from backend
-    const vendorId = localStorage.getItem('VendorId');
-    if (!vendorId) {
+    if (!this.vendorId) {
       this.errorMessage = 'Vendor ID not found. Please login again.';
       return;
     }
-    this.fetchInvoices(vendorId);
+    this.fetchInvoices(this.vendorId);
+  }
+
+  // Amount badge styling method
+  getAmountClass(amount: number): string {
+    if (!amount) return 'amount-normal';
+    if (amount > 10000) return 'amount-high';
+    if (amount > 5000) return 'amount-medium';
+    return 'amount-normal';
   }
 
   private base64ToArrayBuffer(base64: string): ArrayBuffer {
