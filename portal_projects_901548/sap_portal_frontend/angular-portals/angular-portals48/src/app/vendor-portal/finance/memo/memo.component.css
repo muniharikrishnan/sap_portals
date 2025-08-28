@@ -1,4 +1,4 @@
-/* Invoice Component Styles - Matching Aging Component Design */
+/* Memo Component Styles - Matching Aging Component Design */
 
 /* Import Inter Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -9,14 +9,14 @@
   box-sizing: border-box;
 }
 
-/* Full Screen Invoice Container */
+/* Full Screen Memo Container */
 .rfq-container {
   position: relative;
   top: 0;
   left: 0;
-  width: calc(100vw - 250px); /* Sidebar width is 250px */
+  width: calc(100vw - 280px); /* Sidebar width is 280px */
   height: 100vh;
-  margin-left: 250px; /* Push content right of sidebar */
+  margin-left: 280px; /* Push content right of sidebar */
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #7c3aed 75%, #a855f7 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -55,7 +55,7 @@
 }
 
 /* Scrollable Content Area */
-.invoice-content {
+.memo-content {
   position: relative;
   z-index: 2;
   height: 100vh;
@@ -368,83 +368,53 @@
 /* Table container */
 .table-container {
   width: 100%;
-  max-width: 100%;
   overflow-x: auto;
-  overflow-y: auto;
-  max-height: 400px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  border-radius: 12px;
+  background: rgba(15, 15, 35, 0.4);
+  border-radius: 16px;
   border: 1px solid rgba(124, 58, 237, 0.2);
-  background: rgba(15, 15, 35, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
-.table-container::-webkit-scrollbar { 
-  display: block; 
-  height: 8px;
-  width: 8px;
-}
 
-.table-container::-webkit-scrollbar-track {
-  background: rgba(124, 58, 237, 0.1);
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #7c3aed, #a855f7);
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(90deg, #a855f7, #c084fc);
-}
 
 /* Table */
 .rfq-table {
   width: 100%;
-  min-width: 1400px;
-  max-width: 100%;
-  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   background: transparent;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 12px 48px 0 rgba(124, 42, 232, 0.32), 0 2px 16px 0 rgba(255, 78, 80, 0.18), 0 0 32px 4px rgba(249, 212, 35, 0.10);
-  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .rfq-table th {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: rgba(30, 30, 40, 0.92);
-  color: #fff;
+  background: rgba(30, 32, 40, 0.92);
+  color: #ffffff;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 1rem 0.8rem;
-  border-bottom: 2.5px solid #7c2ae8;
+  letter-spacing: 1px;
+  padding: 20px 16px;
+  border-bottom: 2px solid #7c3aed;
   text-align: left;
-  box-shadow: 0 2px 8px 0 #23263a22;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  backdrop-filter: blur(10px);
 }
 
-/* Specific column widths for invoice table */
-.rfq-table th:nth-child(1) { width: 140px; } /* INVOICE NO */
-.rfq-table th:nth-child(2) { width: 140px; } /* INVOICE DATE */
-.rfq-table th:nth-child(3) { width: 120px; } /* PO NUMBER */
-.rfq-table th:nth-child(4) { width: 100px; } /* PO ITEM */
-.rfq-table th:nth-child(5) { width: 140px; } /* MATERIAL NO */
-.rfq-table th:nth-child(6) { width: 180px; } /* DESCRIPTION */
-.rfq-table th:nth-child(7) { width: 100px; } /* QUANTITY */
-.rfq-table th:nth-child(8) { width: 80px; }  /* UNIT */
-.rfq-table th:nth-child(9) { width: 120px; } /* UNIT PRICE */
-.rfq-table th:nth-child(10) { width: 140px; } /* TOTAL AMOUNT */
-.rfq-table th:nth-child(11) { width: 100px; } /* CURRENCY */
-.rfq-table th:nth-child(12) { width: 120px; } /* ACTIONS */
+/* Specific column widths for memo table */
+.rfq-table th:nth-child(1) { width: 140px; } /* MEMO DOC */
+.rfq-table th:nth-child(2) { width: 160px; } /* POSTING DATE - increased for full date */
+.rfq-table th:nth-child(3) { width: 120px; } /* MEMO TYPE */
+.rfq-table th:nth-child(4) { width: 140px; } /* REFERENCE DOC */
+.rfq-table th:nth-child(5) { width: 160px; } /* ENTRY DATE - increased for full date */
+.rfq-table th:nth-child(6) { width: 120px; } /* AMOUNT */
+.rfq-table th:nth-child(7) { width: 100px; } /* CURRENCY */
+.rfq-table th:nth-child(8) { width: 120px; } /* DOC TYPE */
+.rfq-table th:nth-child(9) { width: 120px; } /* COMPANY CODE */
 
 .th-content {
   display: flex;
@@ -458,47 +428,49 @@
 .sortable:hover .sort-icon { opacity: 1; }
 
 .rfq-table td {
-  color: #fff;
+  color: #ffffff;
   font-weight: 500;
-  font-size: 0.95rem;
-  padding: 1rem 0.8rem;
-  border-bottom: 1.5px solid rgba(124, 42, 232, 0.10);
+  font-size: 14px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.1);
   background: transparent;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 0;
+  transition: all 0.2s ease;
 }
 
-.table-row { 
-  transition: background 0.2s; 
-  background: transparent;
+.table-row {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.table-row:hover { background: rgba(124, 42, 232, 0.10); }
+
+.table-row:hover {
+  background: rgba(124, 58, 237, 0.08);
+  transform: translateX(4px);
+}
+
+.table-row:hover td {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+}
 
 /* Specific cell styling for better readability */
-.rfq-table td.invoice-no {
+.rfq-table td.memo-doc {
   font-weight: 600;
   color: #e2e8f0;
 }
 
-.rfq-table td.po-no {
+.rfq-table td.posting-date,
+.rfq-table td.entry-date {
+  min-width: 160px;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.rfq-table td.reference-doc {
   font-weight: 600;
   color: #e2e8f0;
 }
 
-.rfq-table td.material-no {
-  font-weight: 600;
-  color: #cbd5e1;
-}
-
-.rfq-table td.description {
-  color: #94a3b8;
-  max-width: 180px;
-}
-
-.rfq-table td.quantity,
-.rfq-table td.unit-price {
+.rfq-table td.amount {
   text-align: right;
   font-weight: 600;
   color: #f8fafc;
@@ -510,6 +482,16 @@
   color: #f59e0b;
 }
 
+.rfq-table td.doc-type {
+  color: #94a3b8;
+  max-width: 120px;
+}
+
+.rfq-table td.company-code {
+  color: #94a3b8;
+  max-width: 120px;
+}
+
 /* Date badge like aging */
 .date-badge {
   background: rgba(16, 185, 129, 0.18);
@@ -519,6 +501,11 @@
   font-size: 1rem;
   font-weight: 600;
   border: 1px solid rgba(16, 185, 129, 0.22);
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  min-width: 120px;
+  display: inline-block;
 }
 .date-badge.no-date {
   background: rgba(156, 163, 175, 0.18);
@@ -526,7 +513,36 @@
   border-color: rgba(156, 163, 175, 0.22);
 }
 
-/* Amount badges for invoices */
+/* Memo type badges */
+.type-badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  display: inline-block;
+  min-width: 80px;
+}
+
+.memo-type-credit {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.memo-type-debit {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.memo-type-unknown {
+  background: rgba(156, 163, 175, 0.2);
+  color: #9ca3af;
+  border: 1px solid rgba(156, 163, 175, 0.3);
+}
+
+/* Amount badges for memos */
 .amount-badge {
   padding: 6px 12px;
   border-radius: 12px;
@@ -555,23 +571,7 @@
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-/* PDF Button */
-.pdf-button {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 14px;
-}
-
-.pdf-button:hover {
-  background: rgba(239, 68, 68, 0.3);
-  border-color: rgba(239, 68, 68, 0.5);
-  transform: translateY(-1px);
-}
+/* Status badges for memos - removed as not needed for current structure */
 
 /* Pagination */
 .pagination-card {
@@ -756,6 +756,32 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .rfq-container {
+    width: calc(100vw - 260px);
+    margin-left: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rfq-container {
+    width: 100vw;
+    margin-left: 0;
+  }
+
+  .rfq-header-card {
+    padding: 24px 30px;
+  }
+
+  .rfq-gradient-title {
+    font-size: 2rem;
+  }
+
+  .content-card {
+    padding: 24px;
+  }
+}
+
 @media (max-width: 900px) {
   .rfq-container {
     padding: 20px 16px;
@@ -793,6 +819,11 @@
   .rfq-table td {
     padding: 12px 8px;
     font-size: 0.8rem;
+  }
+
+  .rfq-table td.posting-date,
+  .rfq-table td.entry-date {
+    min-width: 140px;
   }
 
   .pagination-card {

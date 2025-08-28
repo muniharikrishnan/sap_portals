@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { FinanceAnalyticsComponent } from './finance-analytics/finance-analytics.component';
 
 interface DashboardStats {
   activeRfqs: number;
@@ -29,7 +30,7 @@ interface VendorProfile {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FinanceAnalyticsComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -169,6 +170,16 @@ export class DashboardComponent implements OnInit {
       'profile': 'fas fa-user'
     };
     return iconMap[type] || 'fas fa-info-circle';
+  }
+
+  scrollToFinanceAnalytics() {
+    const analyticsSection = document.querySelector('.finance-analytics-section');
+    if (analyticsSection) {
+      analyticsSection.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
   }
 
   logout() {

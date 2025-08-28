@@ -121,6 +121,18 @@
           <div class="tile-arrow"></div>
         </a>
 
+        <a class="business-tile" (click)="scrollToFinanceAnalytics()">
+          <div class="tile-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="tile-content">
+            <h4>Finance Analytics</h4>
+            <p>Interactive charts and insights</p>
+            <div class="tile-badge">Analytics</div>
+          </div>
+          <div class="tile-arrow"></div>
+        </a>
+
         <a class="business-tile" [routerLink]="['/vendor/profile']">
           <div class="tile-icon">
             <i class="fas fa-user-cog"></i>
@@ -133,6 +145,16 @@
           <div class="tile-arrow"></div>
         </a>
       </div>
+    </section>
+
+    <!-- Finance Analytics Section -->
+    <section class="finance-analytics-section">
+      <div class="section-header">
+        <h3>Finance Analytics</h3>
+        <p>Comprehensive financial insights and trends</p>
+      </div>
+      
+      <app-finance-analytics></app-finance-analytics>
     </section>
 
     <!-- Recent Activity Section -->

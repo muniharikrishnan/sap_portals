@@ -15,9 +15,9 @@
   position: relative;
   top: 0;
   left: 0;
-  width: calc(100vw - 250px); /* Sidebar width is 250px */
+  width: calc(100vw - 280px); /* Sidebar width is 280px */
   height: 100vh;
-  margin-left: 250px; /* Push content right of sidebar */
+  margin-left: 280px; /* Push content right of sidebar */
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #7c3aed 75%, #a855f7 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -529,6 +529,33 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .rfq-container {
+    width: calc(100vw - 260px);
+    margin-left: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rfq-container {
+    width: 100vw;
+    margin-left: 0;
+  }
+}
+
+  .aging-header-card {
+    padding: 24px 30px;
+  }
+
+  .aging-gradient-title {
+    font-size: 2rem;
+  }
+
+  .content-card {
+    padding: 24px;
+  }
+}
+
 @media (max-width: 900px) {
   .aging-container {
     padding: 20px 16px;
@@ -707,36 +734,17 @@
 /* Table container */
 .table-container {
   width: 100%;
-  max-width: 100%;
   overflow-x: auto;
-  overflow-y: auto;
-  max-height: 400px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  border-radius: 12px;
+  background: rgba(15, 15, 35, 0.4);
+  border-radius: 16px;
   border: 1px solid rgba(124, 58, 237, 0.2);
-  background: rgba(15, 15, 35, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
-.table-container::-webkit-scrollbar { 
-  display: block; 
-  height: 8px;
-  width: 8px;
-}
 
-.table-container::-webkit-scrollbar-track {
-  background: rgba(124, 58, 237, 0.1);
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #7c3aed, #a855f7);
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(90deg, #a855f7, #c084fc);
-}
 
 /* Aging Badge Styles */
 .aging-badge {
@@ -790,34 +798,26 @@
 /* Table */
 .rfq-table {
   width: 100%;
-  min-width: 1400px; /* Increased minimum width to show all column names */
-  max-width: 100%;
-  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   background: transparent;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 12px 48px 0 rgba(124, 42, 232, 0.32), 0 2px 16px 0 rgba(255, 78, 80, 0.18), 0 0 32px 4px rgba(249, 212, 35, 0.10);
-  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .rfq-table th {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: rgba(30, 30, 40, 0.92);
-  color: #fff;
+  background: rgba(30, 32, 40, 0.92);
+  color: #ffffff;
   font-weight: 700;
-  font-size: 0.95rem; /* Slightly smaller font for better fit */
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.5px; /* Reduced letter spacing */
-  padding: 1rem 0.8rem; /* Slightly reduced padding */
-  border-bottom: 2.5px solid #7c2ae8;
+  letter-spacing: 1px;
+  padding: 20px 16px;
+  border-bottom: 2px solid #7c3aed;
   text-align: left;
-  box-shadow: 0 2px 8px 0 #23263a22;
-  white-space: nowrap; /* Prevent text wrapping */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  backdrop-filter: blur(10px);
 }
 
 /* Specific column widths to prevent collision and show full column names */
@@ -843,16 +843,13 @@
 .sort-icon { font-size: 0.8rem; opacity: 0.6; transition: opacity 0.2s ease; }
 .sortable:hover .sort-icon { opacity: 1; }
 .rfq-table td {
-  color: #fff;
+  color: #ffffff;
   font-weight: 500;
-  font-size: 0.95rem; /* Match header font size */
-  padding: 1rem 0.8rem; /* Match header padding */
-  border-bottom: 1.5px solid rgba(124, 42, 232, 0.10);
+  font-size: 14px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.1);
   background: transparent;
-  white-space: nowrap; /* Prevent text wrapping */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 0; /* Force text truncation */
+  transition: all 0.2s ease;
 }
 
 /* Specific cell styling for better readability */
@@ -887,8 +884,19 @@
   color: #94a3b8;
   font-style: italic;
 }
-.table-row { transition: background 0.2s; }
-.table-row:hover { background: rgba(124, 42, 232, 0.10); }
+.table-row {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.table-row:hover {
+  background: rgba(124, 58, 237, 0.08);
+  transform: translateX(4px);
+}
+
+.table-row:hover td {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+}
 
 /* Date badge like RFQ */
 .date-badge {
@@ -908,23 +916,15 @@
 
 /* Pagination */
 .pagination-card {
-  position: relative;
-  z-index: 2;
-  background: rgba(15, 15, 35, 0.9);
-  border-radius: 20px;
-  padding: 1.2rem 2rem;
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(124, 58, 237, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
-  transition: all 0.3s ease;
+  margin-top: 32px;
+  padding: 20px 32px;
+  background: rgba(124, 58, 237, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(124, 58, 237, 0.1);
+  backdrop-filter: blur(10px);
 }
 .pagination-controls { display: flex; align-items: center; gap: 16px; }
 .pagination-button {

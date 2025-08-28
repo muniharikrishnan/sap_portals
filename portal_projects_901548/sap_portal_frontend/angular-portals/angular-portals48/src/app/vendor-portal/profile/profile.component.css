@@ -5,8 +5,8 @@
 .profile-container {
   position: fixed;
   top: 0;
-  left: 250px;
-  width: calc(100vw - 250px);
+  left: 280px;
+  width: calc(100vw - 280px);
   height: 100vh;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #7c3aed 75%, #a855f7 100%);
   background-size: 400% 400%;
@@ -332,7 +332,19 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .profile-container {
+    left: 260px;
+    width: calc(100vw - 260px);
+  }
+}
+
 @media (max-width: 768px) {
+  .profile-container {
+    left: 0;
+    width: 100vw;
+  }
+  
   .profile-content {
     padding: 1rem;
   }

@@ -1,0 +1,231 @@
+<div class="finance-analytics-container">
+  <!-- Header Section -->
+  <div class="analytics-header">
+    <div class="header-content">
+      <h2 class="analytics-title">
+        <i class="fas fa-chart-line"></i>
+        Finance Analytics Dashboard
+      </h2>
+      <p class="analytics-subtitle">Comprehensive financial insights and trends</p>
+    </div>
+    <button class="refresh-button" (click)="refreshData()" [disabled]="loading">
+      <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+      {{ loading ? 'Refreshing...' : 'Refresh Data' }}
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading finance analytics...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !loading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3 class="error-title">Unable to Load Data</h3>
+    <p class="error-message">{{ error }}</p>
+    <button class="retry-button" (click)="refreshData()">
+      <i class="fas fa-redo"></i>
+      Try Again
+    </button>
+  </div>
+
+  <!-- Finance Analytics Content -->
+  <div class="analytics-content" *ngIf="financeData && !loading && !error">
+    
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-card invoice-summary">
+        <div class="card-icon">
+          <i class="fas fa-file-invoice"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Invoices</h3>
+          <div class="card-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total:</span>
+              <span class="stat-value">{{ financeData.invoices.total }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Pending:</span>
+              <span class="stat-value pending">{{ financeData.invoices.pending }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Overdue:</span>
+              <span class="stat-value overdue">{{ financeData.invoices.overdue }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Paid:</span>
+              <span class="stat-value paid">{{ financeData.invoices.paid }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card aging-summary">
+        <div class="card-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Aging Analysis</h3>
+          <div class="card-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Records:</span>
+              <span class="stat-value">{{ financeData.aging.total }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Current:</span>
+              <span class="stat-value current">{{ financeData.aging.current }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">30+ Days:</span>
+              <span class="stat-value days30">{{ financeData.aging.days30 + financeData.aging.days60 + financeData.aging.days90 + financeData.aging.over90 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card memo-summary">
+        <div class="card-icon">
+          <i class="fas fa-sticky-note"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Memos</h3>
+          <div class="card-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total:</span>
+              <span class="stat-value">{{ financeData.memos.total }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Credit:</span>
+              <span class="stat-value credit">{{ financeData.memos.credit }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Debit:</span>
+              <span class="stat-value debit">{{ financeData.memos.debit }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="chart-row">
+        <!-- Invoice Trends Chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 class="chart-title">Invoice Trends</h3>
+            <p class="chart-description">Monthly invoice amounts over time</p>
+          </div>
+          <div class="chart-wrapper">
+            <canvas #invoiceChart></canvas>
+          </div>
+        </div>
+
+        <!-- Aging Distribution Chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 class="chart-title">Aging Distribution</h3>
+            <p class="chart-description">Distribution of aging buckets</p>
+          </div>
+          <div class="chart-wrapper">
+            <canvas #agingChart></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <!-- Memo Trends Chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 class="chart-title">Memo Trends</h3>
+            <p class="chart-description">Monthly credit vs debit memos</p>
+          </div>
+          <div class="chart-wrapper">
+            <canvas #memoChart></canvas>
+          </div>
+        </div>
+
+        <!-- Currency Distribution Chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 class="chart-title">Currency Distribution</h3>
+            <p class="chart-description">Invoice amounts by currency</p>
+          </div>
+          <div class="chart-wrapper">
+            <canvas #currencyChart></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Breakdown Section -->
+    <div class="breakdown-section">
+      <div class="breakdown-row">
+        <!-- Aging Breakdown Table -->
+        <div class="breakdown-card">
+          <h3 class="breakdown-title">
+            <i class="fas fa-clock"></i>
+            Aging Breakdown
+          </h3>
+          <div class="breakdown-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aging Range</th>
+                  <th>Count</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of financeData.aging.agingBreakdown">
+                  <td>
+                    <span class="aging-badge" [class]="'aging-' + item.range.toLowerCase().replace(' ', '-')">
+                      {{ item.range }}
+                    </span>
+                  </td>
+                  <td>{{ item.count }}</td>
+                  <td>{{ item.amount | currency:'USD':'symbol':'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Memo Type Breakdown -->
+        <div class="breakdown-card">
+          <h3 class="breakdown-title">
+            <i class="fas fa-sticky-note"></i>
+            Memo Type Breakdown
+          </h3>
+          <div class="breakdown-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Count</th>
+                  <th>Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of financeData.memos.typeBreakdown">
+                  <td>
+                    <span class="memo-badge" [class]="'memo-' + item.type.toLowerCase()">
+                      {{ item.type }}
+                    </span>
+                  </td>
+                  <td>{{ item.count }}</td>
+                  <td>{{ item.amount | currency:'USD':'symbol':'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

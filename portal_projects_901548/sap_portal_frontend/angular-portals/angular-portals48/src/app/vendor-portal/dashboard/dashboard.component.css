@@ -7,9 +7,9 @@
   position: relative;
   top: 0;
   left: 0;
-  width: calc(100vw - 250px); /* Sidebar width is 250px */
+  width: calc(100vw - 280px); /* Sidebar width is 280px */
   height: 100vh;
-  margin-left: 250px; /* Push content right of sidebar */
+  margin-left: 280px; /* Push content right of sidebar */
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #7c3aed 75%, #a855f7 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -480,6 +480,21 @@
   transform: translateX(4px);
 }
 
+.business-tile[onclick] {
+  cursor: pointer;
+}
+
+/* Finance Analytics Section */
+.finance-analytics-section {
+  margin-bottom: 2rem;
+}
+
+.finance-analytics-section .section-header h3::before {
+  content: '\f080';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+}
+
 /* Recent Activity Section */
 .recent-activity-section {
   margin-bottom: 2rem;
@@ -571,7 +586,19 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .dashboard-container {
+    width: calc(100vw - 260px);
+    margin-left: 260px;
+  }
+}
+
 @media (max-width: 768px) {
+  .dashboard-container {
+    width: 100vw;
+    margin-left: 0;
+  }
+  
   .dashboard-content {
     padding: 1rem;
   }
@@ -635,6 +662,7 @@
   
   .quick-stats-section,
   .business-objects-section,
+  .finance-analytics-section,
   .recent-activity-section {
     margin-bottom: 1.5rem;
   }
