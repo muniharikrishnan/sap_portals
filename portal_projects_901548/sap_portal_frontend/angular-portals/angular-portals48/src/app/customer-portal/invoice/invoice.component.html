@@ -1,56 +1,147 @@
 <div class="invoice-container">
-  <h2>Customer Invoices</h2>
-  <table class="invoice-table">
-    <thead>
-      <tr>
-        <th>Invoice No</th>
-        <th>Date</th>
-        <th>Currency</th>
-        <th>Net Amount</th>
-        <th>Customer</th>
-        <th>Org</th>
-        <th>Doc Type</th>
-        <th>Material</th>
-        <th>Description</th>7=''
-        <th>Qty</th>
-        <th>Unit</th>
-        <th>Item Value</th>
-        <th>Created On</th>
-        <th>Created By</th>
-        <th>Download</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let invoice of invoices">
-        <td>{{ invoice.vbeln }}</td>
-        <td>{{ invoice.fkdat }}</td>
-        <td>{{ invoice.waerk }}</td>
-        <td>{{ invoice.netwr }}</td>
-        <td>{{ invoice.kunag }}</td>
-        <td>{{ invoice.vkorg }}</td>
-        <td>{{ invoice.fkart }}</td>
-        <td>{{ invoice.matnr }}</td>
-        <td>{{ invoice.arktx }}</td>
-        <td>{{ invoice.fkimg }}</td>
-        <td>{{ invoice.vrkme }}</td>
-        <td>{{ invoice.item_netwr }}</td>
-        <td>{{ invoice.erdat }}</td>
-        <td>{{ invoice.ernam }}</td>
-        <td>
-          <button 
-            (click)="downloadPDF(invoice.vbeln)" 
-            [disabled]="isDownloading(invoice.vbeln)"
-            [title]="isDownloading(invoice.vbeln) ? 'Downloading...' : 'Download PDF'"
-            class="download-btn">
-            <span *ngIf="!isDownloading(invoice.vbeln)">
-              <img src="assets/pdf-icon.png" alt="Download PDF" width="20" />
-            </span>
-            <span *ngIf="isDownloading(invoice.vbeln)" class="loading-spinner">
-              ⏳
-            </span>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="invoice-content">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading invoice data...</div>
+    </div>
+
+    <!-- Export Overlay -->
+    <div class="export-overlay" *ngIf="isExporting">
+      <div class="export-spinner"></div>
+      <div class="export-text">Exporting invoice data...</div>
+    </div>
+
+    <!-- Invoice Content -->
+    <div *ngIf="!isLoading; else loadingOrError">
+      <!-- Header Section -->
+      <div class="header-section">
+        <h2>Customer Invoices</h2>
+        <div class="controls">
+          <div class="search-container">
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Search invoices..." 
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()"
+            />
+            <svg class="search-icon" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <button 
+              *ngIf="searchTerm" 
+              class="clear-btn" 
+              (click)="clearSearch()"
+              title="Clear search"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <div class="action-buttons">
+            <button class="action-btn" (click)="refreshInvoices()" [disabled]="isLoading">
+              <span class="material-icons btn-icon" [class.spinning]="isLoading">refresh</span>
+              REFRESH
+            </button>
+            <button class="action-btn" (click)="exportInvoiceData()" [disabled]="isExporting">
+              <span class="material-icons btn-icon" [class.spinning]="isExporting">download</span>
+              EXPORT
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-section">
+        <div class="table-container" [class.loading]="isLoading">
+          <table>
+            <thead>
+              <tr>
+                <th>Invoice No</th>
+                <th>Date</th>
+                <th>Currency</th>
+                <th>Net Amount</th>
+                <th>Customer</th>
+                <th>Org</th>
+                <th>Doc Type</th>
+                <th>Material</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Item Value</th>
+                <th>Created On</th>
+                <th>Created By</th>
+                <th>Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let invoice of filteredInvoices">
+                <td>{{ invoice.vbeln }}</td>
+                <td>{{ invoice.fkdat }}</td>
+                <td>{{ invoice.waerk }}</td>
+                <td>{{ invoice.netwr }}</td>
+                <td>{{ invoice.kunag }}</td>
+                <td>{{ invoice.vkorg }}</td>
+                <td>{{ invoice.fkart }}</td>
+                <td>{{ invoice.matnr }}</td>
+                <td>{{ invoice.arktx }}</td>
+                <td>{{ invoice.fkimg }}</td>
+                <td>{{ invoice.vrkme }}</td>
+                <td>{{ invoice.item_netwr }}</td>
+                <td>{{ invoice.erdat }}</td>
+                <td>{{ invoice.ernam }}</td>
+                <td>
+                  <button 
+                    (click)="downloadPDF(invoice.vbeln)" 
+                    [disabled]="isDownloading(invoice.vbeln)"
+                    [title]="isDownloading(invoice.vbeln) ? 'Downloading...' : 'Download PDF'"
+                    class="download-btn">
+                    <span *ngIf="!isDownloading(invoice.vbeln)">
+                      <img src="assets/pdf-icon.png" alt="Download PDF" width="20" />
+                    </span>
+                    <span *ngIf="isDownloading(invoice.vbeln)" class="loading-spinner">
+                      ⏳
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- No Data Container -->
+      <div class="no-data-container" *ngIf="!isLoading && (!filteredInvoices || filteredInvoices.length === 0)">
+        <svg class="no-data-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+        </svg>
+        <p><strong>No invoices found</strong></p>
+        <p *ngIf="searchTerm">Try adjusting your search terms or <button class="clear-search-action" (click)="clearSearch()">clear the search</button></p>
+        <p *ngIf="!searchTerm">No invoice data is currently available.</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Loading and Error States -->
+<ng-template #loadingOrError>
+  <div class="loading-container" *ngIf="!errorMessage">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    <h3>Loading Invoice Data...</h3>
+    <p>Please wait while we fetch your invoice information</p>
+  </div>
+  
+  <div class="error-container" *ngIf="errorMessage">
+    <div class="error-icon">
+      <span class="material-icons">error_outline</span>
+    </div>
+    <h3>Unable to Load Invoice Data</h3>
+    <p>{{ errorMessage }}</p>
+    <button class="retry-btn" (click)="refreshInvoices()">
+      <span class="material-icons">refresh</span>
+      Try Again
+    </button>
+  </div>
+</ng-template>

@@ -13,7 +13,12 @@ import { HttpClientModule } from '@angular/common/http'
 })
 export class InvoiceComponent implements OnInit {
   invoices: any[] = [];
+  filteredInvoices: any[] = [];
   downloadingInvoices: Set<string> = new Set(); // Track which invoices are being downloaded
+  isLoading: boolean = false;
+  isExporting: boolean = false;
+  searchTerm: string = '';
+  errorMessage: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -23,22 +28,74 @@ export class InvoiceComponent implements OnInit {
       this.fetchInvoices(customerId);
     } else {
       console.error('Customer ID not found in local storage');
+      this.errorMessage = 'Customer ID not found. Please login again.';
     }
   }
 
   fetchInvoices(kunnr: string): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+    
     this.http.get<any>(`http://localhost:3001/api/invoices/${kunnr}`).subscribe({
       next: (response) => {
+        this.isLoading = false;
         if (response.success) {
           this.invoices = response.data;
+          this.filteredInvoices = response.data;
         } else {
           console.error('Failed to load invoices');
+          this.errorMessage = 'Failed to load invoices. Please try again.';
         }
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Error fetching invoices:', error);
+        this.errorMessage = 'Error loading invoices. Please check your connection.';
       }
     });
+  }
+
+  onSearch(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredInvoices = this.invoices;
+      return;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase();
+    this.filteredInvoices = this.invoices.filter(invoice => 
+      invoice.vbeln?.toLowerCase().includes(searchLower) ||
+      invoice.fkdat?.toLowerCase().includes(searchLower) ||
+      invoice.kunag?.toLowerCase().includes(searchLower) ||
+      invoice.netwr?.toString().includes(searchLower) ||
+      invoice.waerk?.toLowerCase().includes(searchLower) ||
+      invoice.fkart?.toLowerCase().includes(searchLower) ||
+      invoice.matnr?.toLowerCase().includes(searchLower) ||
+      invoice.arktx?.toLowerCase().includes(searchLower) ||
+      invoice.ernam?.toLowerCase().includes(searchLower)
+    );
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.filteredInvoices = this.invoices;
+  }
+
+  refreshInvoices(): void {
+    const customerId = localStorage.getItem('customerId');
+    if (customerId) {
+      this.fetchInvoices(customerId);
+    }
+  }
+
+  exportInvoiceData(): void {
+    this.isExporting = true;
+    
+    // Simulate export process
+    setTimeout(() => {
+      this.isExporting = false;
+      // Here you would implement actual export logic
+      console.log('Exporting invoice data...');
+    }, 2000);
   }
 
   downloadPDF(vbeln: string): void {
@@ -72,6 +129,10 @@ export class InvoiceComponent implements OnInit {
     });
   }
 
+  isDownloading(vbeln: string): boolean {
+    return this.downloadingInvoices.has(vbeln);
+  }
+
   private downloadBase64PDF(base64Data: string, filename: string): void {
     try {
       // Convert base64 to binary
@@ -99,13 +160,8 @@ export class InvoiceComponent implements OnInit {
       
       console.log(`PDF downloaded successfully: ${filename}`);
     } catch (error) {
-      console.error('Error processing PDF download:', error);
-      alert('Error processing PDF file. Please try again.');
+      console.error('Error creating PDF download:', error);
+      alert('Error creating PDF download. Please try again.');
     }
-  }
-
-  // Helper method to check if an invoice is being downloaded
-  isDownloading(vbeln: string): boolean {
-    return this.downloadingInvoices.has(vbeln);
   }
 }

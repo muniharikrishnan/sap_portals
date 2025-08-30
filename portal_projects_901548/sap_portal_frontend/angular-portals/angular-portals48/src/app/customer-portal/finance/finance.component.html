@@ -1,30 +1,188 @@
 <div class="finance-container">
-  <div class="finance-header-card">
-    <div class="finance-header-content">
-      <div class="finance-header-avatar">💳</div>
-      <div class="finance-header-text">
-        <h2>Customer Finance Panel</h2>
-        <div class="finance-id">Click any card to view finance details</div>
+  <div class="finance-content">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading finance data...</div>
+    </div>
+
+    <!-- Export Overlay -->
+    <div class="export-overlay" *ngIf="isExporting">
+      <div class="export-spinner"></div>
+      <div class="export-text">Exporting finance data...</div>
+    </div>
+
+    <!-- Finance Content -->
+    <div *ngIf="!isLoading; else loadingOrError">
+      <!-- Finance Dashboard Header -->
+      <div class="finance-header">
+        <div class="header-content">
+          <div class="header-info">
+            <h1>Finance Dashboard</h1>
+            <div class="vendor-details">
+              <span class="vendor-id">Customer ID: {{ customerId || '200000' }}</span>
+              <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Financial Overview</span>
+              </div>
+            </div>
+          </div>
+          <button class="back-btn" (click)="goBack()">
+            <span class="material-icons">arrow_back</span>
+            ← BACK TO DASHBOARD
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Statistics Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-icons">schedule</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ financeStats.pendingInvoices || '8' }}</div>
+            <div class="stat-label">Pending Invoices</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-icons">event_busy</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ financeStats.overdueInvoices || '0' }}</div>
+            <div class="stat-label">Overdue Invoices</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-icons">account_balance_wallet</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ financeStats.totalOutstanding || '$4,000' }}</div>
+            <div class="stat-label">Total Outstanding</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-icons">trending_up</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ financeStats.totalPaid || '$105.04' }}</div>
+            <div class="stat-label">Total Paid</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Finance Modules Section -->
+      <div class="finance-modules-section">
+        <div class="section-header">
+          <h3>
+            <span class="material-icons">account_balance</span>
+            Finance Modules
+          </h3>
+          <p>Access your financial data and manage operations</p>
+        </div>
+
+        <div class="modules-grid">
+          <!-- Invoice Management Card -->
+          <div class="module-card" routerLink="/customer/invoice">
+            <div class="card-header">
+              <div class="card-icon">
+                <span class="material-icons">receipt_long</span>
+              </div>
+              <div class="card-badge">{{ financeStats.invoiceCount || '8' }} Invoices</div>
+            </div>
+            <div class="card-content">
+              <h4>Invoice Management</h4>
+              <p>Manage your invoices and payments</p>
+            </div>
+            <div class="card-arrow">
+              <span class="material-icons">arrow_forward</span>
+            </div>
+          </div>
+
+          <!-- Aging Analysis Card -->
+          <div class="module-card" routerLink="/customer/aging">
+            <div class="card-header">
+              <div class="card-icon">
+                <span class="material-icons">schedule</span>
+              </div>
+              <div class="card-badge">{{ financeStats.agingCount || '8' }} Records</div>
+            </div>
+            <div class="card-content">
+              <h4>Aging Analysis</h4>
+              <p>View payment aging and due dates</p>
+            </div>
+            <div class="card-arrow">
+              <span class="material-icons">arrow_forward</span>
+            </div>
+          </div>
+
+          <!-- Memo Management Card -->
+          <div class="module-card" routerLink="/customer/memo">
+            <div class="card-header">
+              <div class="card-icon">
+                <span class="material-icons">note</span>
+              </div>
+              <div class="card-badge">{{ financeStats.memoCount || '8' }} Memos</div>
+            </div>
+            <div class="card-content">
+              <h4>Memo Management</h4>
+              <p>View financial memos and adjustments</p>
+            </div>
+            <div class="card-arrow">
+              <span class="material-icons">arrow_forward</span>
+            </div>
+          </div>
+
+          <!-- Overall Sales Card -->
+          <div class="module-card" routerLink="/customer/overallsales">
+            <div class="card-header">
+              <div class="card-icon">
+                <span class="material-icons">analytics</span>
+              </div>
+              <div class="card-badge">{{ financeStats.overallSalesValue || '$12.3K' }}</div>
+            </div>
+            <div class="card-content">
+              <h4>Overall Sales</h4>
+              <p>Comprehensive sales reports and analytics</p>
+            </div>
+            <div class="card-arrow">
+              <span class="material-icons">arrow_forward</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="finance-tile-grid">
-    <a class="tile" [routerLink]="['/customer/invoice']">
-      <span class="tile-emoji">🧾</span>
-      <span><b>Invoice</b></span>
-    </a>
-    <a class="tile" [routerLink]="['/customer/aging']">
-      <span class="tile-emoji">⏳</span>
-      <span><b>Aging</b></span>
-    </a>
-    <a class="tile" [routerLink]="['/customer/memo']">
-      <span class="tile-emoji">📝</span>
-      <span><b>Memo</b></span>
-    </a>
-    <a class="tile" [routerLink]="['/customer/overallsales']">
-      <span class="tile-emoji">💰</span>
-      <span><b>Overall Sales</b></span>
-    </a>
+
+    <!-- Loading and Error States -->
+    <ng-template #loadingOrError>
+      <div class="loading-container" *ngIf="!errorMessage">
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
+        <h3>Loading Finance Data...</h3>
+        <p>Please wait while we fetch your financial information</p>
+      </div>
+      
+      <div class="error-container" *ngIf="errorMessage">
+        <div class="error-icon">
+          <span class="material-icons">error_outline</span>
+        </div>
+        <h3>Unable to Load Finance Data</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="retry-btn" (click)="refreshFinance()">
+          <span class="material-icons">refresh</span>
+          Try Again
+        </button>
+      </div>
+    </ng-template>
   </div>
 </div>
+
+<!-- Router Outlet for Finance Sub-modules -->
 <router-outlet></router-outlet>

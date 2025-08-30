@@ -1,42 +1,144 @@
 <div class="sales-container">
-    <h2>Customer Sales Data</h2>
-  
-    <div *ngIf="isLoading" class="loading">Loading sales data...</div>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  
-    <table *ngIf="!isLoading && salesData.length > 0" class="sales-table">
-      <thead>
-        <tr>
-          <th>VBELN</th>
-          <th>ERDAT</th>
-          <th>AUART</th>
-          <th>NETWR</th>
-          <th>WAERK</th>
-          <th>VDATU</th>
-          <th>ERNAM</th>
-          <th>POSNR</th>
-          <th>MATNR</th>
-          <th>ARKTX</th>
-          <th>KWMENG</th>
-          <th>VRKME</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of salesData">
-          <td>{{ item.vbeln }}</td>
-          <td>{{ item.erdat }}</td>
-          <td>{{ item.auart }}</td>
-          <td>{{ item.netwr }}</td>
-          <td>{{ item.waerk }}</td>
-          <td>{{ item.vdatu }}</td>
-          <td>{{ item.ernam }}</td>
-          <td>{{ item.posnr }}</td>
-          <td>{{ item.matnr }}</td>
-          <td>{{ item.arktx }}</td>
-          <td>{{ item.kwmeng }}</td>
-          <td>{{ item.vrkme }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="sales-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h2>Customer Sales Data</h2>
+      
+      <!-- Controls -->
+      <div class="controls">
+        <!-- Search Container -->
+        <div class="search-container">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search sales..." 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearch()"
+            class="search-input"
+          />
+          <button 
+            *ngIf="searchTerm" 
+            (click)="clearSearch()" 
+            class="clear-btn"
+            title="Clear search"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button 
+            class="action-btn" 
+            (click)="refreshSales()" 
+            [disabled]="isLoading"
+            title="Refresh sales data"
+          >
+            <svg class="btn-icon" [class.spinning]="isLoading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 2v6h-6"></path>
+              <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+              <path d="M3 22v-6h6"></path>
+              <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+            </svg>
+            {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading sales data...</div>
+    </div>
+
+    <!-- Export Overlay -->
+    <div class="export-overlay" *ngIf="isExporting">
+      <div class="export-spinner"></div>
+      <div class="export-text">Exporting sales data...</div>
+    </div>
+
+    <!-- Sales Data Table -->
+    <div class="table-section" *ngIf="!isLoading && salesData.length > 0">
+      <div class="table-container" [class.loading]="isLoading">
+        <table>
+          <thead>
+            <tr>
+              <th>Sales Order</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Net Value</th>
+              <th>Currency</th>
+              <th>Status</th>
+              <th>Item No</th>
+              <th>Material</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>UOM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of filteredSales">
+              <td>{{ item.vbeln }}</td>
+              <td>{{ item.erdat | date:'dd/MM/yyyy' }}</td>
+              <td>{{ item.ernam }}</td>
+              <td>{{ item.netwr | currency:item.waerk }}</td>
+              <td>{{ item.waerk }}</td>
+              <td>{{ item.auart }}</td>
+              <td>{{ item.posnr }}</td>
+              <td>{{ item.matnr }}</td>
+              <td>{{ item.arktx }}</td>
+              <td>{{ item.kwmeng }}</td>
+              <td>{{ item.vrkme }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Data Container -->
+    <div class="no-data-container" *ngIf="!isLoading && (!salesData || salesData.length === 0)">
+      <svg class="no-data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"></path>
+      </svg>
+      <p><strong>No Sales Data Available</strong></p>
+      <p>Unable to load sales information. Please try refreshing the page.</p>
+      <button class="clear-search-action" (click)="refreshSales()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 8px;">
+          <path d="M21 2v6h-6"></path>
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+          <path d="M3 22v-6h6"></path>
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+        </svg>
+        Refresh Sales
+      </button>
+    </div>
+
+    <!-- Error Message -->
+    <div class="no-data-container" *ngIf="errorMessage">
+      <svg class="no-data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      <p><strong>Error Loading Sales Data</strong></p>
+      <p>{{ errorMessage }}</p>
+      <button class="clear-search-action" (click)="refreshSales()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 8px;">
+          <path d="M21 2v6h-6"></path>
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+          <path d="M3 22v-6h6"></path>
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+        </svg>
+        Try Again
+      </button>
+    </div>
   </div>
+</div>
   

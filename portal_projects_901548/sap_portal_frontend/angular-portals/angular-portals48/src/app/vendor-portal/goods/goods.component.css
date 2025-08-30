@@ -79,17 +79,7 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
-.goods-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 48px 0 32px 0;
-  gap: 32px;
-  padding-top: 0 !important;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
+/* Keep the background full-screen; do not constrain the container width */
 
 /* Enhanced Header Card */
 .goods-header-card {

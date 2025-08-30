@@ -2,14 +2,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-/* Dashboard Container */
+/* Dashboard Container with Blue Dynamic Background */
 .dashboard-container {
-  width: 100%;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  animation: fadeInUp 0.6s ease-out;
+  position: fixed;
+  top: 0;
+  left: 280px;
+  width: calc(100vw - 280px);
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #0b2447 25%, #1e3a8a 50%, #1d4ed8 75%, #60a5fa 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(147, 197, 253, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(96, 165, 250, 0.1) 0%, transparent 50%);
+  animation: floatingOrbs 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes floatingOrbs {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -30px) rotate(120deg); }
+  66% { transform: translate(-20px, 20px) rotate(240deg); }
 }
 
 @keyframes fadeInUp {
@@ -23,29 +58,45 @@
   }
 }
 
+/* Scrollable Content Area */
+.dashboard-content {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 /* Enhanced Header Card */
 .dashboard-header-card {
   width: 100%;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e3a8a 100%);
   border-radius: 20px;
   padding: 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 
-    0 20px 60px rgba(59, 130, 246, 0.3),
-    0 8px 32px rgba(59, 130, 246, 0.2),
+    0 20px 60px rgba(37, 99, 235, 0.3),
+    0 8px 32px rgba(37, 99, 235, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  min-height: 120px;
 }
 
 .dashboard-header-card:hover {
   transform: translateY(-2px);
   box-shadow: 
-    0 25px 70px rgba(59, 130, 246, 0.35),
-    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 25px 70px rgba(37, 99, 235, 0.35),
+    0 12px 40px rgba(37, 99, 235, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
@@ -66,6 +117,8 @@
   align-items: center;
   gap: 24px;
   z-index: 1;
+  flex: 1;
+  min-width: 0;
 }
 
 .dashboard-header-avatar {
@@ -96,6 +149,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 .dashboard-header-text h2 {
@@ -106,6 +161,8 @@
   margin: 0;
   line-height: 1.2;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .welcome-id {
@@ -116,6 +173,7 @@
   font-size: 16px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
+  flex-wrap: wrap;
 }
 
 .welcome-id .material-icons {
@@ -130,6 +188,7 @@
   font-size: 14px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
+  flex-wrap: wrap;
 }
 
 .status-indicator {
@@ -164,6 +223,8 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   z-index: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .logout-button:hover {
@@ -185,6 +246,8 @@
 /* Quick Stats Section */
 .quick-stats-section {
   width: 100%;
+  z-index: 1;
+  position: relative;
 }
 
 .stats-grid {
@@ -194,9 +257,9 @@
 }
 
 .stat-card {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(10, 23, 55, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(37, 99, 235, 0.25);
   border-radius: 16px;
   padding: 24px;
   display: flex;
@@ -214,7 +277,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.12), transparent);
   transition: left 0.5s ease;
 }
 
@@ -224,14 +287,14 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.2);
 }
 
 .stat-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -263,6 +326,8 @@
 /* Business Objects Section */
 .business-objects-section {
   width: 100%;
+  z-index: 1;
+  position: relative;
 }
 
 .section-header {
@@ -282,7 +347,7 @@
 
 .section-header h3 .material-icons {
   font-size: 28px;
-  color: #3b82f6;
+  color: #2563eb;
 }
 
 .section-header p {
@@ -299,9 +364,9 @@
 }
 
 .business-tile {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(10, 23, 55, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(37, 99, 235, 0.25);
   border-radius: 16px;
   padding: 24px;
   display: flex;
@@ -320,7 +385,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.12), transparent);
   transition: left 0.5s ease;
 }
 
@@ -330,8 +395,8 @@
 
 .business-tile:hover {
   transform: translateY(-4px);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.2);
 }
 
 .tile-icon {
@@ -345,7 +410,7 @@
   transition: all 0.3s ease;
 }
 
-.inquiry-tile .tile-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.inquiry-tile .tile-icon { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 .sales-tile .tile-icon { background: linear-gradient(135deg, #10b981, #059669); }
 .delivery-tile .tile-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
 .finance-tile .tile-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
@@ -382,13 +447,13 @@
 
 .tile-badge {
   display: inline-block;
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(37, 99, 235, 0.2);
   color: #60a5fa;
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(37, 99, 235, 0.3);
 }
 
 .tile-arrow {
@@ -407,12 +472,14 @@
 }
 
 .business-tile:hover .tile-arrow .material-icons {
-  color: #3b82f6;
+  color: #2563eb;
 }
 
 /* Recent Activity Section */
 .recent-activity-section {
   width: 100%;
+  z-index: 1;
+  position: relative;
 }
 
 .activity-list {
@@ -422,9 +489,9 @@
 }
 
 .activity-item {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(10, 23, 55, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(37, 99, 235, 0.25);
   border-radius: 12px;
   padding: 20px;
   display: flex;
@@ -434,14 +501,14 @@
 }
 
 .activity-item:hover {
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: rgba(37, 99, 235, 0.4);
   transform: translateX(4px);
 }
 
 .activity-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -483,7 +550,12 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .dashboard-container {
-    gap: 24px;
+    left: 240px;
+    width: calc(100vw - 240px);
+  }
+  
+  .dashboard-content {
+    padding: 1.5rem;
   }
   
   .dashboard-header-card {
@@ -507,7 +579,12 @@
 
 @media (max-width: 768px) {
   .dashboard-container {
-    gap: 20px;
+    left: 0;
+    width: 100vw;
+  }
+  
+  .dashboard-content {
+    padding: 1rem;
   }
   
   .dashboard-header-card {
@@ -602,6 +679,10 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .dashboard-container::before {
+    animation: none;
   }
 }
 

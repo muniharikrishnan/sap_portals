@@ -1,129 +1,104 @@
 
-<div class="login-bg">
-  <!-- Dashboard Preview Sidebar -->
-  <div class="dashboard-preview" [class.show-preview]="showDashboardPreview">
-    <div class="preview-header">
-      <div class="portal-logo">
-        <span class="material-icons">account_circle</span>
-        <div class="logo-text">
-          <h3>Customer Portal</h3>
+<div class="login-page">
+  <div class="login-wrapper">
+    <div class="login-preview">
+      <div class="preview-title">Explore what you can access</div>
+      <div class="preview-grid">
+        <div class="preview-card">
+          <div class="preview-icon"><i class="fas fa-user"></i></div>
+          <div>
+            <div class="preview-name">Profile</div>
+            <div class="preview-desc">View and manage your customer details</div>
+          </div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-icon"><i class="fas fa-truck"></i></div>
+          <div>
+            <div class="preview-name">Delivery</div>
+            <div class="preview-desc">Track goods delivery status</div>
+          </div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-icon"><i class="fas fa-question-circle"></i></div>
+          <div>
+            <div class="preview-name">Inquiry</div>
+            <div class="preview-desc">Create and view inquiries</div>
+          </div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-icon"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <div class="preview-name">Sales</div>
+            <div class="preview-desc">Monitor orders and sales</div>
+          </div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-icon"><i class="fas fa-coins"></i></div>
+          <div>
+            <div class="preview-name">Financials</div>
+            <div class="preview-desc">Invoices, memos and aging insights</div>
+          </div>
         </div>
       </div>
     </div>
-    
-    <nav class="preview-nav">
-      <div class="nav-item active">
-        <span class="material-icons">dashboard</span>
-        <span>Dashboard</span>
-      </div>
-      <div class="nav-item">
-        <span class="material-icons">person</span>
-        <span>Profile</span>
-      </div>
-      <div class="nav-item">
-        <span class="material-icons">local_shipping</span>
-        <span>Delivery</span>
-      </div>
-      <div class="nav-item">
-        <span class="material-icons">help_outline</span>
-        <span>Inquiry</span>
-      </div>
-      <div class="nav-item">
-        <span class="material-icons">trending_up</span>
-        <span>Sales</span>
-      </div>
-      <div class="nav-item">
-        <span class="material-icons">account_balance</span>
-        <span>Finance</span>
-      </div>
-    </nav>
-  
 
-  <!-- Main Login Card -->
-  <div class="login-card" [class.card-shifted]="showDashboardPreview">
-    <div class="icon-circle">
-      <span class="material-icons lock-icon">lock</span>
-    </div>
-    <h2 class="portal-title">SAP Customer Portal</h2>
-    <p class="portal-subtitle">Please sign in to continue</p>
-    
-    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
-      <div class="form-group">
-        <label class="input-label" for="customerId">Customer ID</label>
-        <div class="input-group">
-          <span class="material-icons input-icon">person</span>
-          <input
-            id="customerId"
-            type="text"
-            placeholder="Enter your customer ID"
-            autocomplete="username"
-            [(ngModel)]="customerId"
-            name="customerId"
-            required
-            #customerIdInput="ngModel"
-            (focus)="showDashboardPreview = true"
-          />
+    <div class="login-container">
+      <div class="lock-emoji-circle"></div>
+      <div class="portal-title">SAP Customer Portal</div>
+      <div class="portal-subtitle">Please sign in to continue</div>
+
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="login-form">
+        <div class="form-group">
+          <label for="customerId" class="form-label">Customer ID</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              id="customerId"
+              name="customerId"
+              class="form-input"
+              placeholder="Enter your Customer ID"
+              [(ngModel)]="customerId"
+              required
+              autocomplete="username"
+            />
+          </div>
         </div>
-        <div class="input-error" *ngIf="customerIdInput.invalid && customerIdInput.touched">
-          Customer ID is required
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              class="form-input"
+              placeholder="Enter your password"
+              [(ngModel)]="password"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+              <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="input-label" for="password">Password</label>
-        <div class="input-group">
-          <span class="material-icons input-icon">lock</span>
-          <input
-            id="password"
-            [type]="showPassword ? 'text' : 'password'"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            [(ngModel)]="password"
-            name="password"
-            required
-            #passwordInput="ngModel"
-          />
-          <button 
-            type="button" 
-            class="password-toggle"
-            (click)="togglePasswordVisibility()"
-            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-          >
-            <span class="material-icons">
-              {{ showPassword ? 'visibility_off' : 'visibility' }}
-            </span>
-          </button>
+        <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading && !isAuthenticating && !loginSuccess">Sign In</span>
+          <span *ngIf="isAuthenticating">Authenticating...</span>
+          <span *ngIf="loginSuccess">Login Successful!</span>
+        </button>
+
+        <div class="error-message" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ errorMessage }}
         </div>
-        <div class="input-error" *ngIf="passwordInput.invalid && passwordInput.touched">
-          Password is required
-        </div>
-      </div>
-
-      <button 
-        type="submit" 
-        class="sign-in-btn"
-        [class.loading]="isLoading"
-        [disabled]="loginForm.invalid || isLoading"
-      >
-        <span *ngIf="!isLoading && !isAuthenticating && !loginSuccess">Sign In</span>
-        <span *ngIf="isAuthenticating">Authenticating...</span>
-        <span *ngIf="loginSuccess">Login Successful!</span>
-      </button>
-
-      <div class="error-message" *ngIf="errorMessage">
-        <span class="material-icons error-icon">error_outline</span>
-        {{ errorMessage }}
-      </div>
-    </form>
-
-    <div class="login-footer">
-      <p class="help-text">
-        Need help? Contact your system administrator
-      </p>
+      </form>
     </div>
   </div>
 
-  <!-- Authentication Overlay -->
   <div class="auth-overlay" *ngIf="isAuthenticating || loginSuccess" [class.success]="loginSuccess">
     <div class="auth-content">
       <div class="auth-spinner" *ngIf="isAuthenticating">
@@ -131,10 +106,9 @@
         <h3>Authenticating</h3>
         <p>Please wait while we verify your credentials...</p>
       </div>
-      
       <div class="auth-success" *ngIf="loginSuccess">
         <div class="success-icon">
-          <span class="material-icons">check_circle</span>
+          <i class="fas fa-check-circle"></i>
         </div>
         <h3>Login Successful!</h3>
         <p>Redirecting to dashboard...</p>

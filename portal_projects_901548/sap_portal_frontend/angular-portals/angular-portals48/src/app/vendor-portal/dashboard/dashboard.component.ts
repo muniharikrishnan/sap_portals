@@ -54,10 +54,11 @@ export class DashboardComponent implements OnInit {
       this.vendorProfile = JSON.parse(storedProfile);
     } else {
       // Default profile structure
+      const storedId = localStorage.getItem('VendorId') || localStorage.getItem('vendorId') || localStorage.getItem('lifnr');
       this.vendorProfile = {
         name: 'Vendor User',
-        vendorId: localStorage.getItem('vendorId') || 'V001',
-        lifnr: localStorage.getItem('lifnr') || localStorage.getItem('vendorId') || 'V001'
+        vendorId: storedId || 'V001',
+        lifnr: storedId || 'V001'
       };
     }
   }

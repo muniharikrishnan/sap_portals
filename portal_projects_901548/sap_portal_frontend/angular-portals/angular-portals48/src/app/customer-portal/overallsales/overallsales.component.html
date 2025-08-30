@@ -1,35 +1,123 @@
-<div class="overall-sales-container">
-    <h2>Customer Overall Sales Report</h2>
-  
-    <table *ngIf="overallData.length > 0" class="sales-table">
-      <thead>
-        <tr>
-          <th>Document No</th>
-          <th>Doc Date</th>
-          <th>Currency</th>
-          <th>Sales Org</th>
-          <th>Order Type</th>
-          <th>Record Type</th>
-          <th>Total Orders</th>
-          <th>Total Order Value</th>
-          <th>Total Billed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of overallData">
-          <td>{{ item.document_no }}</td>
-          <td>{{ item.doc_date }}</td>
-          <td>{{ item.waerk }}</td>
-          <td>{{ item.vkorg }}</td>
-          <td>{{ item.auart }}</td>
-          <td>{{ item.record_type }}</td>
-          <td>{{ item.total_orders }}</td>
-          <td>{{ item.total_order_value | currency: item.waerk }}</td>
-          <td>{{ item.total_billed | currency: item.waerk }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <p *ngIf="overallData.length === 0">No data available for this customer.</p>
+<div class="overallsales-container">
+  <div class="overallsales-content">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading overall sales data...</div>
+    </div>
+
+    <!-- Export Overlay -->
+    <div class="export-overlay" *ngIf="isExporting">
+      <div class="export-spinner"></div>
+      <div class="export-text">Exporting overall sales data...</div>
+    </div>
+
+    <!-- Overall Sales Content -->
+    <div *ngIf="!isLoading; else loadingOrError">
+      <!-- Header Section -->
+      <div class="header-section">
+        <h2>Customer Overall Sales Report</h2>
+        <div class="controls">
+          <div class="search-container">
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Search overall sales..." 
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()"
+            />
+            <svg class="search-icon" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <button 
+              *ngIf="searchTerm" 
+              class="clear-btn" 
+              (click)="clearSearch()"
+              title="Clear search"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <div class="action-buttons">
+            <button class="action-btn" (click)="refreshOverallSales()" [disabled]="isLoading">
+              <span class="material-icons btn-icon" [class.spinning]="isLoading">refresh</span>
+              REFRESH
+            </button>
+            <button class="action-btn" (click)="exportOverallSalesData()" [disabled]="isExporting">
+              <span class="material-icons btn-icon" [class.spinning]="isExporting">download</span>
+              EXPORT
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-section">
+        <div class="table-container" [class.loading]="isLoading">
+          <table>
+            <thead>
+              <tr>
+                <th>Document No</th>
+                <th>Doc Date</th>
+                <th>Currency</th>
+                <th>Sales Org</th>
+                <th>Order Type</th>
+                <th>Record Type</th>
+                <th>Total Orders</th>
+                <th>Total Order Value</th>
+                <th>Total Billed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of filteredOverallData">
+                <td>{{ item.document_no }}</td>
+                <td>{{ item.doc_date }}</td>
+                <td>{{ item.waerk }}</td>
+                <td>{{ item.vkorg }}</td>
+                <td>{{ item.auart }}</td>
+                <td>{{ item.record_type }}</td>
+                <td>{{ item.total_orders }}</td>
+                <td>{{ item.total_order_value | currency: item.waerk }}</td>
+                <td>{{ item.total_billed | currency: item.waerk }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- No Data Container -->
+      <div class="no-data-container" *ngIf="!isLoading && (!filteredOverallData || filteredOverallData.length === 0)">
+        <svg class="no-data-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+        </svg>
+        <p><strong>No overall sales data found</strong></p>
+        <p *ngIf="searchTerm">Try adjusting your search terms or <button class="clear-search-action" (click)="clearSearch()">clear the search</button></p>
+        <p *ngIf="!searchTerm">No overall sales data is currently available for this customer.</p>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- Loading and Error States -->
+<ng-template #loadingOrError>
+  <div class="loading-container" *ngIf="!errorMessage">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    <h3>Loading Overall Sales Data...</h3>
+    <p>Please wait while we fetch your overall sales information</p>
+  </div>
+  
+  <div class="error-container" *ngIf="errorMessage">
+    <div class="error-icon">
+      <span class="material-icons">error_outline</span>
+    </div>
+    <h3>Unable to Load Overall Sales Data</h3>
+    <p>{{ errorMessage }}</p>
+    <button class="retry-btn" (click)="refreshOverallSales()">
+      <span class="material-icons">refresh</span>
+      Try Again
+    </button>
+  </div>
+</ng-template>
   

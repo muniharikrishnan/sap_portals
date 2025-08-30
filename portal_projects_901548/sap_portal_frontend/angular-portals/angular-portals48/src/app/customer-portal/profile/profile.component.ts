@@ -18,6 +18,8 @@ export class ProfileComponent implements OnInit {
   profileData: any = null;
   errorMessage: string = '';
   isLoading: boolean = false;
+  isExporting: boolean = false;
+  searchTerm: string = '';
   @ViewChild('loadingOrError', { static: true }) loadingOrError!: TemplateRef<any>;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -83,8 +85,7 @@ export class ProfileComponent implements OnInit {
   }
 
   // Additional utility methods for enhanced functionality
-  // Additional utility methods for enhanced functionality
- refreshProfile(): void {
+  refreshProfile(): void {
     // Show loading state
     this.isLoading = true;
     this.errorMessage = '';
@@ -100,36 +101,105 @@ export class ProfileComponent implements OnInit {
     // Show user feedback
     console.log('Refreshing profile data...');
   }
+
+  // Search functionality
+  onSearch(): void {
+    // Implement search functionality if needed
+    console.log('Searching for:', this.searchTerm);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    console.log('Search cleared');
+  }
+
   printProfile(): void {
-    window.print();
+    if (!this.profileData) {
+      alert('No profile data available to print');
+      return;
+    }
+
+    // Create a printable version of the profile
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Customer Profile - ${this.customerId}</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              .header { text-align: center; margin-bottom: 30px; }
+              .section { margin-bottom: 20px; }
+              .label { font-weight: bold; }
+              .value { margin-left: 10px; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <h1>Customer Profile</h1>
+              <p>Customer ID: ${this.customerId}</p>
+            </div>
+            <div class="section">
+              <div class="label">Name:</div>
+              <div class="value">${this.profileData.name1 || 'N/A'}</div>
+            </div>
+            <div class="section">
+              <div class="label">Email:</div>
+              <div class="value">${this.profileData.email || 'N/A'}</div>
+            </div>
+            <div class="section">
+              <div class="label">Phone:</div>
+              <div class="value">${this.profileData.phone || 'N/A'}</div>
+            </div>
+            <div class="section">
+              <div class="label">Address:</div>
+              <div class="value">${this.profileData.street || 'N/A'}</div>
+            </div>
+            <div class="section">
+              <div class="label">City:</div>
+              <div class="value">${this.profileData.city || 'N/A'}</div>
+            </div>
+            <div class="section">
+              <div class="label">Country:</div>
+              <div class="value">${this.profileData.country || 'N/A'}</div>
+            </div>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
   }
 
   shareProfile(): void {
+    if (!this.profileData) {
+      alert('No profile data available to share');
+      return;
+    }
+
+    // Create shareable content
+    const shareText = `Customer Profile - ${this.customerId}\nName: ${this.profileData.name1 || 'N/A'}\nEmail: ${this.profileData.email || 'N/A'}`;
+    
     if (navigator.share) {
       navigator.share({
         title: 'Customer Profile',
-        text: 'Check out my customer profile',
+        text: shareText,
         url: window.location.href
-      }).catch(err => console.log('Error sharing:', err));
+      });
     } else {
-      // Fallback: copy URL to clipboard
-      this.copyToClipboard(window.location.href);
-      alert('Profile URL copied to clipboard!');
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert('Profile information copied to clipboard!');
+      }).catch(() => {
+        alert('Unable to copy to clipboard. Please copy manually:\n\n' + shareText);
+      });
     }
   }
 
   changePassword(): void {
-    // TODO: Implement change password functionality
-    alert('Change password functionality will be implemented soon!');
-  }
-
-  copyToClipboard(text: string): void {
-    navigator.clipboard.writeText(text).then(() => {
-      // Could show a toast notification here
-      console.log('Copied to clipboard:', text);
-    }).catch(err => {
-      console.error('Failed to copy to clipboard:', err);
-    });
+    // TODO: Implement password change functionality
+    console.log('Change password clicked');
+    alert('Password change functionality will be implemented soon!');
   }
 }
 
