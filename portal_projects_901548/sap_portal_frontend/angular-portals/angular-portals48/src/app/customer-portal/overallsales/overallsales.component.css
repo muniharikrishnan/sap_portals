@@ -53,7 +53,7 @@
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 2rem;
+    padding: 2rem;
   box-sizing: border-box;
 }
 
@@ -229,7 +229,7 @@ h2 {
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
-  text-align: center;
+    text-align: center;
   font-family: 'Inter', sans-serif;
 }
 
@@ -258,7 +258,7 @@ h2 {
     0 8px 32px rgba(59, 130, 246, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  min-width: 1200px; /* Ensure minimum width for all columns */
+  min-width: 1280px; /* Ensure minimum width for all 9 columns with proper spacing */
 }
 
 .table-container::before {
@@ -289,11 +289,11 @@ h2 {
 
 /* Table Styling */
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
   background: transparent;
   margin: 0;
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 th, td {
@@ -305,22 +305,22 @@ th, td {
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
+  word-wrap: normal;
+  word-break: keep-all;
 }
 
 /* Column widths for overall sales data */
-th:nth-child(1), td:nth-child(1) { width: 120px; } /* Sales Order */
-th:nth-child(2), td:nth-child(2) { width: 100px; } /* Date */
-th:nth-child(3), td:nth-child(3) { width: 120px; } /* Customer */
-th:nth-child(4), td:nth-child(4) { width: 100px; } /* Net Value */
-th:nth-child(5), td:nth-child(5) { width: 80px; }  /* Currency */
-th:nth-child(6), td:nth-child(6) { width: 100px; } /* Status */
-th:nth-child(7), td:nth-child(7) { width: 80px; }  /* Item No */
-th:nth-child(8), td:nth-child(8) { width: 150px; } /* Material */
-th:nth-child(9), td:nth-child(9) { width: 150px; } /* Description */
-th:nth-child(10), td:nth-child(10) { width: 100px; } /* Quantity */
-th:nth-child(11), td:nth-child(11) { width: 80px; }  /* UOM */
+th:nth-child(1), td:nth-child(1) { width: 160px; min-width: 160px; } /* Document No */
+th:nth-child(2), td:nth-child(2) { width: 140px; min-width: 140px; } /* Doc Date */
+th:nth-child(3), td:nth-child(3) { width: 120px; min-width: 120px; } /* Currency */
+th:nth-child(4), td:nth-child(4) { width: 120px; min-width: 120px; } /* Sales Org */
+th:nth-child(5), td:nth-child(5) { width: 140px; min-width: 140px; } /* Order Type */
+th:nth-child(6), td:nth-child(6) { width: 140px; min-width: 140px; } /* Record Type */
+th:nth-child(7), td:nth-child(7) { width: 140px; min-width: 140px; } /* Total Orders */
+th:nth-child(8), td:nth-child(8) { width: 180px; min-width: 180px; } /* Total Order Value */
+th:nth-child(9), td:nth-child(9) { width: 180px; min-width: 180px; } /* Total Billed */
 
 th {
   background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
@@ -334,6 +334,13 @@ th {
   position: sticky;
   top: 0;
   z-index: 10;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+  padding: 20px 16px;
+  text-align: center;
+  word-wrap: normal;
+  word-break: keep-all;
 }
 
 th:first-child {
@@ -409,7 +416,7 @@ tbody tr:hover td {
   margin-top: 1.5rem;
   padding: 14px 28px;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: #ffffff;
+    color: #ffffff;
   border: none;
   border-radius: 12px;
   font-size: 14px;
@@ -505,5 +512,5 @@ tbody tr:hover td {
   .overallsales-container::before {
     animation: none;
   }
-}
+  }
   

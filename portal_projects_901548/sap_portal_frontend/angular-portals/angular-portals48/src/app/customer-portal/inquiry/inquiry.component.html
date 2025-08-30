@@ -16,7 +16,7 @@
             type="text" 
             placeholder="Search inquiries..." 
             [(ngModel)]="searchTerm" 
-            (input)="filterInquiries()"
+            (input)="onSearch()"
             class="search-input">
           <button 
             *ngIf="searchTerm" 
@@ -49,7 +49,7 @@
           <!-- Export Button -->
           <button 
             class="action-btn export-btn" 
-            (click)="exportToExcel()"
+            (click)="exportInquiryData()"
             [disabled]="isExporting || filteredInquiries.length === 0"
             title="Export to Excel">
             <svg class="btn-icon" [class.spinning]="isExporting" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

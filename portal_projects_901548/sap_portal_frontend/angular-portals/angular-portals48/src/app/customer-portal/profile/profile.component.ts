@@ -201,5 +201,78 @@ export class ProfileComponent implements OnInit {
     console.log('Change password clicked');
     alert('Password change functionality will be implemented soon!');
   }
+
+  exportProfileData(): void {
+    if (!this.profileData) {
+      alert('No profile data available to export');
+      return;
+    }
+
+    this.isExporting = true;
+    
+    // Create Excel data
+    const excelData = this.prepareExcelData();
+    
+    // Download the Excel file
+    const fileName = `Customer_Profile_${this.customerId}_${new Date().toISOString().split('T')[0]}.xlsx`;
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
+    setTimeout(() => {
+      this.isExporting = false;
+    }, 1000);
+  }
+
+  private prepareExcelData(): any[] {
+    // Define headers
+    const headers = [
+      'Field',
+      'Value'
+    ];
+
+    // Create data rows with profile information
+    const rows = [
+      ['Customer ID', this.profileData.kunnr || this.customerId || ''],
+      ['Name', this.profileData.name || ''],
+      ['Email', this.profileData.email || ''],
+      ['Phone', this.profileData.phone || ''],
+      ['Address', this.profileData.address || ''],
+      ['City', this.profileData.city || ''],
+      ['State', this.profileData.state || ''],
+      ['Country', this.profileData.country || ''],
+      ['Postal Code', this.profileData.postalCode || ''],
+      ['Company', this.profileData.company || ''],
+      ['Industry', this.profileData.industry || ''],
+      ['Created Date', this.profileData.createdDate || ''],
+      ['Last Updated', this.profileData.lastUpdated || ''],
+      ['Status', this.profileData.status || ''],
+      ['Notes', this.profileData.notes || '']
+    ];
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported profile data to ${fileName}`);
+  }
 }
 

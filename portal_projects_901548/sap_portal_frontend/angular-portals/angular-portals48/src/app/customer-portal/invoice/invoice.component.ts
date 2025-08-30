@@ -90,12 +90,85 @@ export class InvoiceComponent implements OnInit {
   exportInvoiceData(): void {
     this.isExporting = true;
     
-    // Simulate export process
+    // Determine which data to export
+    const dataToExport = this.searchTerm.trim() ? this.filteredInvoices : this.invoices;
+    const fileName = this.searchTerm.trim() 
+      ? `Invoice_Data_Filtered_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `Invoice_Data_All_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Create Excel data
+    const excelData = this.prepareExcelData(dataToExport);
+    
+    // Download the Excel file
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
     setTimeout(() => {
       this.isExporting = false;
-      // Here you would implement actual export logic
-      console.log('Exporting invoice data...');
-    }, 2000);
+    }, 1000);
+  }
+
+  private prepareExcelData(data: any[]): any[] {
+    // Define headers
+    const headers = [
+      'Invoice No',
+      'Date',
+      'Currency',
+      'Net Amount',
+      'Customer',
+      'Org',
+      'Doc Type',
+      'Material',
+      'Description',
+      'Qty',
+      'Unit',
+      'Item Value',
+      'Created On',
+      'Created By'
+    ];
+
+    // Create data rows
+    const rows = data.map(item => [
+      item.vbeln || '',
+      item.fkdat || '',
+      item.waerk || '',
+      item.netwr || '',
+      item.kunag || '',
+      item.vkorg || '',
+      item.fkart || '',
+      item.matnr || '',
+      item.arktx || '',
+      item.fkimg || '',
+      item.vrkme || '',
+      item.item_netwr || '',
+      item.erdat || '',
+      item.ernam || ''
+    ]);
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported ${data.length - 1} invoice records to ${fileName}`);
   }
 
   downloadPDF(vbeln: string): void {

@@ -84,11 +84,70 @@ export class AgingComponent implements OnInit {
   exportAgingData(): void {
     this.isExporting = true;
     
-    // Simulate export process
+    // Determine which data to export
+    const dataToExport = this.searchTerm.trim() ? this.filteredAgingData : this.agingData;
+    const fileName = this.searchTerm.trim() 
+      ? `Aging_Data_Filtered_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `Aging_Data_All_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Create Excel data
+    const excelData = this.prepareExcelData(dataToExport);
+    
+    // Download the Excel file
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
     setTimeout(() => {
       this.isExporting = false;
-      // Here you would implement actual export logic
-      console.log('Exporting aging data...');
-    }, 2000);
+    }, 1000);
+  }
+
+  private prepareExcelData(data: any[]): any[] {
+    // Define headers
+    const headers = [
+      'Invoice No',
+      'Invoice Date',
+      'Due Date',
+      'Amount',
+      'Currency',
+      'Aging',
+      'Status'
+    ];
+
+    // Create data rows
+    const rows = data.map(item => [
+      item.vbeln || '',
+      item.fkdat || '',
+      item.due_dt || '',
+      item.netwr || '',
+      item.waerk || '',
+      item.aging || '',
+      item.meaning || ''
+    ]);
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported ${data.length - 1} aging records to ${fileName}`);
   }
 }

@@ -32,6 +32,7 @@ export class DeliveryComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
   searchTerm: string = '';
+  isExporting: boolean = false; // New property for export state
 
   // Mock data for development/testing
   private mockDeliveryData: DeliveryItem[] = [
@@ -255,5 +256,81 @@ export class DeliveryComponent implements OnInit {
       link.click();
       document.body.removeChild(link);
     }
+  }
+
+  exportDeliveryData(): void {
+    this.isExporting = true;
+    
+    // Determine which data to export
+    const dataToExport = this.searchTerm.trim() ? this.filteredDeliveryData : this.deliveryData;
+    const fileName = this.searchTerm.trim() 
+      ? `Delivery_Data_Filtered_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `Delivery_Data_All_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Create Excel data
+    const excelData = this.prepareExcelData(dataToExport);
+    
+    // Download the Excel file
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
+    setTimeout(() => {
+      this.isExporting = false;
+    }, 1000);
+  }
+
+  private prepareExcelData(data: DeliveryItem[]): any[] {
+    // Define headers
+    const headers = [
+      'Delivery No',
+      'Date',
+      'Shipping Point',
+      'Sales Org',
+      'Type',
+      'Delivery Date',
+      'Item No',
+      'Material No',
+      'Description',
+      'Quantity'
+    ];
+
+    // Create data rows
+    const rows = data.map(item => [
+      item.vbeln || '',
+      item.erdat || '',
+      item.vstel || '',
+      item.vkorg || '',
+      item.lfart || '',
+      item.lfdat || '',
+      item.posnr || '',
+      item.matnr || '',
+      item.arktx || '',
+      item.lfimg || ''
+    ]);
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported ${data.length - 1} delivery records to ${fileName}`);
   }
 }

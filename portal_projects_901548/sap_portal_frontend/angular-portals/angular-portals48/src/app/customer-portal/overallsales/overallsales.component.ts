@@ -88,11 +88,74 @@ export class OverallsalesComponent implements OnInit {
   exportOverallSalesData(): void {
     this.isExporting = true;
     
-    // Simulate export process
+    // Determine which data to export
+    const dataToExport = this.searchTerm.trim() ? this.filteredOverallData : this.overallData;
+    const fileName = this.searchTerm.trim() 
+      ? `Overall_Sales_Data_Filtered_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `Overall_Sales_Data_All_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Create Excel data
+    const excelData = this.prepareExcelData(dataToExport);
+    
+    // Download the Excel file
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
     setTimeout(() => {
       this.isExporting = false;
-      // Here you would implement actual export logic
-      console.log('Exporting overall sales data...');
-    }, 2000);
+    }, 1000);
+  }
+
+  private prepareExcelData(data: any[]): any[] {
+    // Define headers
+    const headers = [
+      'Document No',
+      'Doc Date',
+      'Currency',
+      'Sales Org',
+      'Order Type',
+      'Record Type',
+      'Total Orders',
+      'Total Order Value',
+      'Total Billed'
+    ];
+
+    // Create data rows
+    const rows = data.map(item => [
+      item.document_no || '',
+      item.doc_date || '',
+      item.waerk || '',
+      item.vkorg || '',
+      item.auart || '',
+      item.record_type || '',
+      item.total_orders || '',
+      item.total_order_value || '',
+      item.total_billed || ''
+    ]);
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported ${data.length - 1} overall sales records to ${fileName}`);
   }
 }

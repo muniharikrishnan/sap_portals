@@ -237,6 +237,14 @@ h2 {
 /* Table Section */
 .table-section {
   width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.table-section::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .table-container {
@@ -251,6 +259,7 @@ h2 {
     0 8px 32px rgba(59, 130, 246, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  min-width: 1200px; /* Ensure minimum width for all 10 columns */
 }
 
 .table-container::before {

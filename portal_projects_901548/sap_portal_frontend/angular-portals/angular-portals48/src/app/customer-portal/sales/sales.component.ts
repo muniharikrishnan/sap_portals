@@ -93,34 +93,78 @@ export class SalesComponent implements OnInit {
 
     this.isExporting = true;
     
-    // Create CSV content
-    const headers = ['Sales Order', 'Date', 'Customer', 'Net Value', 'Currency', 'Status', 'Item No', 'Material', 'Description', 'Quantity', 'UOM'];
-    const csvContent = [
-      headers.join(','),
-      ...this.salesData.map(item => [
-        item.vbeln || '',
-        item.erdat || '',
-        item.ernam || '',
-        item.netwr || '',
-        item.waerk || '',
-        item.auart || '',
-        item.posnr || '',
-        item.matnr || '',
-        item.arktx || '',
-        item.kwmeng || '',
-        item.vrkme || ''
-      ].join(','))
-    ].join('\n');
-
-    // Create and download file
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `sales-data-${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-    window.URL.revokeObjectURL(url);
+    // Determine which data to export
+    const dataToExport = this.searchTerm.trim() ? this.filteredSales : this.salesData;
+    const fileName = this.searchTerm.trim() 
+      ? `Sales_Data_Filtered_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `Sales_Data_All_${new Date().toISOString().split('T')[0]}.xlsx`;
     
-    this.isExporting = false;
+    // Create Excel data
+    const excelData = this.prepareExcelData(dataToExport);
+    
+    // Download the Excel file
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
+    setTimeout(() => {
+      this.isExporting = false;
+    }, 1000);
+  }
+
+  private prepareExcelData(data: any[]): any[] {
+    // Define headers
+    const headers = [
+      'Sales Order',
+      'Date',
+      'Customer',
+      'Net Value',
+      'Currency',
+      'Status',
+      'Item No',
+      'Material',
+      'Description',
+      'Quantity',
+      'UOM'
+    ];
+
+    // Create data rows
+    const rows = data.map(item => [
+      item.vbeln || '',
+      item.erdat || '',
+      item.kunnr || '',
+      item.netwr || '',
+      item.waerk || '',
+      item.status || '',
+      item.posnr || '',
+      item.matnr || '',
+      item.arktx || '',
+      item.kwmeng || '',
+      item.vrkme || ''
+    ]);
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported ${data.length - 1} sales records to ${fileName}`);
   }
 }

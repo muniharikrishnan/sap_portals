@@ -13,143 +13,163 @@ import { HttpClientModule } from '@angular/common/http';
 export class InquiryComponent implements OnInit {
   inquiries: any[] = [];
   filteredInquiries: any[] = [];
-  customerId: string = '';
-  searchTerm: string = '';
   isLoading: boolean = false;
   isExporting: boolean = false;
+  searchTerm: string = '';
+  errorMessage: string = '';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Get customerId from localStorage
-    this.customerId = localStorage.getItem('customerId') || '';
-
-    if (this.customerId) {
-      this.fetchInquiries(this.customerId);
+    const customerId = localStorage.getItem('customerId');
+    if (customerId) {
+      this.fetchInquiries(customerId);
+    } else {
+      console.error('Customer ID not found in local storage');
+      this.errorMessage = 'Customer ID not found. Please login again.';
     }
   }
 
   fetchInquiries(kunnr: string): void {
     this.isLoading = true;
+    this.errorMessage = '';
+    
+    console.log(`Fetching inquiries for customer: ${kunnr}`);
+    console.log(`API URL: http://localhost:3001/api/inquiry/${kunnr}`);
+    
     this.http.get<any>(`http://localhost:3001/api/inquiry/${kunnr}`).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.inquiries = res.data;
-          this.filteredInquiries = [...this.inquiries];
+      next: (response) => {
+        this.isLoading = false;
+        // Handle both response formats: {success: true, data: [...]} or direct array
+        if (response.success && response.data) {
+          this.inquiries = response.data;
+          this.filteredInquiries = response.data;
+        } else if (Array.isArray(response)) {
+          // Direct array response
+          this.inquiries = response;
+          this.filteredInquiries = response;
         } else {
-          console.error('No inquiries found');
-          this.inquiries = [];
-          this.filteredInquiries = [];
+          console.error('Failed to load inquiries - unexpected response format:', response);
+          this.errorMessage = 'Failed to load inquiries. Please try again.';
         }
-        this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error fetching inquiries:', err);
+      error: (error) => {
         this.isLoading = false;
+        console.error('Error fetching inquiries:', error);
+        this.errorMessage = 'Error loading inquiries. Please check your connection.';
       }
     });
   }
 
-  filterInquiries(): void {
+  onSearch(): void {
     if (!this.searchTerm.trim()) {
-      this.filteredInquiries = [...this.inquiries];
+      this.filteredInquiries = this.inquiries;
       return;
     }
 
     const searchLower = this.searchTerm.toLowerCase();
     this.filteredInquiries = this.inquiries.filter(inquiry => 
-      inquiry.vbeln?.toString().toLowerCase().includes(searchLower) ||
-      inquiry.erdat?.toString().toLowerCase().includes(searchLower) ||
-      inquiry.auart?.toString().toLowerCase().includes(searchLower) ||
-      inquiry.matnr?.toString().toLowerCase().includes(searchLower) ||
-      inquiry.arktx?.toString().toLowerCase().includes(searchLower) ||
-      inquiry.waerk?.toString().toLowerCase().includes(searchLower) ||
-      inquiry.posnr?.toString().toLowerCase().includes(searchLower)
+      inquiry.vbeln?.toLowerCase().includes(searchLower) ||
+      inquiry.erdat?.toLowerCase().includes(searchLower) ||
+      inquiry.auart?.toLowerCase().includes(searchLower) ||
+      inquiry.netwr?.toString().includes(searchLower) ||
+      inquiry.waerk?.toLowerCase().includes(searchLower) ||
+      inquiry.vdate?.toLowerCase().includes(searchLower) ||
+      inquiry.posnr?.toLowerCase().includes(searchLower) ||
+      inquiry.matnr?.toLowerCase().includes(searchLower) ||
+      inquiry.arktx?.toLowerCase().includes(searchLower) ||
+      inquiry.kwmeng?.toString().includes(searchLower) ||
+      inquiry.vrkme?.toLowerCase().includes(searchLower)
     );
-  }
-
-  refreshInquiries(): void {
-    if (this.customerId) {
-      this.searchTerm = '';
-      this.fetchInquiries(this.customerId);
-    }
   }
 
   clearSearch(): void {
     this.searchTerm = '';
-    this.filterInquiries();
+    this.filteredInquiries = this.inquiries;
   }
 
-  exportToCSV(): void {
-    this.isExporting = true;
-    
-    // Simulate export delay
-    setTimeout(() => {
-      const headers = ['Inquiry No', 'Date', 'Type', 'Net Value', 'Currency', 'Valid Date', 'Item No', 'Material', 'Description', 'Quantity', 'UOM'];
-      const csvContent = [
-        headers.join(','),
-        ...this.filteredInquiries.map(inquiry => [
-          inquiry.vbeln,
-          inquiry.erdat,
-          inquiry.auart,
-          inquiry.netwr,
-          inquiry.waerk,
-          inquiry.vdate,
-          inquiry.posnr,
-          inquiry.matnr,
-          inquiry.arktx,
-          inquiry.kwmeng,
-          inquiry.vrkme
-        ].join(','))
-      ].join('\n');
-
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `customer_inquiries_${new Date().toISOString().split('T')[0]}.csv`;
-      link.click();
-      window.URL.revokeObjectURL(url);
-      
-      this.isExporting = false;
-    }, 1500);
+  refreshInquiries(): void {
+    const customerId = localStorage.getItem('customerId');
+    if (customerId) {
+      this.fetchInquiries(customerId);
+    }
   }
 
-  exportToExcel(): void {
+  exportInquiryData(): void {
     this.isExporting = true;
     
-    // Simulate export delay
+    // Determine which data to export
+    const dataToExport = this.searchTerm.trim() ? this.filteredInquiries : this.inquiries;
+    const fileName = this.searchTerm.trim() 
+      ? `Inquiry_Data_Filtered_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `Inquiry_Data_All_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Create Excel data
+    const excelData = this.prepareExcelData(dataToExport);
+    
+    // Download the Excel file
+    this.downloadExcelFile(excelData, fileName);
+    
+    // Reset export state
     setTimeout(() => {
-      const headers = ['Inquiry No', 'Date', 'Type', 'Net Value', 'Currency', 'Valid Date', 'Item No', 'Material', 'Description', 'Quantity', 'UOM'];
-      let excelContent = '<table>';
-      excelContent += '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
-      
-      this.filteredInquiries.forEach(inquiry => {
-        excelContent += '<tr>';
-        excelContent += `<td>${inquiry.vbeln}</td>`;
-        excelContent += `<td>${inquiry.erdat}</td>`;
-        excelContent += `<td>${inquiry.auart}</td>`;
-        excelContent += `<td>${inquiry.netwr}</td>`;
-        excelContent += `<td>${inquiry.waerk}</td>`;
-        excelContent += `<td>${inquiry.vdate}</td>`;
-        excelContent += `<td>${inquiry.posnr}</td>`;
-        excelContent += `<td>${inquiry.matnr}</td>`;
-        excelContent += `<td>${inquiry.arktx}</td>`;
-        excelContent += `<td>${inquiry.kwmeng}</td>`;
-        excelContent += `<td>${inquiry.vrkme}</td>`;
-        excelContent += '</tr>';
-      });
-      excelContent += '</table>';
-
-      const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `customer_inquiries_${new Date().toISOString().split('T')[0]}.xls`;
-      link.click();
-      window.URL.revokeObjectURL(url);
-      
       this.isExporting = false;
-    }, 1500);
+    }, 1000);
+  }
+
+  private prepareExcelData(data: any[]): any[] {
+    // Define headers
+    const headers = [
+      'Inquiry No',
+      'Date',
+      'Type',
+      'Net Value',
+      'Currency',
+      'Valid Date',
+      'Item No',
+      'Material',
+      'Description',
+      'Quantity',
+      'UOM'
+    ];
+
+    // Create data rows
+    const rows = data.map(item => [
+      item.vbeln || '',
+      item.erdat || '',
+      item.auart || '',
+      item.netwr || '',
+      item.waerk || '',
+      item.vdate || '',
+      item.posnr || '',
+      item.matnr || '',
+      item.arktx || '',
+      item.kwmeng || '',
+      item.vrkme || ''
+    ]);
+
+    // Return data with headers
+    return [headers, ...rows];
+  }
+
+  private downloadExcelFile(data: any[], fileName: string): void {
+    // Convert data to CSV format (Excel can open CSV files)
+    const csvContent = data.map(row => 
+      row.map((cell: any) => `"${cell}"`).join(',')
+    ).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Exported ${data.length - 1} inquiry records to ${fileName}`);
   }
 }

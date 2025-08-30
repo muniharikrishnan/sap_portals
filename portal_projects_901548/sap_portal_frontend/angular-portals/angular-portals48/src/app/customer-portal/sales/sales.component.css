@@ -258,7 +258,7 @@ h2 {
     0 8px 32px rgba(59, 130, 246, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  min-width: 1200px; /* Ensure minimum width for all columns */
+  min-width: 1400px; /* Increased for 11 columns */
 }
 
 .table-container::before {
@@ -293,11 +293,23 @@ table {
   border-collapse: collapse;
   background: transparent;
   margin: 0;
-  table-layout: fixed;
+  table-layout: auto; /* Changed from fixed to auto for better column handling */
 }
 
 th, td {
-  padding: 18px 12px;
+  padding: 18px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  word-wrap: normal;
+  word-break: keep-all;
+}
   text-align: center;
   border-bottom: 1px solid rgba(59, 130, 246, 0.1);
   color: #ffffff;
