@@ -61,6 +61,7 @@ export const routes: Routes = [
       { path: 'aging', loadComponent: () => import('./customer-portal/aging/aging.component').then(m => m.AgingComponent) },
       { path: 'memo', loadComponent: () => import('./customer-portal/memo/memo.component').then(m => m.MemoComponent) },
       { path: 'overallsales', loadComponent: () => import('./customer-portal/overallsales/overallsales.component').then(m => m.OverallsalesComponent) },
+      { path: 'finance-report', loadComponent: () => import('./customer-portal/finance-report/finance-report.component').then(m => m.FinanceReportComponent) },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

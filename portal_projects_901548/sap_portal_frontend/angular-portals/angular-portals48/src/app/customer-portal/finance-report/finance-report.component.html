@@ -1,0 +1,162 @@
+<!-- Finance Report Container with Blue Dynamic Background -->
+<div class="finance-report-container">
+  <div class="finance-report-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h2>Finance Reports & Analytics</h2>
+      <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+        <svg class="btn-icon" [class.spinning]="isLoading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+        </svg>
+        <span>{{ isLoading ? 'Refreshing...' : 'Refresh Data' }}</span>
+      </button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading finance data and generating reports...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Summary Statistics Cards -->
+    <div class="summary-section" *ngIf="!isLoading && !errorMessage">
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-value">{{ totalInvoices }}</h3>
+            <p class="card-label">Total Invoices</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-value">{{ totalInvoiceValue | currency:'EUR' }}</h3>
+            <p class="card-label">Total Invoice Value</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-value">{{ totalAgingAmount | currency:'EUR' }}</h3>
+            <p class="card-label">Total Aging Amount</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v18h18"></path>
+              <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-value">{{ totalSalesValue | currency:'EUR' }}</h3>
+            <p class="card-label">Total Sales Value</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"></path>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-value">{{ averageInvoiceValue | currency:'EUR' }}</h3>
+            <p class="card-label">Average Invoice Value</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section" *ngIf="!isLoading && !errorMessage">
+      <div class="charts-grid">
+        <!-- Pie Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Financial Overview</h3>
+            <p>Distribution of financial data across categories</p>
+          </div>
+          <div class="chart-container">
+            <canvas #pieChartCanvas></canvas>
+          </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Monthly Invoice Trends</h3>
+            <p>Invoice values over time by month</p>
+          </div>
+          <div class="chart-container">
+            <canvas #barChartCanvas></canvas>
+          </div>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Payment Aging Distribution</h3>
+            <p>Amount distribution across aging buckets</p>
+          </div>
+          <div class="chart-container">
+            <canvas #lineChartCanvas></canvas>
+          </div>
+        </div>
+
+        <!-- Doughnut Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Currency Distribution</h3>
+            <p>Invoice values by currency</p>
+          </div>
+          <div class="chart-container">
+            <canvas #doughnutChartCanvas></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data Container -->
+    <div class="no-data-container" *ngIf="!isLoading && !errorMessage && (!invoiceData.length && !agingData.length && !overallSalesData.length)">
+      <svg class="no-data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"></path>
+      </svg>
+      <p><strong>No Financial Data Available</strong></p>
+      <p>Unable to load financial information. Please try refreshing the page.</p>
+    </div>
+  </div>
+</div>

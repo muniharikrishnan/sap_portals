@@ -289,8 +289,8 @@ h2 {
 
 /* Table Styling */
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
   background: transparent;
   margin: 0;
   table-layout: auto; /* Changed from fixed to auto for better column handling */
@@ -310,6 +310,8 @@ th, td {
   word-wrap: normal;
   word-break: keep-all;
 }
+
+td {
   text-align: center;
   border-bottom: 1px solid rgba(59, 130, 246, 0.1);
   color: #ffffff;
@@ -484,5 +486,5 @@ tbody tr:hover td {
   .sales-container::before {
     animation: none;
   }
-}
+  }
   

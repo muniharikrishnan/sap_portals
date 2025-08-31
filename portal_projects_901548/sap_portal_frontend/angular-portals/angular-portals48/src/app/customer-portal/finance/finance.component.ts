@@ -19,16 +19,16 @@ export class FinanceComponent implements OnInit {
   errorMessage = '';
   customerId = '';
 
-  // Finance Statistics - Updated to match vendor finance structure
+  // Finance Statistics - Real data from APIs
   financeStats = {
-    pendingInvoices: '8',
+    pendingInvoices: '0',
     overdueInvoices: '0',
-    totalOutstanding: '$4,000',
-    totalPaid: '$105.04',
-    invoiceCount: '8',
-    agingCount: '8',
-    memoCount: '8',
-    overallSalesValue: '$12.3K'
+    totalOutstanding: '$0',
+    totalPaid: '$0',
+    invoiceCount: '0',
+    agingCount: '0',
+    memoCount: '0',
+    overallSalesValue: '$0'
   };
 
   constructor(private router: Router, private http: HttpClient) {}
@@ -42,26 +42,107 @@ export class FinanceComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     
-    // Simulate loading finance data
-    setTimeout(() => {
+    // Fetch all finance data in parallel
+    Promise.all([
+      this.fetchInvoiceData(),
+      this.fetchAgingData(),
+      this.fetchMemoData()
+    ]).finally(() => {
       this.isLoading = false;
-      // In a real application, you would fetch data from your backend
-      // this.http.get(`http://localhost:3001/api/finance/${this.customerId}`).subscribe({
-      //   next: (res: any) => {
-      //     this.isLoading = false;
-      //     if (res.success) {
-      //       this.financeStats = res.data;
-      //     } else {
-      //       this.errorMessage = res.message || 'Failed to load finance data';
-      //     }
-      //   },
-      //   error: (err) => {
-      //     this.isLoading = false;
-      //     this.errorMessage = 'Error loading finance data';
-      //     console.error(err);
-      //   }
-      // });
-    }, 1000);
+    });
+  }
+
+  private fetchInvoiceData(): Promise<void> {
+    return new Promise((resolve) => {
+      this.http.get<any>(`http://localhost:3001/api/invoices/${this.customerId}`).subscribe({
+        next: (response) => {
+          try {
+            let invoices = [];
+            if (response && response.success && response.data) {
+              invoices = response.data;
+            } else if (response && Array.isArray(response)) {
+              invoices = response;
+            } else if (response && response.data && Array.isArray(response.data)) {
+              invoices = response.data;
+            }
+            
+            this.financeStats.invoiceCount = invoices.length.toString();
+            console.log('Invoice data loaded:', this.financeStats.invoiceCount, 'invoices');
+          } catch (error) {
+            console.error('Error processing invoice data:', error);
+            this.financeStats.invoiceCount = '0';
+          }
+          resolve();
+        },
+        error: (error) => {
+          console.error('Error fetching invoice data:', error);
+          this.financeStats.invoiceCount = '0';
+          resolve();
+        }
+      });
+    });
+  }
+
+  private fetchAgingData(): Promise<void> {
+    return new Promise((resolve) => {
+      this.http.get<any>(`http://localhost:3001/api/aging/${this.customerId}`).subscribe({
+        next: (response) => {
+          try {
+            let agingRecords = [];
+            if (response && response.success && response.data) {
+              agingRecords = response.data;
+            } else if (response && Array.isArray(response)) {
+              agingRecords = response;
+            } else if (response && response.data && Array.isArray(response.data)) {
+              agingRecords = response.data;
+            }
+            
+            this.financeStats.agingCount = agingRecords.length.toString();
+            console.log('Aging data loaded:', this.financeStats.agingCount, 'records');
+          } catch (error) {
+            console.error('Error processing aging data:', error);
+            this.financeStats.agingCount = '0';
+          }
+          resolve();
+        },
+        error: (error) => {
+          console.error('Error fetching aging data:', error);
+          this.financeStats.agingCount = '0';
+          resolve();
+        }
+      });
+    });
+  }
+
+  private fetchMemoData(): Promise<void> {
+    return new Promise((resolve) => {
+      this.http.get<any>(`http://localhost:3001/api/cdmemo/${this.customerId}`).subscribe({
+        next: (response) => {
+          try {
+            let memos = [];
+            if (response && response.success && response.data) {
+              memos = response.data;
+            } else if (response && Array.isArray(response)) {
+              memos = response;
+            } else if (response && response.data && Array.isArray(response.data)) {
+              memos = response.data;
+            }
+            
+            this.financeStats.memoCount = memos.length.toString();
+            console.log('Memo data loaded:', this.financeStats.memoCount, 'memos');
+          } catch (error) {
+            console.error('Error processing memo data:', error);
+            this.financeStats.memoCount = '0';
+          }
+          resolve();
+        },
+        error: (error) => {
+          console.error('Error fetching memo data:', error);
+          this.financeStats.memoCount = '0';
+          resolve();
+        }
+      });
+    });
   }
 
   // Search functionality
@@ -76,13 +157,7 @@ export class FinanceComponent implements OnInit {
   }
 
   refreshFinance(): void {
-    this.isLoading = true;
-    
-    // Simulate refresh action
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('Finance data refreshed');
-    }, 1000);
+    this.loadFinanceData();
   }
 
   exportFinanceData(): void {

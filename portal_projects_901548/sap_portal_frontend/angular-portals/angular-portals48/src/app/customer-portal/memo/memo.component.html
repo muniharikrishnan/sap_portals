@@ -1,6 +1,12 @@
-<div class="cdmemo-container">
-    <h2>Customer Debit/Credit Memo</h2>
-  
+<!-- Memo Container with Blue Dynamic Background -->
+<div class="memo-container">
+  <div class="memo-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h2>Customer Debit/Credit Memo</h2>
+    </div>
+
+    <!-- Date Filters Section -->
     <div class="date-filters">
       <label>
         From Date:
@@ -10,50 +16,66 @@
         To Date:
         <input type="date" [(ngModel)]="toDate" />
       </label>
-      <button (click)="fetchMemoData()">Fetch Memo</button>
+      <button class="fetch-btn" (click)="fetchMemoData()">Fetch Memo</button>
     </div>
-  
+
+    <!-- Error Message -->
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-  
-    <table *ngIf="memoData.length" class="memo-table">
-      <thead>
-        <tr>
-          <th>Memo ID</th>
-          <th>Type</th>
-          <th>Reference</th>
-          <th>Customer</th>
-          <th>Name</th>
-          <th>Billing Date</th>
-          <th>Created Date</th>
-          <th>Created By</th>
-          <th>Currency</th>
-          <th>Net Value</th>
-          <th>Tax</th>
-          <th>Sales Org</th>
-          <th>Channel</th>
-          <th>Division</th>
-          <th>Direction</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let memo of memoData">
-          <td>{{ memo.memoId }}</td>
-          <td>{{ memo.memoType }}</td>
-          <td>{{ memo.referenceDoc }}</td>
-          <td>{{ memo.customerId }}</td>
-          <td>{{ memo.customerName }}</td>
-          <td>{{ memo.billingDate }}</td>
-          <td>{{ memo.createdDate }}</td>
-          <td>{{ memo.createdBy }}</td>
-          <td>{{ memo.currency }}</td>
-          <td>{{ memo.netValue }}</td>
-          <td>{{ memo.taxAmount }}</td>
-          <td>{{ memo.salesOrg }}</td>
-          <td>{{ memo.distChannel }}</td>
-          <td>{{ memo.division }}</td>
-          <td>{{ memo.memoDirection }}</td>
-        </tr>
-      </tbody>
-    </table>
+
+    <!-- Table Section -->
+    <div class="table-section" *ngIf="memoData.length > 0">
+      <div class="table-container">
+        <table class="memo-table">
+          <thead>
+            <tr>
+              <th>Memo ID</th>
+              <th>Type</th>
+              <th>Reference</th>
+              <th>Customer</th>
+              <th>Name</th>
+              <th>Billing Date</th>
+              <th>Created Date</th>
+              <th>Created By</th>
+              <th>Currency</th>
+              <th>Net Value</th>
+              <th>Tax</th>
+              <th>Sales Org</th>
+              <th>Channel</th>
+              <th>Division</th>
+              <th>Direction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let memo of memoData">
+              <td>{{ memo.memoId }}</td>
+              <td>{{ memo.memoType }}</td>
+              <td>{{ memo.referenceDoc }}</td>
+              <td>{{ memo.customerId }}</td>
+              <td>{{ memo.customerName }}</td>
+              <td>{{ memo.billingDate }}</td>
+              <td>{{ memo.createdDate }}</td>
+              <td>{{ memo.createdBy }}</td>
+              <td>{{ memo.currency }}</td>
+              <td>{{ memo.netValue }}</td>
+              <td>{{ memo.taxAmount }}</td>
+              <td>{{ memo.salesOrg }}</td>
+              <td>{{ memo.distChannel }}</td>
+              <td>{{ memo.division }}</td>
+              <td>{{ memo.memoDirection }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Data Container -->
+    <div class="no-data-container" *ngIf="!memoData || memoData.length === 0">
+      <svg class="no-data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"></path>
+      </svg>
+      <p><strong>No Memo Data Available</strong></p>
+      <p>Select date range and click "Fetch Memo" to load data.</p>
+    </div>
   </div>
+</div>
   
