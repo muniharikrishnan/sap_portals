@@ -11,12 +11,12 @@
       
       <div class="welcome-content">
         <h1 class="welcome-title">
-          Welcome back, <span class="employee-name">{{ employeeProfile?.name || 'Employee' }}</span>!
+          Welcome back, <span class="employee-name">{{ employeeProfile?.fullName || 'Employee' }}</span>!
         </h1>
         <p class="welcome-subtitle">Here's what's happening with your account today</p>
         <div class="employee-badge">
           <i class="fas fa-id-badge"></i>
-          <span>ID: {{ employeeProfile?.employeeId || '000000' }}</span>
+          <span>ID: {{ employeeId || '000000' }}</span>
         </div>
       </div>
     </div>

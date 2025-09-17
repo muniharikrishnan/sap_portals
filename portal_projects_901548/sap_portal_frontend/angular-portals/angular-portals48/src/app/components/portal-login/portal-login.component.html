@@ -1,8 +1,257 @@
-<div class="portal-login-container">
-  <img src="assets/kaar.jpg" alt="KAAR Logo" class="logo" />
-  <div class="tiles">
-    <div class="tile customer" routerLink="/customer/login" routerLinkActive="active">Customer</div>
-    <div class="tile vendor" routerLink="/vendor/login" routerLinkActive="active">Vendor</div>
-    <div class="tile employee" routerLink="/employee/login" routerLinkActive="active">Employee</div>
+<div class="topbar">
+  <div class="brand">
+    <img src="assets/klogo.png" alt="KAAR" class="brand-logo" />
+    <span class="brand-text">Kaar Tech</span>
+  </div>
+  <nav class="nav">
+    <button class="nav-item" [class.active]="selectedTab==='home'" (click)="selectTab('home')">
+      <i class="icon-home"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" [class.active]="selectedTab==='about'" (click)="selectTab('about')">
+      <i class="icon-info"></i>
+      <span>About</span>
+    </button>
+    <button class="nav-item" [class.active]="selectedTab==='help'" (click)="selectTab('help')">
+      <i class="icon-help"></i>
+      <span>Help</span>
+    </button>
+    <button class="nav-item" [class.active]="selectedTab==='contact'" (click)="selectTab('contact')">
+      <i class="icon-contact"></i>
+      <span>Contact</span>
+    </button>
+  </nav>
+</div>
+
+<div class="portal-login-container" *ngIf="selectedTab==='home'">
+  <div class="hero-section">
+    <div class="logo-container">
+      <img src="assets/kaar.jpg" alt="KAAR Logo" class="logo" />
+      <h1 class="welcome-title">Welcome to Kaar Tech</h1>
+      <p class="welcome-subtitle">Choose your portal to access your personalized dashboard</p>
+    </div>
+    
+    <div class="tiles">
+      <div class="tile customer" routerLink="/customer/login" routerLinkActive="active">
+        <div class="tile-icon">
+          <i class="icon-customer"></i>
+        </div>
+        <h3>Customer</h3>
+        <p>Access invoices, deliveries, and sales data</p>
+        <div class="tile-arrow">→</div>
+      </div>
+      
+      <div class="tile vendor" routerLink="/vendor/login" routerLinkActive="active">
+        <div class="tile-icon">
+          <i class="icon-vendor"></i>
+        </div>
+        <h3>Vendor</h3>
+        <p>Manage RFQs, orders, and payments</p>
+        <div class="tile-arrow">→</div>
+      </div>
+      
+      <div class="tile employee" routerLink="/employee/login" routerLinkActive="active">
+        <div class="tile-icon">
+          <i class="icon-employee"></i>
+        </div>
+        <h3>Employee</h3>
+        <p>View payslips, leave requests, and profile</p>
+        <div class="tile-arrow">→</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="features-section">
+    <div class="feature-card">
+      <i class="feature-icon icon-secure"></i>
+      <h4>Secure Access</h4>
+      <p>Enterprise-grade security for all your data</p>
+    </div>
+    <div class="feature-card">
+      <i class="feature-icon icon-realtime"></i>
+      <h4>Real-time Data</h4>
+      <p>Live updates from SAP backend systems</p>
+    </div>
+    <div class="feature-card">
+      <i class="feature-icon icon-mobile"></i>
+      <h4>Mobile Ready</h4>
+      <p>Access from any device, anywhere</p>
+    </div>
+  </div>
+</div>
+
+<div class="content about" *ngIf="selectedTab==='about'">
+  <div class="content-header">
+    <h2>About Kaar Tech Portals</h2>
+    <p class="content-subtitle">Comprehensive business solutions powered by SAP integration</p>
+  </div>
+  
+  <div class="about-grid">
+    <div class="about-card customer-card">
+      <div class="card-header">
+        <i class="card-icon icon-customer"></i>
+        <h3>Customer Portal</h3>
+      </div>
+      <p>Access invoices, deliveries, inquiries, sales performance, and account aging in a simple dashboard. Designed for customers to track transactions and get quick support.</p>
+      <div class="card-features">
+        <span class="feature-tag">Invoices</span>
+        <span class="feature-tag">Deliveries</span>
+        <span class="feature-tag">Sales Analytics</span>
+      </div>
+    </div>
+    
+    <div class="about-card vendor-card">
+      <div class="card-header">
+        <i class="card-icon icon-vendor"></i>
+        <h3>Vendor Portal</h3>
+      </div>
+      <p>Manage RFQs, purchase orders, goods receipts, invoices, memos, and finance analytics. Built to streamline collaboration and payments with vendors.</p>
+      <div class="card-features">
+        <span class="feature-tag">RFQs</span>
+        <span class="feature-tag">Purchase Orders</span>
+        <span class="feature-tag">Finance Analytics</span>
+      </div>
+    </div>
+    
+    <div class="about-card employee-card">
+      <div class="card-header">
+        <i class="card-icon icon-employee"></i>
+        <h3>Employee Portal</h3>
+      </div>
+      <p>Self-service for profile, payslips, leave requests, and dashboards. Helps employees stay informed and productive.</p>
+      <div class="card-features">
+        <span class="feature-tag">Payslips</span>
+        <span class="feature-tag">Leave Management</span>
+        <span class="feature-tag">Profile</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="about-footer">
+    <div class="tech-badge">
+      <i class="icon-sap"></i>
+      <span>SAP Integrated</span>
+    </div>
+    <p class="about-note">These portals are integrated with SAP backends to provide secure, real-time data and seamless business operations.</p>
+  </div>
+</div>
+
+<div class="content help" *ngIf="selectedTab==='help'">
+  <div class="content-header">
+    <h2>Help & Support</h2>
+    <p class="content-subtitle">Get assistance with your portal access and usage</p>
+  </div>
+  
+  <div class="help-sections">
+    <div class="help-section">
+      <h3><i class="icon-login"></i> Getting Started</h3>
+      <div class="help-steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <p>Choose a portal tile on Home to sign in</p>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <p>Enter your company email and password</p>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <p>Access your personalized dashboard</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="help-section">
+      <h3><i class="icon-troubleshoot"></i> Troubleshooting</h3>
+      <div class="help-items">
+        <div class="help-item">
+          <i class="icon-password"></i>
+          <div>
+            <h4>Forgot Password?</h4>
+            <p>Use your portal's reset option or contact support</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <i class="icon-access"></i>
+          <div>
+            <h4>Access Issues?</h4>
+            <p>Verify your company email is registered in the system</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <i class="icon-browser"></i>
+          <div>
+            <h4>Browser Problems?</h4>
+            <p>Clear cache/cookies and try again or switch browsers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="help-footer">
+    <div class="support-card">
+      <i class="icon-support"></i>
+      <h4>Still need help?</h4>
+      <p>Contact our support team for direct assistance</p>
+      <button class="contact-btn" (click)="selectTab('contact')">Contact Support</button>
+    </div>
+  </div>
+</div>
+
+<div class="content contact" *ngIf="selectedTab==='contact'">
+  <div class="content-header">
+    <h2>Contact Us</h2>
+    <p class="content-subtitle">Get in touch with our support team</p>
+  </div>
+  
+  <div class="contact-sections">
+    <div class="contact-info">
+      <div class="contact-card primary">
+        <div class="card-header">
+          <i class="icon-person"></i>
+          <h3>Primary Contact</h3>
+        </div>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class="icon-name"></i>
+            <div>
+              <label>Name</label>
+              <span>Muni Hari Krishnan</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="icon-email"></i>
+            <div>
+              <label>Email</label>
+              <a href="mailto:muniharikrishnanm&#64;kaartech.com">muniharikrishnanm&#64;kaartech.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="icon-phone"></i>
+            <div>
+              <label>Phone</label>
+              <a href="tel:7708169507">+91 7708169507</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="contact-actions">
+      <div class="action-card">
+        <i class="icon-email-action"></i>
+        <h4>Send Email</h4>
+        <p>Get quick response via email</p>
+        <a href="mailto:muniharikrishnanm&#64;kaartech.com" class="action-btn">Email Now</a>
+      </div>
+      
+      <div class="action-card">
+        <i class="icon-call-action"></i>
+        <h4>Call Directly</h4>
+        <p>Speak with our support team</p>
+        <a href="tel:7708169507" class="action-btn">Call Now</a>
+      </div>
+    </div>
   </div>
 </div>

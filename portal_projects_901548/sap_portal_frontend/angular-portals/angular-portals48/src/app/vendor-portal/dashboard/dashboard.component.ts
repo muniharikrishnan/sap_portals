@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FinanceAnalyticsComponent } from './finance-analytics/finance-analytics.component';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 interface DashboardStats {
   activeRfqs: number;
@@ -30,7 +32,7 @@ interface VendorProfile {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, FinanceAnalyticsComponent],
+  imports: [CommonModule, RouterModule, FinanceAnalyticsComponent, HttpClientModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -39,7 +41,7 @@ export class DashboardComponent implements OnInit {
   dashboardStats: DashboardStats | null = null;
   recentActivities: RecentActivity[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     this.loadVendorProfile();
@@ -81,6 +83,8 @@ export class DashboardComponent implements OnInit {
       
       // TODO: Replace with actual service calls to SAP backend
       this.fetchDashboardStatsFromAPI();
+      // Fetch Purchase Orders count without interrupting other calls
+      this.fetchPoCount();
     }
   }
 
@@ -114,7 +118,7 @@ export class DashboardComponent implements OnInit {
           // Update with simulated data - remove when real API is connected
           this.dashboardStats = {
             activeRfqs: 5,
-            activePOs: 12,
+            activePOs: this.dashboardStats.activePOs || 0,
             pendingDeliveries: 3,
             pendingInvoices: 7,
             totalValue: '$45,250'
@@ -124,6 +128,49 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
     }
+  }
+
+  private fetchPoCount(): void {
+    const vendorId = this.getVendorId();
+    if (!vendorId) {
+      return;
+    }
+
+    this.http.get<any>(`http://localhost:3000/api/purchase/${vendorId}`).subscribe({
+      next: (res) => {
+        // Determine rows count from common response shapes
+        const rows = Array.isArray(res) ? res.length
+          : Array.isArray(res?.purchase) ? res.purchase.length
+          : Array.isArray(res?.data) ? res.data.length
+          : Array.isArray(res?.items) ? res.items.length
+          : Number(res?.count) || 0;
+
+        this.dashboardStats = this.dashboardStats ? {
+          ...this.dashboardStats,
+          activePOs: rows
+        } : {
+          activeRfqs: 0,
+          activePOs: rows,
+          pendingDeliveries: 0,
+          pendingInvoices: 0,
+          totalValue: '$0'
+        };
+      },
+      error: (err) => {
+        console.error('Failed to fetch PO count:', err);
+      }
+    });
+  }
+
+  private getVendorId(): string | null {
+    // Prefer profile if present
+    if (this.vendorProfile?.lifnr) return this.vendorProfile.lifnr;
+    if (this.vendorProfile?.vendorId) return this.vendorProfile.vendorId;
+
+    // Fall back to localStorage keys commonly used in the app
+    return localStorage.getItem('VendorId')
+      || localStorage.getItem('vendorId')
+      || localStorage.getItem('lifnr');
   }
 
   private async fetchRecentActivitiesFromAPI() {

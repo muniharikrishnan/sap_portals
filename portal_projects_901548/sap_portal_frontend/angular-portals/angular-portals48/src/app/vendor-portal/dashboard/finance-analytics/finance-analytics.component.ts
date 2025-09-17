@@ -71,13 +71,8 @@ export class FinanceAnalyticsComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private loadVendorProfile() {
-    const storedProfile = localStorage.getItem('vendorProfile');
-    if (storedProfile) {
-      const profile = JSON.parse(storedProfile);
-      this.vendorId = profile.lifnr || profile.vendorId || localStorage.getItem('lifnr') || 'V001';
-    } else {
-      this.vendorId = localStorage.getItem('lifnr') || localStorage.getItem('vendorId') || 'V001';
-    }
+    // Read the correct VendorId from localStorage
+    this.vendorId = localStorage.getItem('VendorId') || 'V001';
   }
 
   private async loadFinanceAnalytics() {

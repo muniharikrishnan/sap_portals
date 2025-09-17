@@ -324,6 +324,31 @@ export class PayComponent implements OnInit {
   }
 
   /**
+   * Get gender display text from gender value
+   */
+  getGenderDisplay(gender: string): string {
+    if (!gender) return 'Not Available';
+    
+    // Handle different gender representations
+    switch (gender.toString().toLowerCase()) {
+      case '1':
+      case 'male':
+      case 'm':
+        return 'MALE';
+      case '2':
+      case 'female':
+      case 'f':
+        return 'FEMALE';
+      case '3':
+      case 'other':
+      case 'o':
+        return 'OTHER';
+      default:
+        return gender;
+    }
+  }
+
+  /**
    * Track by function for ngFor optimization
    */
   trackByRecord(index: number, record: PayslipRecord): string {

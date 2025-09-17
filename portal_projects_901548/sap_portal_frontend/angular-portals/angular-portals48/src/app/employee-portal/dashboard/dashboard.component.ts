@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { EmployeeService, EmployeeProfile } from '../../services/employee.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  employeeProfile: any = null;
+  employeeProfile: EmployeeProfile | null = null;
+  employeeId: string = '';
   isDarkMode: boolean = true;
   
   // Dashboard data properties
@@ -31,6 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router, 
     private http: HttpClient,
     private renderer: Renderer2,
+    private employeeService: EmployeeService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -86,11 +89,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private loadEmployeeProfile(): void {
     const employeeId = localStorage.getItem('employeeId')?.trim();
     if (employeeId) {
-      // Mock employee profile data for now
-      this.employeeProfile = {
-        name: 'John Doe',
-        employeeId: employeeId
-      };
+      this.employeeId = employeeId;
+      this.employeeService.getEmployeeProfile(employeeId).subscribe({
+        next: (profile) => {
+          console.log('Profile data received:', profile);
+          this.employeeProfile = profile;
+        },
+        error: (error) => {
+          console.error('Error fetching profile data:', error);
+          // Fallback to basic employee info if profile fetch fails
+          this.employeeProfile = {
+            fullName: 'Employee',
+            gender: '',
+            dob: '',
+            orgUnit: '',
+            position: '',
+            department: '',
+            compCode: '',
+            email: '',
+            phone: '',
+            address: ''
+          };
+        }
+      });
     }
   }
 
